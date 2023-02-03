@@ -1,0 +1,44 @@
+[
+    {
+        "id": 0,
+        "CharType": 2
+        "image": "Z",
+        "character": "Z"
+    },
+    {
+        "id": 1,
+        "CharType": 2
+        "image": "X",
+        "character": "X"
+    },
+    {
+        "id": 2,
+        "CharType": 2
+        "image": "C",
+        "character": "C"
+    },
+    {
+        "id": 3,
+        "CharType": 2
+        "image": "V",
+        "character": "V"
+    },
+    {
+        "id": 4,
+        "CharType": 2
+        "image": "B",
+        "character": "B"
+    },
+    {
+        "id": 5,
+        "CharType": 2
+        "image": "N",
+        "character": "N"
+    },
+    {
+        "id": 6,
+        "CharType": 2
+        "image": "M",
+        "character": "M"
+    }
+]

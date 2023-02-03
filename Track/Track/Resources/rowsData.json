@@ -1,0 +1,74 @@
+[
+    {
+        "id": 0,
+        "image": "QWERTYUIOP",
+        "RowType": 0,
+        "CharType": 0
+    },
+    {
+        "id": 1,
+        "image": "ASDFGHJKL",
+        "RowType": 0,
+        "CharType": 1
+    },
+    {
+        "id": 2,
+        "image": "ZXCVBNM",
+        "RowType": 0,
+        "CharType": 2,
+    },
+    {
+        "id": 3,
+        "image": "lower1",
+        "RowType": 3,
+        "CharType": 9
+    },
+    {
+        "id": 4,
+        "image": "lower2",
+        "RowType": 3,
+        "CharType": 10
+    },
+    {
+        "id": 5,
+        "image": "lower3",
+        "RowType": 3,
+        "CharType": 11
+    },
+    {
+        "id": 6,
+        "image": "sym1",
+        "RowType": 1,
+        "CharType": 3
+    },
+    {
+        "id": 7,
+        "image": "sym2",
+        "RowType": 1,
+        "CharType": 4
+    },
+    {
+        "id": 8,
+        "image": "sym3",
+        "RowType": 1,
+        "CharType": 5
+    },
+    {
+        "id": 9,
+        "image": "sym4",
+        "RowType": 1,
+        "CharType": 6
+    },
+    {
+        "id": 10,
+        "image": "num1",
+        "RowType": 2,
+        "CharType": 7
+    },
+    {
+        "id": 11,
+        "image": "num2",
+        "RowType": 2,
+        "CharType": 8
+    }
+]
