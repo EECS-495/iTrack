@@ -11,6 +11,7 @@ struct CoverButtons: View {
     @Binding var state: Int
     @Binding var rowState: Int
     @Binding var content: String
+    @Binding var contentInd: Int
   
     var body: some View {
         VStack{
@@ -58,12 +59,30 @@ struct CoverButtons: View {
         self.rowState = 3
     }
     private func addSpace() {
-        content = content + " "
+        var count: Int = 0
+        var content1: String = ""
+        var content2: String = ""
+        for char in Array(content) {
+            if count >= contentInd {
+                break
+            }
+            content1 = content1 + String(char)
+            count = count + 1
+        }
+        count = 0
+        for char in Array(content) {
+            if count >= contentInd {
+                content2 = content2 + String(char)
+            }
+            count = count + 1
+        }
+        content = content1 + " " + content2
+        contentInd = contentInd + 1
     }
 }
 
 struct CoverButtons_Previews: PreviewProvider {
     static var previews: some View {
-        CoverButtons(state: .constant(0), rowState: .constant(0), content: .constant(""))
+        CoverButtons(state: .constant(0), rowState: .constant(0), content: .constant(""), contentInd: .constant(0))
     }
 }

@@ -11,6 +11,7 @@ struct CharView: View {
     @Binding var state: Int
     @Binding var charState: Int
     @Binding var content: String
+    @Binding var contentInd: Int
     
     var charRows: [CharRow] {
         CharRows.filter { row in
@@ -35,12 +36,31 @@ struct CharView: View {
     }
     
     private func clickChar(character: String) {
-        content = content + character
+        var count: Int = 0
+        var content1: String = ""
+        var content2: String = ""
+        for char in Array(content) {
+            if count >= contentInd {
+                break
+            }
+            content1 = content1 + String(char)
+            count = count + 1
+        }
+        count = 0
+        for char in Array(content) {
+            if count >= contentInd {
+                content2 = content2 + String(char)
+            }
+            count = count + 1
+        }
+        content = content1 + character + content2
+        contentInd = contentInd + 1
+        state = 1
     }
 }
 
 struct CharView_Previews: PreviewProvider {
     static var previews: some View {
-        CharView(state: .constant(2), charState: .constant(0), content: .constant(""))
+        CharView(state: .constant(2), charState: .constant(0), content: .constant(""), contentInd: .constant(0))
     }
 }
