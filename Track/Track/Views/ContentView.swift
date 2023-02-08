@@ -7,13 +7,26 @@
 
 import SwiftUI
 
+enum ButtonType {
+    case cover, row , char, space
+}
+
+struct selectedState {
+    var buttonType: ButtonType
+    var buttonId: Int
+    var clickState: Int
+}
+
+
 struct ContentView: View {
-    
+
     @State var content: String = ""
     @State var contentInd: Int = 0
     @State var state: Int = 0
     @State var rowState: Int = 0
     @State var charState: Int = 0
+    @State var prevState: Int = 0
+    @State var selectState: selectedState = selectedState(buttonType: ButtonType.cover, buttonId: 0, clickState: 0)
     
     var body: some View {
        
@@ -29,7 +42,6 @@ struct ContentView: View {
                         .padding()
                 }
             }
-            Spacer()
             HStack {
                 Button(action: moveCursorLeft){
                     Text("Cursor Left")
@@ -43,11 +55,14 @@ struct ContentView: View {
             }
             Spacer()
             if state == 0{
-                CoverButtons(state: $state, rowState: $rowState, content: $content, contentInd: $contentInd)
+                CoverButtons(state: $state, rowState: $rowState, content: $content, contentInd: $contentInd, prevState: $prevState, selectState: $selectState)
             } else if state == 1{
-                RowsView(state: $state, rowState: $rowState, charState: $charState)
+                RowsView(state: $state, rowState: $rowState, charState: $charState, prevState: $prevState)
             } else if state == 2 {
                 CharView(state: $state, charState: $charState, content: $content, contentInd: $contentInd)
+            } else if state == 4 {
+                ConfirmationPopup(state: $state, rowState: $rowState, charState: $charState, prevState: $prevState)
+                Spacer()
             }
             Spacer()
         }

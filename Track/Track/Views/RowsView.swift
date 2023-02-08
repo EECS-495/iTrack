@@ -11,6 +11,7 @@ struct RowsView: View {
     @Binding var state: Int
     @Binding var rowState: Int
     @Binding var charState: Int
+    @Binding var prevState: Int
     
     var rows: [Row] {
         Rows.filter { row in
@@ -37,7 +38,9 @@ struct RowsView: View {
     }
     private func clickRow(_ CharType: Int){
         // check row state to skip to checking image name to know what to set char state to be
-        self.state = 2
+        //self.state = 2
+        self.state = 4
+        self.prevState = 1
         self.charState = CharType
         
     }
@@ -46,6 +49,6 @@ struct RowsView: View {
 
 struct RowsView_Previews: PreviewProvider {
     static var previews: some View {
-        RowsView(state: .constant(2), rowState: .constant(0), charState: .constant(0))
+        RowsView(state: .constant(2), rowState: .constant(0), charState: .constant(0), prevState: .constant(1))
     }
 }
