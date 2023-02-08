@@ -20,30 +20,68 @@ struct CoverButtons: View {
         VStack{
             Button(action: {toNextState(buttonID: 0)}){
                 Image("uppercover")
+                    .resizable()
+                    .border(.blue, width: addBorder(buttonType: ButtonType.cover, buttonId: 0))
+                    .frame(width: scaleDim(buttonType: ButtonType.cover, buttonId: 0), height: scaleDim(buttonType: ButtonType.cover, buttonId: 0))
             }
             
             HStack{
                 Button(action: {toNextState(buttonID: 1)}){
                     Image("symbolscover")
+                        .resizable()
+                        .border(.blue, width: addBorder(buttonType: ButtonType.cover, buttonId: 1))
+                        .frame(width: scaleDim(buttonType: ButtonType.cover, buttonId: 1), height: scaleDim(buttonType: ButtonType.cover, buttonId: 1))
+                    
                 }
                 
                 Spacer()
                 Button(action: addSpace){
                     Text("Space")
-                        .frame(width: 60, height: 60)
+                        .frame(width: scaleDim(buttonType: ButtonType.space, buttonId: 0), height: scaleDim(buttonType: ButtonType.space, buttonId: 0))
                         .foregroundColor(.black)
                         .background(.gray)
+                        .border(.blue, width: addBorder(buttonType: ButtonType.space, buttonId: 0))
                 }
                 Spacer()
                 Button(action: {toNextState(buttonID: 2)}){
                     Image("numberscover")
+                        .resizable()
+                        .border(.blue, width: addBorder(buttonType: ButtonType.cover, buttonId: 2))
+                        .frame(width: scaleDim(buttonType: ButtonType.cover, buttonId: 2), height: scaleDim(buttonType: ButtonType.cover, buttonId: 2))
                 }
             }
             Button(action: {toNextState(buttonID: 3)}){
                 Image("lowercover")
+                    .resizable()
+                    .border(.blue, width: addBorder(buttonType: ButtonType.cover, buttonId: 3))
+                    .frame(width: scaleDim(buttonType: ButtonType.cover, buttonId: 3), height: scaleDim(buttonType: ButtonType.cover, buttonId: 3))
             }
         }
         .padding()
+    }
+    
+    private func addBorder(buttonType: ButtonType, buttonId: Int) -> CGFloat {
+        if selectState.buttonType == buttonType && selectState.buttonId == buttonId && selectState.clickState == 1{
+            return 3.0
+        } else {
+            return 0
+        }
+    }
+    
+    private func scaleDim(buttonType: ButtonType, buttonId: Int) -> CGFloat {
+        if selectState.buttonType == buttonType && selectState.buttonId == buttonId && selectState.clickState == 1{
+            if buttonType == ButtonType.space {
+                return 80.0
+            } else {
+                return 110.0
+            }
+        } else {
+            if buttonType == ButtonType.space {
+                return 60.0
+            } else {
+                return 90.0
+            }
+        }
     }
     
     private func toNextState(buttonID: Int) {

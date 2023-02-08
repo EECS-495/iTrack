@@ -57,7 +57,7 @@ struct ContentView: View {
             if state == 0{
                 CoverButtons(state: $state, rowState: $rowState, content: $content, contentInd: $contentInd, prevState: $prevState, selectState: $selectState)
             } else if state == 1{
-                RowsView(state: $state, rowState: $rowState, charState: $charState, prevState: $prevState)
+                RowsView(state: $state, rowState: $rowState, charState: $charState, prevState: $prevState, selectState: $selectState)
             } else if state == 2 {
                 CharView(state: $state, charState: $charState, content: $content, contentInd: $contentInd)
             } else if state == 4 {
