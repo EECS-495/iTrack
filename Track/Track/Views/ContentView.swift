@@ -17,6 +17,10 @@ struct selectedState {
     var clickState: Int
 }
 
+struct CustomColor {
+    static let lightgray = Color("lightgray")
+}
+
 
 struct ContentView: View {
 
@@ -27,6 +31,8 @@ struct ContentView: View {
     @State var charState: Int = 0
     @State var prevState: Int = 0
     @State var selectState: selectedState = selectedState(buttonType: ButtonType.cover, buttonId: 0, clickState: 0)
+    let tutorialTimer = Timer.publish(every: 5, on: .main, in: .common).autoconnect()
+    @State var showHelpButton: Bool = false
     
     var body: some View {
        
@@ -48,6 +54,20 @@ struct ContentView: View {
                 }
                 .padding()
                 Spacer()
+                Button(action: {tutorial()}) {
+                    Text("?")
+                        .foregroundColor(.black)
+                        .overlay(
+                            Circle()
+                                .stroke(Color.black)
+                                .frame(width: 20, height: 20)
+                        )
+                }
+                .scaleEffect(showHelpButton ? 1 : 0.001)
+                .onReceive(tutorialTimer) {_ in
+                    showHelpButton = true
+                }
+                Spacer()
                 Button(action: moveCursorRight){
                     Text("Cursor Right")
                 }
@@ -59,9 +79,9 @@ struct ContentView: View {
             } else if state == 1{
                 RowsView(state: $state, rowState: $rowState, charState: $charState, prevState: $prevState, selectState: $selectState)
             } else if state == 2 {
-                CharView(state: $state, charState: $charState, content: $content, contentInd: $contentInd)
+                CharView(state: $state, charState: $charState, content: $content, contentInd: $contentInd, prevState: $prevState, selectState: $selectState)
             } else if state == 4 {
-                ConfirmationPopup(state: $state, rowState: $rowState, charState: $charState, prevState: $prevState)
+                ConfirmationPopup(state: $state, rowState: $rowState, charState: $charState, prevState: $prevState, selectState: $selectState, content: $content, contentInd: $contentInd)
                 Spacer()
             }
             Spacer()
@@ -104,6 +124,10 @@ struct ContentView: View {
         if contentInd < content.count {
             contentInd = contentInd + 1
         }
+    }
+    
+    private func tutorial() {
+        print("tutorial")
     }
 
 }

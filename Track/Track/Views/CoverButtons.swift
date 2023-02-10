@@ -23,6 +23,7 @@ struct CoverButtons: View {
                     .resizable()
                     .border(.blue, width: addBorder(buttonType: ButtonType.cover, buttonId: 0))
                     .frame(width: scaleDim(buttonType: ButtonType.cover, buttonId: 0), height: scaleDim(buttonType: ButtonType.cover, buttonId: 0))
+                    .cornerRadius(8)
             }
             
             HStack{
@@ -31,6 +32,7 @@ struct CoverButtons: View {
                         .resizable()
                         .border(.blue, width: addBorder(buttonType: ButtonType.cover, buttonId: 1))
                         .frame(width: scaleDim(buttonType: ButtonType.cover, buttonId: 1), height: scaleDim(buttonType: ButtonType.cover, buttonId: 1))
+                        .cornerRadius(8)
                     
                 }
                 
@@ -39,8 +41,9 @@ struct CoverButtons: View {
                     Text("Space")
                         .frame(width: scaleDim(buttonType: ButtonType.space, buttonId: 0), height: scaleDim(buttonType: ButtonType.space, buttonId: 0))
                         .foregroundColor(.black)
-                        .background(.gray)
+                        .background(CustomColor.lightgray)
                         .border(.blue, width: addBorder(buttonType: ButtonType.space, buttonId: 0))
+                        .cornerRadius(8)
                 }
                 Spacer()
                 Button(action: {toNextState(buttonID: 2)}){
@@ -48,6 +51,7 @@ struct CoverButtons: View {
                         .resizable()
                         .border(.blue, width: addBorder(buttonType: ButtonType.cover, buttonId: 2))
                         .frame(width: scaleDim(buttonType: ButtonType.cover, buttonId: 2), height: scaleDim(buttonType: ButtonType.cover, buttonId: 2))
+                        .cornerRadius(8)
                 }
             }
             Button(action: {toNextState(buttonID: 3)}){
@@ -55,6 +59,7 @@ struct CoverButtons: View {
                     .resizable()
                     .border(.blue, width: addBorder(buttonType: ButtonType.cover, buttonId: 3))
                     .frame(width: scaleDim(buttonType: ButtonType.cover, buttonId: 3), height: scaleDim(buttonType: ButtonType.cover, buttonId: 3))
+                    .cornerRadius(8)
             }
         }
         .padding()

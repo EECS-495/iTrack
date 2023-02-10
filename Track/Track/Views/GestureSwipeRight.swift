@@ -22,7 +22,7 @@ struct GestureSwipeRight: ViewModifier {
                 && value.translation.height < 30 {
 
               // Add your actions here when user swipe right.
-            if(state != 0) {
+            if(state != 0 && state != 4) {
                 state = state - 1
             }
             }

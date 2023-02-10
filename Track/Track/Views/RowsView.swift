@@ -27,10 +27,13 @@ struct RowsView: View {
                 Button(action: {
                     clickRow(row)
                 }){
-                    Image(row.image)
-                        .resizable()
-                        .border(.blue, width: addBorder(buttonId: row.id))
+                    Text(row.image)
                         .frame(width: scaleDimWidth(buttonId: row.id), height: scaleDimHeight(buttonId: row.id))
+                        .foregroundColor(.black)
+                        .background(CustomColor.lightgray)
+                        .border(.blue, width: addBorder(buttonId: row.id))
+                        .font(.system(size: scaleFont(buttonId: row.id), weight: .semibold))
+                        .cornerRadius(8)
                 }
                 .padding()
             }
@@ -60,6 +63,14 @@ struct RowsView: View {
             return 3.0
         } else {
             return 0
+        }
+    }
+    
+    private func scaleFont(buttonId: Int) -> CGFloat {
+        if selectState.buttonType == ButtonType.row && selectState.buttonId == buttonId && selectState.clickState == 1 {
+            return 30
+        } else {
+            return 20
         }
     }
     
