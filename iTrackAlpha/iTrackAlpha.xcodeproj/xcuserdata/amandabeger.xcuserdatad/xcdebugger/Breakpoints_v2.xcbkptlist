@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Bucket
+   uuid = "B424F59E-8C80-483D-9F49-E40666D2E6CE"
+   type = "1"
+   version = "2.0">
+   <Breakpoints>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "90366FD9-17DC-48C2-AC5A-0B48B8D14DC6"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "iTrackAlpha/ViewController.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "52"
+            endingLineNumber = "52"
+            landmarkName = "renderer(_:didUpdate:for:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "9FDEB996-5AB0-4F6C-9B46-07A032E21B60"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "iTrackAlpha/ViewController.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "47"
+            endingLineNumber = "47"
+            landmarkName = "renderer(_:didUpdate:for:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "9FDEB996-5AB0-4F6C-9B46-07A032E21B60 - a4625f23598e4c68"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "iTrackAlpha.ViewController.renderer(_: __C.SCNSceneRenderer, didUpdate: __C.SCNNode, for: __C.ARAnchor) -&gt; ()"
+                  moduleName = "iTrackAlpha"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/amandabeger/Desktop/EECS495/iTrack/iTrackAlpha/iTrackAlpha/ViewController.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "61"
+                  endingLineNumber = "61"
+                  offsetFromSymbolStart = "220">
+               </Location>
+               <Location
+                  uuid = "9FDEB996-5AB0-4F6C-9B46-07A032E21B60 - a4625f23598e4c68"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "iTrackAlpha.ViewController.renderer(_: __C.SCNSceneRenderer, didUpdate: __C.SCNNode, for: __C.ARAnchor) -&gt; ()"
+                  moduleName = "iTrackAlpha"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/amandabeger/Desktop/EECS495/iTrack/iTrackAlpha/iTrackAlpha/ViewController.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "61"
+                  endingLineNumber = "61"
+                  offsetFromSymbolStart = "424">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "6D5111BC-2867-41D0-A074-08375079D57A"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "iTrackAlpha/ViewController.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "32"
+            endingLineNumber = "32"
+            landmarkName = "viewWillAppear(_:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+   </Breakpoints>
+</Bucket>

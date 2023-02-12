@@ -7,6 +7,21 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		9507A9FC2999793300CE7E78 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9507A9FB2999793300CE7E78 /* ContentView.swift */; };
+		9507A9FE2999795100CE7E78 /* RowsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9507A9FD2999795100CE7E78 /* RowsView.swift */; };
+		9507AA002999796F00CE7E78 /* CharView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9507A9FF2999796F00CE7E78 /* CharView.swift */; };
+		9507AA022999798D00CE7E78 /* ConfirmationPopup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9507AA012999798D00CE7E78 /* ConfirmationPopup.swift */; };
+		9507AA04299979A900CE7E78 /* CoverButtons.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9507AA03299979A900CE7E78 /* CoverButtons.swift */; };
+		9507AA06299979F400CE7E78 /* CustomTextFieldView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9507AA05299979F400CE7E78 /* CustomTextFieldView.swift */; };
+		9507AA0829997A0200CE7E78 /* GestureSwipeRight.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9507AA0729997A0200CE7E78 /* GestureSwipeRight.swift */; };
+		9507AA0D29997B0D00CE7E78 /* CharRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9507AA0C29997B0D00CE7E78 /* CharRow.swift */; };
+		9507AA0F29997B1600CE7E78 /* ModelData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9507AA0E29997B1600CE7E78 /* ModelData.swift */; };
+		9507AA1129997B2500CE7E78 /* Row.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9507AA1029997B2500CE7E78 /* Row.swift */; };
+		9507AA1629997BB200CE7E78 /* rowsData.json in Resources */ = {isa = PBXBuildFile; fileRef = 9507AA1329997BB200CE7E78 /* rowsData.json */; };
+		9507AA1729997BB200CE7E78 /* lowerRowsData.json in Resources */ = {isa = PBXBuildFile; fileRef = 9507AA1429997BB200CE7E78 /* lowerRowsData.json */; };
+		9507AA1829997BB200CE7E78 /* charRows.json in Resources */ = {isa = PBXBuildFile; fileRef = 9507AA1529997BB200CE7E78 /* charRows.json */; };
+		9507AA1A29997D1D00CE7E78 /* PageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9507AA1929997D1D00CE7E78 /* PageViewController.swift */; };
+		9507AA1C29997D7C00CE7E78 /* PageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9507AA1B29997D7C00CE7E78 /* PageView.swift */; };
 		CC5353CE299715BA00097C49 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC5353CD299715BA00097C49 /* AppDelegate.swift */; };
 		CC5353D0299715BA00097C49 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC5353CF299715BA00097C49 /* SceneDelegate.swift */; };
 		CC5353D2299715BA00097C49 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC5353D1299715BA00097C49 /* ViewController.swift */; };
@@ -36,6 +51,21 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		9507A9FB2999793300CE7E78 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		9507A9FD2999795100CE7E78 /* RowsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RowsView.swift; sourceTree = "<group>"; };
+		9507A9FF2999796F00CE7E78 /* CharView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CharView.swift; sourceTree = "<group>"; };
+		9507AA012999798D00CE7E78 /* ConfirmationPopup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmationPopup.swift; sourceTree = "<group>"; };
+		9507AA03299979A900CE7E78 /* CoverButtons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoverButtons.swift; sourceTree = "<group>"; };
+		9507AA05299979F400CE7E78 /* CustomTextFieldView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTextFieldView.swift; sourceTree = "<group>"; };
+		9507AA0729997A0200CE7E78 /* GestureSwipeRight.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GestureSwipeRight.swift; sourceTree = "<group>"; };
+		9507AA0C29997B0D00CE7E78 /* CharRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CharRow.swift; sourceTree = "<group>"; };
+		9507AA0E29997B1600CE7E78 /* ModelData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelData.swift; sourceTree = "<group>"; };
+		9507AA1029997B2500CE7E78 /* Row.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Row.swift; sourceTree = "<group>"; };
+		9507AA1329997BB200CE7E78 /* rowsData.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = rowsData.json; sourceTree = "<group>"; };
+		9507AA1429997BB200CE7E78 /* lowerRowsData.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = lowerRowsData.json; sourceTree = "<group>"; };
+		9507AA1529997BB200CE7E78 /* charRows.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = charRows.json; sourceTree = "<group>"; };
+		9507AA1929997D1D00CE7E78 /* PageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageViewController.swift; sourceTree = "<group>"; };
+		9507AA1B29997D7C00CE7E78 /* PageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageView.swift; sourceTree = "<group>"; };
 		CC5353CA299715BA00097C49 /* iTrackAlpha.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iTrackAlpha.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CC5353CD299715BA00097C49 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		CC5353CF299715BA00097C49 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -76,6 +106,42 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		9507A9FA2999791400CE7E78 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				9507A9FB2999793300CE7E78 /* ContentView.swift */,
+				9507A9FD2999795100CE7E78 /* RowsView.swift */,
+				9507A9FF2999796F00CE7E78 /* CharView.swift */,
+				9507AA012999798D00CE7E78 /* ConfirmationPopup.swift */,
+				9507AA03299979A900CE7E78 /* CoverButtons.swift */,
+				9507AA05299979F400CE7E78 /* CustomTextFieldView.swift */,
+				9507AA0729997A0200CE7E78 /* GestureSwipeRight.swift */,
+				9507AA1929997D1D00CE7E78 /* PageViewController.swift */,
+				9507AA1B29997D7C00CE7E78 /* PageView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		9507AA0B29997AFB00CE7E78 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				9507AA0C29997B0D00CE7E78 /* CharRow.swift */,
+				9507AA0E29997B1600CE7E78 /* ModelData.swift */,
+				9507AA1029997B2500CE7E78 /* Row.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		9507AA1229997B5100CE7E78 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				9507AA1529997BB200CE7E78 /* charRows.json */,
+				9507AA1429997BB200CE7E78 /* lowerRowsData.json */,
+				9507AA1329997BB200CE7E78 /* rowsData.json */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
 		CC5353C1299715BA00097C49 = {
 			isa = PBXGroup;
 			children = (
@@ -99,6 +165,9 @@
 		CC5353CC299715BA00097C49 /* iTrackAlpha */ = {
 			isa = PBXGroup;
 			children = (
+				9507AA1229997B5100CE7E78 /* Resources */,
+				9507AA0B29997AFB00CE7E78 /* Models */,
+				9507A9FA2999791400CE7E78 /* Views */,
 				CC5353CD299715BA00097C49 /* AppDelegate.swift */,
 				CC5353CF299715BA00097C49 /* SceneDelegate.swift */,
 				CC5353D1299715BA00097C49 /* ViewController.swift */,
@@ -233,7 +302,10 @@
 			files = (
 				CC5353DA299715BF00097C49 /* LaunchScreen.storyboard in Resources */,
 				CC5353D7299715BF00097C49 /* Assets.xcassets in Resources */,
+				9507AA1629997BB200CE7E78 /* rowsData.json in Resources */,
 				CC5353D5299715BA00097C49 /* Main.storyboard in Resources */,
+				9507AA1829997BB200CE7E78 /* charRows.json in Resources */,
+				9507AA1729997BB200CE7E78 /* lowerRowsData.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -259,8 +331,20 @@
 			buildActionMask = 2147483647;
 			files = (
 				CC5353D2299715BA00097C49 /* ViewController.swift in Sources */,
+				9507AA1A29997D1D00CE7E78 /* PageViewController.swift in Sources */,
+				9507AA0829997A0200CE7E78 /* GestureSwipeRight.swift in Sources */,
+				9507AA0D29997B0D00CE7E78 /* CharRow.swift in Sources */,
+				9507AA1129997B2500CE7E78 /* Row.swift in Sources */,
 				CC5353CE299715BA00097C49 /* AppDelegate.swift in Sources */,
+				9507A9FE2999795100CE7E78 /* RowsView.swift in Sources */,
+				9507AA0F29997B1600CE7E78 /* ModelData.swift in Sources */,
+				9507AA04299979A900CE7E78 /* CoverButtons.swift in Sources */,
+				9507AA022999798D00CE7E78 /* ConfirmationPopup.swift in Sources */,
+				9507AA1C29997D7C00CE7E78 /* PageView.swift in Sources */,
+				9507A9FC2999793300CE7E78 /* ContentView.swift in Sources */,
+				9507AA002999796F00CE7E78 /* CharView.swift in Sources */,
 				CC5353D0299715BA00097C49 /* SceneDelegate.swift in Sources */,
+				9507AA06299979F400CE7E78 /* CustomTextFieldView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -437,9 +521,10 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 82CF59PP76;
+				DEVELOPMENT_TEAM = 4BGHV6A4B4;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = iTrackAlpha/Info.plist;
+				INFOPLIST_KEY_NSCameraUsageDescription = "Using front camera for blink detection.";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
@@ -450,7 +535,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = mananmanchanda.iTrackAlpha;
+				PRODUCT_BUNDLE_IDENTIFIER = amanda.iTrackAlpha;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -465,9 +550,10 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 82CF59PP76;
+				DEVELOPMENT_TEAM = 4BGHV6A4B4;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = iTrackAlpha/Info.plist;
+				INFOPLIST_KEY_NSCameraUsageDescription = "Using front camera for blink detection.";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
@@ -478,7 +564,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = mananmanchanda.iTrackAlpha;
+				PRODUCT_BUNDLE_IDENTIFIER = amanda.iTrackAlpha;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;

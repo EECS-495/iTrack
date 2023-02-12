@@ -17,7 +17,6 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         guard ARFaceTrackingConfiguration.isSupported else {
             fatalError("Face tracking is not supported on this device")
         }
-
         sceneView = ARSCNView(frame: self.view.frame)
         sceneView.delegate = self
         sceneView.backgroundColor = UIColor.white
@@ -30,7 +29,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         let configuration = ARFaceTrackingConfiguration()
         configuration.isLightEstimationEnabled = true
 
-        sceneView.session.run(configuration)
+        sceneView.session.run(configuration, options: [.resetTracking, .removeExistingAnchors])
     }
     
     override func viewWillDisappear(_ animated: Bool) {
