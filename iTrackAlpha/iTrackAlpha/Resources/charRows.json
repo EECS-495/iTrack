@@ -1,0 +1,585 @@
+[
+    {
+        "id": 0,
+        "CharType": 0,
+        "image": "Q",
+        "character": "Q"
+    },
+    {
+        "id": 1,
+        "CharType": 0,
+        "image": "W",
+        "character": "W"
+    },
+    {
+        "id": 2,
+        "CharType": 0,
+        "image": "E",
+        "character": "E"
+    },
+    {
+        "id": 3,
+        "CharType": 0,
+        "image": "R",
+        "character": "R"
+    },
+    {
+        "id": 4,
+        "CharType": 0,
+        "image": "T",
+        "character": "T"
+    },
+    {
+        "id": 5,
+        "CharType": 0,
+        "image": "Y",
+        "character": "Y"
+    },
+    {
+        "id": 6,
+        "CharType": 0,
+        "image": "U",
+        "character": "U"
+    },
+    {
+        "id": 7,
+        "CharType": 0,
+        "image": "I",
+        "character": "I"
+    },
+    {
+        "id": 8,
+        "CharType": 0,
+        "image": "O",
+        "character": "O"
+    },
+    {
+        "id": 9,
+        "CharType": 0,
+        "image": "P",
+        "character": "P"
+    },
+    {
+        "id": 10,
+        "CharType": 1,
+        "image": "A",
+        "character": "A"
+    },
+    {
+        "id": 11,
+        "CharType": 1,
+        "image": "S",
+        "character": "S"
+    },
+    {
+        "id": 12,
+        "CharType": 1,
+        "image": "D",
+        "character": "D"
+    },
+    {
+        "id": 13,
+        "CharType": 1,
+        "image": "F",
+        "character": "F"
+    },
+    {
+        "id": 14,
+        "CharType": 1,
+        "image": "G",
+        "character": "G"
+    },
+    {
+        "id": 15,
+        "CharType": 1,
+        "image": "H",
+        "character": "H"
+    },
+    {
+        "id": 16,
+        "CharType": 1,
+        "image": "J",
+        "character": "J"
+    },
+    {
+        "id": 17,
+        "CharType": 1,
+        "image": "K",
+        "character": "K"
+    },
+    {
+        "id": 18,
+        "CharType": 1,
+        "image": "L",
+        "character": "L"
+    },
+    {
+        "id": 19,
+        "CharType": 2,
+        "image": "Z",
+        "character": "Z"
+    },
+    {
+        "id": 20,
+        "CharType": 2,
+        "image": "X",
+        "character": "X"
+    },
+    {
+        "id": 21,
+        "CharType": 2,
+        "image": "C",
+        "character": "C"
+    },
+    {
+        "id": 22,
+        "CharType": 2,
+        "image": "V",
+        "character": "V"
+    },
+    {
+        "id": 23,
+        "CharType": 2,
+        "image": "B",
+        "character": "B"
+    },
+    {
+        "id": 24,
+        "CharType": 2,
+        "image": "N",
+        "character": "N"
+    },
+    {
+        "id": 25,
+        "CharType": 2,
+        "image": "M",
+        "character": "M"
+    },
+    {
+        "id": 26,
+        "CharType": 9,
+        "image": "q",
+        "character": "q"
+    },
+    {
+        "id": 27,
+        "CharType": 9,
+        "image": "w",
+        "character": "w"
+    },
+    {
+        "id": 28,
+        "CharType": 9,
+        "image": "e",
+        "character": "e"
+    },
+    {
+        "id": 29,
+        "CharType": 9,
+        "image": "r",
+        "character": "r"
+    },
+    {
+        "id": 30,
+        "CharType": 9,
+        "image": "t",
+        "character": "t"
+    },
+    {
+        "id": 31,
+        "CharType": 9,
+        "image": "y",
+        "character": "y"
+    },
+    {
+        "id": 32,
+        "CharType": 9,
+        "image": "u",
+        "character": "u"
+    },
+    {
+        "id": 33,
+        "CharType": 9,
+        "image": "i",
+        "character": "i"
+    },
+    {
+        "id": 34,
+        "CharType": 9,
+        "image": "o",
+        "character": "o"
+    },
+    {
+        "id": 35,
+        "CharType": 9,
+        "image": "p",
+        "character": "p"
+    },
+    {
+        "id": 36,
+        "CharType": 10,
+        "image": "a",
+        "character": "a"
+    },
+    {
+        "id": 37,
+        "CharType": 10,
+        "image": "s",
+        "character": "s"
+    },
+    {
+        "id": 38,
+        "CharType": 10,
+        "image": "d",
+        "character": "d"
+    },
+    {
+        "id": 39,
+        "CharType": 10,
+        "image": "f",
+        "character": "f"
+    },
+    {
+        "id": 40,
+        "CharType": 10,
+        "image": "g",
+        "character": "g"
+    },
+    {
+        "id": 41,
+        "CharType": 10,
+        "image": "h",
+        "character": "h"
+    },
+    {
+        "id": 42,
+        "CharType": 10,
+        "image": "j",
+        "character": "j"
+    },
+    {
+        "id": 43,
+        "CharType": 10,
+        "image": "k",
+        "character": "k"
+    },
+    {
+        "id": 44,
+        "CharType": 10,
+        "image": "l",
+        "character": "l"
+    },
+    {
+        "id": 45,
+        "CharType": 11,
+        "image": "z",
+        "character": "z"
+    },
+    {
+        "id": 46,
+        "CharType": 11,
+        "image": "x",
+        "character": "x"
+    },
+    {
+        "id": 47,
+        "CharType": 11,
+        "image": "c",
+        "character": "c"
+    },
+    {
+        "id": 48,
+        "CharType": 11,
+        "image": "v",
+        "character": "v"
+    },
+    {
+        "id": 49,
+        "CharType": 11,
+        "image": "b",
+        "character": "b"
+    },
+    {
+        "id": 50,
+        "CharType": 11,
+        "image": "n",
+        "character": "n"
+    },
+    {
+        "id": 51,
+        "CharType": 11,
+        "image": "m",
+        "character": "m"
+    },
+    {
+        "id": 52,
+        "CharType": 3,
+        "image": "-",
+        "character": "-"
+    },
+    {
+        "id": 53,
+        "CharType": 3,
+        "image": "/",
+        "character": "/"
+    },
+    {
+        "id": 54,
+        "CharType": 3,
+        "image": ":",
+        "character": ":"
+    },
+    {
+        "id": 55,
+        "CharType": 3,
+        "image": ";",
+        "character": ";"
+    },
+    {
+        "id": 56,
+        "CharType": 3,
+        "image": "(",
+        "character": "("
+    },
+    {
+        "id": 57,
+        "CharType": 3,
+        "image": ")",
+        "character": ")"
+    },
+    {
+        "id": 58,
+        "CharType": 3,
+        "image": "$",
+        "character": "$"
+    },
+    {
+        "id": 59,
+        "CharType": 3,
+        "image": "&",
+        "character": "&"
+    },
+    {
+        "id": 60,
+        "CharType": 3,
+        "image": "@",
+        "character": "@"
+    },
+    {
+        "id": 61,
+        "CharType": 3,
+        "image": "\"",
+        "character": "\""
+    },
+    {
+        "id": 62,
+        "CharType": 4,
+        "image": "[",
+        "character": "["
+    },
+    {
+        "id": 63,
+        "CharType": 4,
+        "image": "]",
+        "character": "]"
+    },
+    {
+        "id": 64,
+        "CharType": 4,
+        "image": "{",
+        "character": "{"
+    },
+    {
+        "id": 65,
+        "CharType": 4,
+        "image": "}",
+        "character": "}"
+    },
+    {
+        "id": 66,
+        "CharType": 4,
+        "image": "#",
+        "character": "#"
+    },
+    {
+        "id": 67,
+        "CharType": 4,
+        "image": "%",
+        "character": "%"
+    },
+    {
+        "id": 68,
+        "CharType": 4,
+        "image": "^",
+        "character": "^"
+    },
+    {
+        "id": 69,
+        "CharType": 4,
+        "image": "*",
+        "character": "*"
+    },
+    {
+        "id": 70,
+        "CharType": 4,
+        "image": "+",
+        "character": "+"
+    },
+    {
+        "id": 71,
+        "CharType": 4,
+        "image": "=",
+        "character": "="
+    },
+    {
+        "id": 72,
+        "CharType": 5,
+        "image": "_",
+        "character": "_"
+    },
+    {
+        "id": 73,
+        "CharType": 5,
+        "image": "\\",
+        "character": "\\"
+    },
+    {
+        "id": 74,
+        "CharType": 5,
+        "image": "|",
+        "character": "|"
+    },
+    {
+        "id": 75,
+        "CharType": 5,
+        "image": "~",
+        "character": "~"
+    },
+    {
+        "id": 76,
+        "CharType": 5,
+        "image": "<",
+        "character": "<"
+    },
+    {
+        "id": 77,
+        "CharType": 5,
+        "image": ">",
+        "character": ">"
+    },
+    {
+        "id": 78,
+        "CharType": 5,
+        "image": "€",
+        "character": "€"
+    },
+    {
+        "id": 79,
+        "CharType": 5,
+        "image": "£",
+        "character": "£"
+    },
+    {
+        "id": 80,
+        "CharType": 5,
+        "image": "¥",
+        "character": "¥"
+    },
+    {
+        "id": 81,
+        "CharType": 5,
+        "image": "•",
+        "character": "•"
+    },
+    {
+        "id": 82,
+        "CharType": 6,
+        "image": ".",
+        "character": "."
+    },
+    {
+        "id": 83,
+        "CharType": 6,
+        "image": ",",
+        "character": ","
+    },
+    {
+        "id": 84,
+        "CharType": 6,
+        "image": "?",
+        "character": "?"
+    },
+    {
+        "id": 85,
+        "CharType": 6,
+        "image": "!",
+        "character": "!"
+    },
+    {
+        "id": 86,
+        "CharType": 6,
+        "image": "'",
+        "character": "'"
+    },
+    {
+        "id": 87,
+        "CharType": 7,
+        "image": "0",
+        "character": "0"
+    },
+    {
+        "id": 88,
+        "CharType": 7,
+        "image": "1",
+        "character": "1"
+    },
+    {
+        "id": 89,
+        "CharType": 7,
+        "image": "2",
+        "character": "2"
+    },
+    {
+        "id": 90,
+        "CharType": 7,
+        "image": "3",
+        "character": "3"
+    },
+    {
+        "id": 91,
+        "CharType": 7,
+        "image": "4",
+        "character": "4"
+    },
+    {
+        "id": 92,
+        "CharType": 8,
+        "image": "5",
+        "character": "5"
+    },
+    {
+        "id": 93,
+        "CharType": 8,
+        "image": "6",
+        "character": "6"
+    },
+    {
+        "id": 94,
+        "CharType": 8,
+        "image": "7",
+        "character": "7"
+    },
+    {
+        "id": 95,
+        "CharType": 8,
+        "image": "8",
+        "character": "8"
+    },
+    {
+        "id": 96,
+        "CharType": 8,
+        "image": "9",
+        "character": "9"
+    }
+]
+
