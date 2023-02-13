@@ -58,7 +58,6 @@ class ViewController: UIViewController, ARSCNViewDelegate {
             return
         }
 
-        // Check if the user has blinked by checking the value of the "eyeBlinkLeft" or "eyeBlinkRight" blend shape
         let leftBlink = faceAnchor.blendShapes[.eyeBlinkLeft]?.doubleValue ?? 0
         let rightBlink = faceAnchor.blendShapes[.eyeBlinkRight]?.doubleValue ?? 0
 
@@ -74,19 +73,19 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         let lookRightLeft = faceAnchor.blendShapes[.eyeLookOutLeft]?.doubleValue ?? 0
         let lookRightRight = faceAnchor.blendShapes[.eyeLookInRight]?.doubleValue ?? 0
         
-        if leftBlink > 0.9 || rightBlink > 0.9 {
-           print("blink")
+        if leftBlink > 0.9 && rightBlink > 0.9 {
+           print("Blink")
         }
-        if lookUpLeft > 0.7 || lookUpRight > 0.7 {
-            print("UP")
+        if lookUpLeft > 0.7 && lookUpRight > 0.7 {
+            print("Up")
         }
-        if lookDownLeft > 0.5 || lookDownRight > 0.5 {
-            print("DOWN")
+        if lookDownLeft > 0.3 && lookDownRight > 0.3 {
+            print("Down")
         }
-        if lookLeftLeft > 0.7 || lookLeftRight > 0.7 {
+        if lookLeftLeft > 0.7 && lookLeftRight > 0.7 {
             print("Left")
         }
-        if lookRightLeft > 0.7 || lookRightRight > 0.7 {
+        if lookRightLeft > 0.7 && lookRightRight > 0.7 {
             print("Right")
         }
     }
