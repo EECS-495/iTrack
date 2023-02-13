@@ -12,6 +12,11 @@ import SwiftUI
 class ViewController: UIViewController, ARSCNViewDelegate {
     var sceneView: ARSCNView!
     let contentView = UIHostingController(rootView: ContentView())
+    var blinkDelay = false
+    /*var upDelay = false
+    var downDelay = false
+    var rightDelay = false
+    var leftDelay = false*/
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -73,19 +78,25 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         let lookRightLeft = faceAnchor.blendShapes[.eyeLookOutLeft]?.doubleValue ?? 0
         let lookRightRight = faceAnchor.blendShapes[.eyeLookInRight]?.doubleValue ?? 0
         
-        if leftBlink > 0.9 && rightBlink > 0.9 {
-           print("Blink")
+        
+        if leftBlink > 0.9 && rightBlink > 0.9 && !self.blinkDelay {
+            print("Blink")
+            self.blinkDelay = true
+            DispatchQueue.main.asyncAfter(deadline: .now() + 2.0){
+                self.blinkDelay = false
+            }
+            
         }
-        if lookUpLeft > 0.7 && lookUpRight > 0.7 {
+        if lookUpLeft > 0.7 && lookUpRight > 0.7 && !self.blinkDelay {
             print("Up")
         }
-        if lookDownLeft > 0.3 && lookDownRight > 0.3 {
+        if lookDownLeft > 0.35 && lookDownRight > 0.35 && !self.blinkDelay {
             print("Down")
         }
-        if lookLeftLeft > 0.7 && lookLeftRight > 0.7 {
+        if lookLeftLeft > 0.7 && lookLeftRight > 0.7 && !self.blinkDelay {
             print("Left")
         }
-        if lookRightLeft > 0.7 && lookRightRight > 0.7 {
+        if lookRightLeft > 0.7 && lookRightRight > 0.7 && !self.blinkDelay {
             print("Right")
         }
     }
