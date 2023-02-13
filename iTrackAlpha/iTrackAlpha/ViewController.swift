@@ -7,9 +7,11 @@
 
 import UIKit
 import ARKit
+import SwiftUI
 
 class ViewController: UIViewController, ARSCNViewDelegate {
     var sceneView: ARSCNView!
+    let contentView = UIHostingController(rootView: ContentView())
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -21,6 +23,10 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         sceneView.delegate = self
         sceneView.backgroundColor = UIColor.white
         self.view.addSubview(sceneView)
+        
+        addChild(contentView)
+        view.addSubview(contentView.view)
+        setupConstraints()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -36,6 +42,14 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         super.viewWillDisappear(animated)
 
         sceneView.session.pause()
+    }
+    
+    fileprivate func setupConstraints() {
+        contentView.view.translatesAutoresizingMaskIntoConstraints = false
+        contentView.view.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
+        contentView.view.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
+        contentView.view.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
+        contentView.view.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
     }
     
     func renderer(_ renderer: SCNSceneRenderer, didUpdate node: SCNNode, for anchor: ARAnchor) {
