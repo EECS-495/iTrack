@@ -62,8 +62,32 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         let leftBlink = faceAnchor.blendShapes[.eyeBlinkLeft]?.doubleValue ?? 0
         let rightBlink = faceAnchor.blendShapes[.eyeBlinkRight]?.doubleValue ?? 0
 
+        let lookUpLeft = faceAnchor.blendShapes[.eyeLookUpLeft]?.doubleValue ?? 0
+        let lookUpRight = faceAnchor.blendShapes[.eyeLookUpRight]?.doubleValue ?? 0
+        
+        let lookDownLeft = faceAnchor.blendShapes[.eyeLookDownLeft]?.doubleValue ?? 0
+        let lookDownRight = faceAnchor.blendShapes[.eyeLookDownRight]?.doubleValue ?? 0
+        
+        let lookLeftLeft = faceAnchor.blendShapes[.eyeLookInLeft]?.doubleValue ?? 0
+        let lookLeftRight = faceAnchor.blendShapes[.eyeLookOutRight]?.doubleValue ?? 0
+        
+        let lookRightLeft = faceAnchor.blendShapes[.eyeLookOutLeft]?.doubleValue ?? 0
+        let lookRightRight = faceAnchor.blendShapes[.eyeLookInRight]?.doubleValue ?? 0
+        
         if leftBlink > 0.9 || rightBlink > 0.9 {
-            print("blink")
+           print("blink")
+        }
+        if lookUpLeft > 0.7 || lookUpRight > 0.7 {
+            print("UP")
+        }
+        if lookDownLeft > 0.5 || lookDownRight > 0.5 {
+            print("DOWN")
+        }
+        if lookLeftLeft > 0.7 || lookLeftRight > 0.7 {
+            print("Left")
+        }
+        if lookRightLeft > 0.7 || lookRightRight > 0.7 {
+            print("Right")
         }
     }
 
