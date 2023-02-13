@@ -13,6 +13,7 @@ struct RowsView: View {
     @Binding var charState: Int
     @Binding var prevState: Int
     @Binding var selectState: selectedState
+    @Binding var highlightBackspace: Bool
     
     var rows: [Row] {
         Rows.filter { row in
@@ -93,6 +94,8 @@ struct RowsView: View {
                 selectState.buttonId = row.id
             }
         }
+        // tells backspace another button has been pushed
+        highlightBackspace = false
         
     }
     
@@ -102,6 +105,6 @@ struct RowsView_Previews: PreviewProvider {
     static var tempSelect = selectedState(buttonType: ButtonType.cover, buttonId: 0, clickState: 0)
     
     static var previews: some View {
-        RowsView(state: .constant(2), rowState: .constant(0), charState: .constant(0), prevState: .constant(1), selectState: .constant(tempSelect))
+        RowsView(state: .constant(2), rowState: .constant(0), charState: .constant(0), prevState: .constant(1), selectState: .constant(tempSelect), highlightBackspace: .constant(false))
     }
 }

@@ -8,7 +8,7 @@
 import SwiftUI
 
 enum ButtonType {
-    case cover, row , char, space
+    case cover, row , char, space, backspace
 }
 
 struct selectedState {
@@ -33,6 +33,7 @@ struct ContentView: View {
     @State var selectState: selectedState = selectedState(buttonType: ButtonType.cover, buttonId: 0, clickState: 0)
     let tutorialTimer = Timer.publish(every: 5, on: .main, in: .common).autoconnect()
     @State var showHelpButton: Bool = false
+    @State var highlightBackspace: Bool = false
     
     var body: some View {
        
@@ -42,9 +43,9 @@ struct ContentView: View {
                     .padding()
                 Spacer()
                 Button(action: {deleteChar()}) {
-                    Image("backspace")
+                    Image(backspaceImage())
                         .resizable()
-                        .frame(width: 45, height: 30)
+                        .frame(width: backspaceWidth(), height: backspaceHeight())
                         .padding()
                 }
             }
@@ -75,11 +76,11 @@ struct ContentView: View {
             }
             Spacer()
             if state == 0{
-                CoverButtons(state: $state, rowState: $rowState, content: $content, contentInd: $contentInd, prevState: $prevState, selectState: $selectState)
+                CoverButtons(state: $state, rowState: $rowState, content: $content, contentInd: $contentInd, prevState: $prevState, selectState: $selectState, highlightBackspace: $highlightBackspace)
             } else if state == 1{
-                RowsView(state: $state, rowState: $rowState, charState: $charState, prevState: $prevState, selectState: $selectState)
+                RowsView(state: $state, rowState: $rowState, charState: $charState, prevState: $prevState, selectState: $selectState, highlightBackspace: $highlightBackspace)
             } else if state == 2 {
-                CharView(state: $state, charState: $charState, content: $content, contentInd: $contentInd, prevState: $prevState, selectState: $selectState)
+                CharView(state: $state, charState: $charState, content: $content, contentInd: $contentInd, prevState: $prevState, selectState: $selectState, highlightBackspace: $highlightBackspace)
             } else if state == 4 {
                 ConfirmationPopup(state: $state, rowState: $rowState, charState: $charState, prevState: $prevState, selectState: $selectState, content: $content, contentInd: $contentInd)
                 Spacer()
@@ -90,26 +91,41 @@ struct ContentView: View {
     }
     
     private func deleteChar() {
-        if contentInd > 0 {
-            var count: Int = 0
-            var content1: String = ""
-            var content2: String = ""
-            for char in Array(content) {
-                if count >= contentInd - 1 {
-                    break
+        if selectState.clickState == 0 {
+            selectState.clickState = 1
+            selectState.buttonType = ButtonType.backspace
+            selectState.buttonId = 0
+            highlightBackspace = true
+        } else if selectState.clickState == 1 {
+            if selectState.buttonType == ButtonType.backspace {
+                if contentInd > 0 {
+                    var count: Int = 0
+                    var content1: String = ""
+                    var content2: String = ""
+                    for char in Array(content) {
+                        if count >= contentInd - 1 {
+                            break
+                        }
+                        content1 = content1 + String(char)
+                        count = count + 1
+                    }
+                    count = 0
+                    for char in Array(content) {
+                        if count >= contentInd {
+                            content2 = content2 + String(char)
+                        }
+                        count = count + 1
+                    }
+                    content = content1 + content2
+                    contentInd = contentInd - 1
                 }
-                content1 = content1 + String(char)
-                count = count + 1
+                highlightBackspace = false
+                selectState.clickState = 0
+            } else {
+                selectState.buttonType = ButtonType.backspace
+                selectState.buttonId = 0
+                highlightBackspace = true
             }
-            count = 0
-            for char in Array(content) {
-                if count >= contentInd {
-                    content2 = content2 + String(char)
-                }
-                count = count + 1
-            }
-            content = content1 + content2
-            contentInd = contentInd - 1
         }
     }
     
@@ -128,6 +144,30 @@ struct ContentView: View {
     
     private func tutorial() {
         print("tutorial")
+    }
+    
+    private func backspaceImage() -> String {
+        if highlightBackspace {
+            return "blueBackspace"
+        } else {
+            return "backspace"
+        }
+    }
+    
+    private func backspaceWidth() -> CGFloat {
+        if highlightBackspace {
+            return 55
+        } else {
+            return 45
+        }
+    }
+    
+    private func backspaceHeight() -> CGFloat {
+        if highlightBackspace {
+            return 40
+        } else {
+            return 30
+        }
     }
 
 }

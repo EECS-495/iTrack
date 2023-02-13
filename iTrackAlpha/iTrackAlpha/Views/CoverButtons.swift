@@ -15,6 +15,7 @@ struct CoverButtons: View {
     @Binding var contentInd: Int
     @Binding var prevState: Int
     @Binding var selectState: selectedState
+    @Binding var highlightBackspace: Bool
   
     var body: some View {
         VStack{
@@ -105,6 +106,8 @@ struct CoverButtons: View {
                 selectState.buttonId = buttonID
             }
         }
+        // tells backspace another button has been pushed
+        highlightBackspace = false
     }
     
     private func addSpace() {
@@ -138,7 +141,8 @@ struct CoverButtons: View {
                 selectState.buttonType = ButtonType.space
             }
         }
-        
+        // tells backspace another button has been pushed
+        highlightBackspace = false
     }
 }
 
@@ -147,6 +151,6 @@ struct CoverButtons_Previews: PreviewProvider {
     
     static var previews: some View {
         
-        CoverButtons(state: .constant(0), rowState: .constant(0), content: .constant(""), contentInd: .constant(0), prevState: .constant(0), selectState: .constant(tempSelect))
+        CoverButtons(state: .constant(0), rowState: .constant(0), content: .constant(""), contentInd: .constant(0), prevState: .constant(0), selectState: .constant(tempSelect), highlightBackspace: .constant(false))
     }
 }

@@ -14,6 +14,7 @@ struct CharView: View {
     @Binding var contentInd: Int
     @Binding var prevState: Int
     @Binding var selectState: selectedState
+    @Binding var highlightBackspace: Bool
     
     var charRows: [CharRow] {
         CharRows.filter { row in
@@ -55,6 +56,8 @@ struct CharView: View {
                 selectState.buttonType = ButtonType.char
             }
         }
+        // tells backspace another button has been pushed
+        highlightBackspace = false
     }
     
     private func scaleDim(row: CharRow) -> CGFloat {
@@ -78,7 +81,7 @@ struct CharView_Previews: PreviewProvider {
     static var tempSelect = selectedState(buttonType: ButtonType.cover, buttonId: 0, clickState: 0)
     
     static var previews: some View {
-        CharView(state: .constant(2), charState: .constant(0), content: .constant(""), contentInd: .constant(0), prevState: .constant(2), selectState: .constant(tempSelect))
+        CharView(state: .constant(2), charState: .constant(0), content: .constant(""), contentInd: .constant(0), prevState: .constant(2), selectState: .constant(tempSelect), highlightBackspace: .constant(false))
     }
 }
 
