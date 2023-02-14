@@ -31,6 +31,7 @@
 		CC5353E5299715BF00097C49 /* iTrackAlphaTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC5353E4299715BF00097C49 /* iTrackAlphaTests.swift */; };
 		CC5353EF299715BF00097C49 /* iTrackAlphaUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC5353EE299715BF00097C49 /* iTrackAlphaUITests.swift */; };
 		CC5353F1299715BF00097C49 /* iTrackAlphaUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC5353F0299715BF00097C49 /* iTrackAlphaUITestsLaunchTests.swift */; };
+		CCC5D5B9299C472E00D078A5 /* ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCC5D5B8299C472E00D078A5 /* ViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -79,6 +80,7 @@
 		CC5353EA299715BF00097C49 /* iTrackAlphaUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = iTrackAlphaUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		CC5353EE299715BF00097C49 /* iTrackAlphaUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iTrackAlphaUITests.swift; sourceTree = "<group>"; };
 		CC5353F0299715BF00097C49 /* iTrackAlphaUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iTrackAlphaUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		CCC5D5B8299C472E00D078A5 /* ViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -171,6 +173,7 @@
 				CC5353CD299715BA00097C49 /* AppDelegate.swift */,
 				CC5353CF299715BA00097C49 /* SceneDelegate.swift */,
 				CC5353D1299715BA00097C49 /* ViewController.swift */,
+				CCC5D5B8299C472E00D078A5 /* ViewModel.swift */,
 				CC5353D3299715BA00097C49 /* Main.storyboard */,
 				CC5353D6299715BF00097C49 /* Assets.xcassets */,
 				CC5353D8299715BF00097C49 /* LaunchScreen.storyboard */,
@@ -336,6 +339,7 @@
 				9507AA0D29997B0D00CE7E78 /* CharRow.swift in Sources */,
 				9507AA1129997B2500CE7E78 /* Row.swift in Sources */,
 				CC5353CE299715BA00097C49 /* AppDelegate.swift in Sources */,
+				CCC5D5B9299C472E00D078A5 /* ViewModel.swift in Sources */,
 				9507A9FE2999795100CE7E78 /* RowsView.swift in Sources */,
 				9507AA0F29997B1600CE7E78 /* ModelData.swift in Sources */,
 				9507AA04299979A900CE7E78 /* CoverButtons.swift in Sources */,
@@ -521,7 +525,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 4BGHV6A4B4;
+				DEVELOPMENT_TEAM = 82CF59PP76;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = iTrackAlpha/Info.plist;
 				INFOPLIST_KEY_NSCameraUsageDescription = "Using front camera for blink detection.";
@@ -535,7 +539,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = amanda.iTrackAlpha;
+				PRODUCT_BUNDLE_IDENTIFIER = manan.iTrackAlpha;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -550,7 +554,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 4BGHV6A4B4;
+				DEVELOPMENT_TEAM = 82CF59PP76;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = iTrackAlpha/Info.plist;
 				INFOPLIST_KEY_NSCameraUsageDescription = "Using front camera for blink detection.";
@@ -564,7 +568,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = amanda.iTrackAlpha;
+				PRODUCT_BUNDLE_IDENTIFIER = manan.iTrackAlpha;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
