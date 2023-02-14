@@ -17,8 +17,8 @@ struct PageView<Page: View>: View {
 
 struct PageView_Previews: PreviewProvider {
     // var pageArray: [Page] = [ContentView()]
-    
+    static private var tempvm = ViewModel()
     static var previews: some View {
-        PageView(pages: [ContentView()])
+        PageView(pages: [ContentView(viewModel: tempvm, lastAction: "none")])
     }
 }

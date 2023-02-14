@@ -8,13 +8,14 @@
 import SwiftUI
 
 enum ButtonType {
-    case cover, row , char, space, backspace
+    case cover, row , char, space, backspace, confirm
 }
 
 struct selectedState {
     var buttonType: ButtonType
     var buttonId: Int
     var clickState: Int
+    var isNo:  Bool
 }
 
 struct CustomColor {
@@ -23,14 +24,17 @@ struct CustomColor {
 
 
 struct ContentView: View {
-
+    @StateObject var viewModel = ViewModel()
+    // remove later
+    @State var lastAction: String
+    // end remove later
     @State var content: String = ""
     @State var contentInd: Int = 0
     @State var state: Int = 0
     @State var rowState: Int = 0
     @State var charState: Int = 0
     @State var prevState: Int = 0
-    @State var selectState: selectedState = selectedState(buttonType: ButtonType.cover, buttonId: 0, clickState: 0)
+    @State var selectState: selectedState = selectedState(buttonType: ButtonType.cover, buttonId: 0, clickState: 1, isNo: false)
     let tutorialTimer = Timer.publish(every: 5, on: .main, in: .common).autoconnect()
     @State var showHelpButton: Bool = false
     @State var highlightBackspace: Bool = false
@@ -49,6 +53,10 @@ struct ContentView: View {
                         .padding()
                 }
             }
+            Spacer()
+            Text("last action was \(lastAction)")
+                .foregroundColor(.black)
+            Spacer()
             HStack {
                 Button(action: moveCursorLeft){
                     Text("Cursor Left")
@@ -76,13 +84,13 @@ struct ContentView: View {
             }
             Spacer()
             if state == 0{
-                CoverButtons(state: $state, rowState: $rowState, content: $content, contentInd: $contentInd, prevState: $prevState, selectState: $selectState, highlightBackspace: $highlightBackspace)
+                CoverButtons(state: $state, rowState: $rowState, content: $content, contentInd: $contentInd, prevState: $prevState, selectState: $selectState, highlightBackspace: $highlightBackspace, queue: $viewModel.queue, value: $viewModel.value)
             } else if state == 1{
-                RowsView(state: $state, rowState: $rowState, charState: $charState, prevState: $prevState, selectState: $selectState, highlightBackspace: $highlightBackspace)
+                RowsView(state: $state, rowState: $rowState, charState: $charState, prevState: $prevState, selectState: $selectState, highlightBackspace: $highlightBackspace, queue: $viewModel.queue, value: $viewModel.value, content: $content, contentInd: $contentInd)
             } else if state == 2 {
-                CharView(state: $state, charState: $charState, content: $content, contentInd: $contentInd, prevState: $prevState, selectState: $selectState, highlightBackspace: $highlightBackspace)
+                CharView(state: $state, charState: $charState, content: $content, contentInd: $contentInd, prevState: $prevState, selectState: $selectState, highlightBackspace: $highlightBackspace, queue: $viewModel.queue, value: $viewModel.value)
             } else if state == 4 {
-                ConfirmationPopup(state: $state, rowState: $rowState, charState: $charState, prevState: $prevState, selectState: $selectState, content: $content, contentInd: $contentInd)
+                ConfirmationPopup(state: $state, rowState: $rowState, charState: $charState, prevState: $prevState, selectState: $selectState, content: $content, contentInd: $contentInd, queue: $viewModel.queue, value: $viewModel.value, highlightBackspace: $highlightBackspace)
                 Spacer()
             }
             Spacer()
@@ -119,8 +127,8 @@ struct ContentView: View {
                     content = content1 + content2
                     contentInd = contentInd - 1
                 }
-                highlightBackspace = false
-                selectState.clickState = 0
+//                highlightBackspace = false
+//                selectState.clickState = 0
             } else {
                 selectState.buttonType = ButtonType.backspace
                 selectState.buttonId = 0
@@ -173,8 +181,9 @@ struct ContentView: View {
 }
 
 struct ContentView_Previews: PreviewProvider {
+    static private var tempVm = ViewModel()
     static var previews: some View {
-        ContentView()
+        ContentView(viewModel: tempVm, lastAction: "")
             .previewInterfaceOrientation(.portrait)
     }
 }

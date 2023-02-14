@@ -14,6 +14,10 @@ struct RowsView: View {
     @Binding var prevState: Int
     @Binding var selectState: selectedState
     @Binding var highlightBackspace: Bool
+    @Binding var queue: [Action]
+    @Binding var value: Int
+    @Binding var content: String
+    @Binding var contentInd: Int
     
     var rows: [Row] {
         Rows.filter { row in
@@ -40,7 +44,102 @@ struct RowsView: View {
             }
             Spacer()
         }
-        .modifier(GestureSwipeRight(state: $state))
+        .modifier(GestureSwipeRight(state: $state, selectState: $selectState, prevState: $prevState))
+        .onChange(of: value ) { _ in
+            let action = queue.first!.actionType
+            if action == ActionType.blink {
+                registerBlink()
+                queue.removeFirst()
+            } else {
+                registerGaze(action: action)
+                queue.removeFirst()
+            }
+        }
+    }
+    
+    private func registerBlink() {
+        if selectState.buttonType == ButtonType.backspace {
+            deleteChar()
+        } else {
+            // button type is row
+            prevState = 1
+            state = 4
+            self.charState = rows[selectState.buttonId].CharType
+            selectState.clickState = 1
+            
+            selectState.buttonType = ButtonType.confirm
+            selectState.isNo = false
+        }
+    }
+    
+    private func registerGaze(action: ActionType) {
+        if action == ActionType.up {
+            if selectState.buttonType == ButtonType.row && selectState.buttonId - getFirstRow() == 0 {
+                // go to backspace
+                goToBackspace()
+            } else if selectState.buttonType == ButtonType.row && selectState.buttonId - getFirstRow() > 0 && selectState.buttonId - getFirstRow() < rows.count {
+                // go to button(id-1)
+                goToRow(id: selectState.buttonId-1)
+            }
+        } else if action == ActionType.down {
+            if selectState.buttonType == ButtonType.backspace {
+                // go to button(0)
+                goToRow(id: getFirstRow())
+                highlightBackspace = false
+            } else if selectState.buttonType == ButtonType.row && selectState.buttonId - getFirstRow() < rows.count - 1 {
+                // go to button(id + 1
+                goToRow(id: selectState.buttonId + 1)
+            }
+        }
+    }
+    
+    private func deleteChar() {
+        if contentInd > 0 {
+            var count: Int = 0
+            var content1: String = ""
+            var content2: String = ""
+            for char in Array(content) {
+                if count >= contentInd - 1 {
+                    break
+                }
+                content1 = content1 + String(char)
+                count = count + 1
+            }
+            count = 0
+            for char in Array(content) {
+                if count >= contentInd {
+                    content2 = content2 + String(char)
+                }
+                count = count + 1
+            }
+            content = content1 + content2
+            contentInd = contentInd - 1
+        }
+    }
+    
+    private func goToBackspace() {
+        selectState.clickState = 1
+        selectState.buttonType = ButtonType.backspace
+        selectState.buttonId = 0
+        highlightBackspace = true
+    }
+    
+    private func goToRow(id: Int) {
+        selectState.clickState = 1
+        selectState.buttonType = ButtonType.row
+        selectState.buttonId = id
+    }
+    
+    private func getFirstRow() -> Int {
+        if rowState == 0 {
+            return 0
+        } else if rowState == 1 {
+            return 6
+        } else if rowState == 2 {
+            return 10
+        } else {
+            return 3
+        }
     }
     
     private func scaleDimWidth(buttonId: Int) -> CGFloat {
@@ -102,9 +201,9 @@ struct RowsView: View {
 }
 
 struct RowsView_Previews: PreviewProvider {
-    static var tempSelect = selectedState(buttonType: ButtonType.cover, buttonId: 0, clickState: 0)
+    static var tempSelect = selectedState(buttonType: ButtonType.cover, buttonId: 0, clickState: 0, isNo: false)
     
     static var previews: some View {
-        RowsView(state: .constant(2), rowState: .constant(0), charState: .constant(0), prevState: .constant(1), selectState: .constant(tempSelect), highlightBackspace: .constant(false))
+        RowsView(state: .constant(2), rowState: .constant(0), charState: .constant(0), prevState: .constant(1), selectState: .constant(tempSelect), highlightBackspace: .constant(false), queue: .constant([]), value: .constant(0), content: .constant(""), contentInd: .constant(0))
     }
 }
