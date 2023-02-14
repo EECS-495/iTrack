@@ -46,13 +46,15 @@ struct RowsView: View {
         }
         .modifier(GestureSwipeRight(state: $state, selectState: $selectState, prevState: $prevState))
         .onChange(of: value ) { _ in
-            let action = queue.first!.actionType
-            if action == ActionType.blink {
-                registerBlink()
-                queue.removeFirst()
-            } else {
-                registerGaze(action: action)
-                queue.removeFirst()
+            if !queue.isEmpty {
+                let action = queue.first!.actionType
+                if action == ActionType.blink {
+                    registerBlink()
+                    queue.removeFirst()
+                } else {
+                    registerGaze(action: action)
+                    queue.removeFirst()
+                }
             }
         }
     }
@@ -64,7 +66,9 @@ struct RowsView: View {
             // button type is row
             prevState = 1
             state = 4
-            self.charState = rows[selectState.buttonId].CharType
+            print(rows[selectState.buttonId - getFirstRow()].CharType)
+            charState = rows[selectState.buttonId - getFirstRow()].CharType
+            print(charState)
             selectState.clickState = 1
             
             selectState.buttonType = ButtonType.confirm

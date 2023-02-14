@@ -274,10 +274,15 @@ struct ConfirmationPopup: View {
     }
     
     private func rowConfirmText() -> String {
-        let row = Rows.filter { row in
+        let rows = Rows.filter { row in
             row.id == selectState.buttonId
-        }[0]
-        return "Did you mean to select: \(row.image)"
+        }
+        print(rows)
+        if !rows.isEmpty {
+            let row = rows[0]
+            return "Did you mean to select: \(row.image)"
+        }
+        return ""
     }
     
     private func coverConfirmText() -> String {

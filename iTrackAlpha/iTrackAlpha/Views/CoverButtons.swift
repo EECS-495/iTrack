@@ -68,13 +68,15 @@ struct CoverButtons: View {
         }
         .padding()
         .onChange(of: value ) { _ in
-            let action = queue.first!.actionType
-            if action == ActionType.blink {
-                registerBlink()
-                queue.removeFirst()
-            } else {
-                registerGaze(action: action)
-                queue.removeFirst()
+            if !queue.isEmpty {
+                let action = queue.first!.actionType
+                if action == ActionType.blink {
+                    registerBlink()
+                    queue.removeFirst()
+                } else {
+                    registerGaze(action: action)
+                    queue.removeFirst()
+                }
             }
         }
     }
