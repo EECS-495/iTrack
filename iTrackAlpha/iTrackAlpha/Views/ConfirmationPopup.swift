@@ -194,13 +194,15 @@ struct ConfirmationPopup: View {
     
     private func lastState() {
         self.state = self.prevState
-        selectState.buttonId = 0
         if prevState == 0 {
             selectState.buttonType = ButtonType.cover
+            selectState.buttonId = 0
         } else if prevState == 1 {
             selectState.buttonType = ButtonType.row
+            selectState.buttonId = getFirstRow()
         } else if prevState == 2 {
             selectState.buttonType = ButtonType.char
+            selectState.buttonId = getFirstChar()
         }
 //        if selectState.buttonType == ButtonType.cover {
 //            state = 0
