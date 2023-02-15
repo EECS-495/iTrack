@@ -10,8 +10,8 @@ Requirements:
         - Mac Catalyst 14.0+
 
     Hardware
-        - iPhone X or later
-        - iPad Pro, 3rd generation or later
+        - iPhone 6s or newer
+        - iPad 2017 or newer
 
 Usage:
 
