@@ -53,10 +53,6 @@ struct ContentView: View {
                         .padding()
                 }
             }
-            Spacer()
-            Text("last action was \(lastAction)")
-                .foregroundColor(.black)
-            Spacer()
             HStack {
                 Button(action: moveCursorLeft){
                     Text("Cursor Left")
