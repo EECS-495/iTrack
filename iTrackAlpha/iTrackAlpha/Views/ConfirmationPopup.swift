@@ -136,12 +136,14 @@ struct ConfirmationPopup: View {
     }
     
     private func goToYes() {
+        print("in yes")
         selectState.clickState = 1
         selectState.buttonType = ButtonType.confirm
         selectState.isNo = false
     }
     
     private func goToNo() {
+        print("in no")
         selectState.clickState = 1
         selectState.buttonType = ButtonType.confirm
         selectState.isNo = true
@@ -186,7 +188,7 @@ struct ConfirmationPopup: View {
             state = 1
             selectState.clickState = 1
             selectState.buttonType = ButtonType.row
-            selectState.buttonId = 0
+            selectState.buttonId = getFirstRow()
         }
     }
     

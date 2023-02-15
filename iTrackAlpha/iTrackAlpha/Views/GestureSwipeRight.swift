@@ -12,6 +12,7 @@ struct GestureSwipeRight: ViewModifier {
     @Binding var state: Int
     @Binding var selectState: selectedState
     @Binding var prevState: Int
+    @Binding var rowState: Int
     
     func body(content: Content) -> some View {
     content
@@ -32,7 +33,7 @@ struct GestureSwipeRight: ViewModifier {
                 } else if state == 2 {
                     state = 1
                     selectState.buttonType = ButtonType.row
-                    selectState.buttonId = 0
+                    selectState.buttonId = getFirstRow()
                     prevState = 1
                 }
 //            if(state != 0 && state != 4) {
@@ -41,5 +42,17 @@ struct GestureSwipeRight: ViewModifier {
             }
           }
       )
+    }
+    
+    private func getFirstRow() -> Int {
+        if rowState == 0 {
+            return 0
+        } else if rowState == 1 {
+            return 6
+        } else if rowState == 2 {
+            return 10
+        } else {
+            return 3
+        }
     }
 }

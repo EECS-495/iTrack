@@ -9,6 +9,7 @@ import SwiftUI
 
 struct CharView: View {
     @Binding var state: Int
+    @Binding var rowState: Int
     @Binding var charState: Int
     @Binding var content: String
     @Binding var contentInd: Int
@@ -39,7 +40,7 @@ struct CharView: View {
                 .padding(.vertical, 10)
             }
         }
-        .modifier(GestureSwipeRight(state: $state, selectState: $selectState, prevState: $prevState))
+        .modifier(GestureSwipeRight(state: $state, selectState: $selectState, prevState: $prevState, rowState: $rowState))
         .onChange(of: value ) { _ in
             if !queue.isEmpty {
                 let action = queue.first!.actionType
@@ -197,7 +198,7 @@ struct CharView_Previews: PreviewProvider {
     static var tempSelect = selectedState(buttonType: ButtonType.cover, buttonId: 0, clickState: 0, isNo: false)
     
     static var previews: some View {
-        CharView(state: .constant(2), charState: .constant(0), content: .constant(""), contentInd: .constant(0), prevState: .constant(2), selectState: .constant(tempSelect), highlightBackspace: .constant(false), queue: .constant([]), value: .constant(0))
+        CharView(state: .constant(2), rowState: .constant(0), charState: .constant(0), content: .constant(""), contentInd: .constant(0), prevState: .constant(2), selectState: .constant(tempSelect), highlightBackspace: .constant(false), queue: .constant([]), value: .constant(0))
     }
 }
 

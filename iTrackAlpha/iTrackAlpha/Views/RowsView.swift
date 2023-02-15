@@ -44,7 +44,7 @@ struct RowsView: View {
             }
             Spacer()
         }
-        .modifier(GestureSwipeRight(state: $state, selectState: $selectState, prevState: $prevState))
+        .modifier(GestureSwipeRight(state: $state, selectState: $selectState, prevState: $prevState, rowState: $rowState))
         .onChange(of: value ) { _ in
             if !queue.isEmpty {
                 let action = queue.first!.actionType

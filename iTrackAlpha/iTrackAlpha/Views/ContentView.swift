@@ -88,7 +88,7 @@ struct ContentView: View {
             } else if state == 1{
                 RowsView(state: $state, rowState: $rowState, charState: $charState, prevState: $prevState, selectState: $selectState, highlightBackspace: $highlightBackspace, queue: $viewModel.queue, value: $viewModel.value, content: $content, contentInd: $contentInd)
             } else if state == 2 {
-                CharView(state: $state, charState: $charState, content: $content, contentInd: $contentInd, prevState: $prevState, selectState: $selectState, highlightBackspace: $highlightBackspace, queue: $viewModel.queue, value: $viewModel.value)
+                CharView(state: $state, rowState: $rowState, charState: $charState, content: $content, contentInd: $contentInd, prevState: $prevState, selectState: $selectState, highlightBackspace: $highlightBackspace, queue: $viewModel.queue, value: $viewModel.value)
             } else if state == 4 {
                 ConfirmationPopup(state: $state, rowState: $rowState, charState: $charState, prevState: $prevState, selectState: $selectState, content: $content, contentInd: $contentInd, queue: $viewModel.queue, value: $viewModel.value, highlightBackspace: $highlightBackspace)
                 Spacer()
