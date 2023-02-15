@@ -2,6 +2,20 @@ EECS 495 - iTrack
 
 This application uses eye movements to communicate a message from the user to their smartphone. Eye movements such as up, down, left, right, and blinking will interact with the user interface to create a sequence of characters.
 
+Requirements:
+Software:
+- iOS 11.0+
+- iPadOS 11.0+
+- Mac Catalyst 14.0+
+Hardware:
+- iPhone X or later
+- iPad Pro, 3rd generation or later
+
+Usage:
+
+- Open the application. If you are a new user, you will need to grant the application access to use your front-facing camera.
+- The top bar indicates what you have typed. It will be blank when you open the application.
+- To type new characters, you must select either symbols (left), uppercase letters (up), numbers (right), or lowercase letters (down). When you select your domain, you must blink to select, and blink again to confirm. Do note that there is a blink delay to prevent unwanted behavior.
 
 Intended Audience
 
