@@ -14,7 +14,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
     let viewModel = ViewModel()
     // var contentView: UIHostingController(rootView: ContentView(viewModel: viewModel))
     var actionDelay = false
-    var blinkDelayTime = 2.0
+    var blinkDelayTime = 1.0
     var lookDelayTime = 1.0
     
     /*var upDelay = false
