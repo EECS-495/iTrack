@@ -9,7 +9,7 @@ Requirements:
         - iPadOS 11.0+
         - Mac Catalyst 14.0+
 
-        Hardware
+    Hardware
         - iPhone X or later
         - iPad Pro, 3rd generation or later
 
@@ -48,4 +48,4 @@ Alpha Release:
         Features that can tolerate imperfect environments:
         - Shaky camera due to transport, walking, etc.
 
-Most of the logic regarding eye tracking and ARKit Framework configuration can be found in iTrackAlpha/iTrackAlpha/ViewController.swift.
+Most of the logic regarding eye tracking and ARKit Framework configuration can be found in the "iTrackAlpha/iTrackAlpha/ViewController.swift" file.
