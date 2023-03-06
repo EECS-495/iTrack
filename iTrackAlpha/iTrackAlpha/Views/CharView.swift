@@ -31,7 +31,7 @@ struct CharView: View {
                     Text(row.character)
                         .frame(width: scaleDim(row: row), height: scaleDim(row: row))
                         .font(.largeTitle)
-                        .background(CustomColor.lightgray)
+                        .background(Color(red: 0.83, green: 0.83, blue: 0.83))
                         .foregroundColor(.black)
                         .border(.blue, width: addBorder(row: row))
                         .cornerRadius(8)

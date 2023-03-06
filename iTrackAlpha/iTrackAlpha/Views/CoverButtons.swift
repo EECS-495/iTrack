@@ -45,7 +45,7 @@ struct CoverButtons: View {
                     Text("Space")
                         .frame(width: scaleDim(buttonType: ButtonType.space, buttonId: 0), height: scaleDim(buttonType: ButtonType.space, buttonId: 0))
                         .foregroundColor(.black)
-                        .background(CustomColor.lightgray)
+                        .background(Color(red: 0.83, green: 0.83, blue: 0.83))
                         .border(.blue, width: addBorder(buttonType: ButtonType.space, buttonId: 0))
                         .cornerRadius(8)
                 }

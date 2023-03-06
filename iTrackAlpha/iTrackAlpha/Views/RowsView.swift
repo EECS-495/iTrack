@@ -35,7 +35,7 @@ struct RowsView: View {
                     Text(row.image)
                         .frame(width: scaleDimWidth(buttonId: row.id), height: scaleDimHeight(buttonId: row.id))
                         .foregroundColor(.black)
-                        .background(CustomColor.lightgray)
+                        .background(Color(red: 0.83, green: 0.83, blue: 0.83))
                         .border(.blue, width: addBorder(buttonId: row.id))
                         .font(.system(size: scaleFont(buttonId: row.id), weight: .semibold))
                         .cornerRadius(8)

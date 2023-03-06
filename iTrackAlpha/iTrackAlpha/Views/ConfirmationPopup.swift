@@ -26,10 +26,13 @@ struct ConfirmationPopup: View {
             
             if prevState == 0 {
                 Text(coverConfirmText())
+                    .foregroundColor(.black)
             } else if prevState == 1 {
                 Text(rowConfirmText())
+                    .foregroundColor(.black)
             } else if prevState == 2 {
                 Text(charConfirmText())
+                    .foregroundColor(.black)
             }
             
             HStack {
@@ -38,7 +41,7 @@ struct ConfirmationPopup: View {
                         .frame(width: scaleDim(isNo: false), height: scaleDim(isNo: false))
                         .border(.blue, width: addBorder(isNo: false))
                         .foregroundColor(.black)
-                        .background(CustomColor.lightgray)
+                        .background(Color(red: 0.83, green: 0.83, blue: 0.83))
                         .cornerRadius(8)
                 }
                 Button(action: lastState) {
@@ -46,7 +49,7 @@ struct ConfirmationPopup: View {
                         .frame(width: scaleDim(isNo: true), height: scaleDim(isNo: true))
                         .border(.blue, width: addBorder(isNo: true))
                         .foregroundColor(.black)
-                        .background(CustomColor.lightgray)
+                        .background(Color(red: 0.83, green: 0.83, blue: 0.83))
                         .cornerRadius(8)
                 }
             }
