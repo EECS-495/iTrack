@@ -8,7 +8,7 @@
 import SwiftUI
 
 enum ButtonType {
-    case cover, row , char, space, backspace, confirm
+    case cover, row , char, space, backspace, confirm, cursor
 }
 
 struct selectedState {
@@ -35,15 +35,15 @@ struct ContentView: View {
     @State var charState: Int = 0
     @State var prevState: Int = 0
     @State var selectState: selectedState = selectedState(buttonType: ButtonType.cover, buttonId: 0, clickState: 1, isNo: false)
-    let tutorialTimer = Timer.publish(every: 5, on: .main, in: .common).autoconnect()
     @State var showHelpButton: Bool = false
     @State var highlightBackspace: Bool = false
+    @State var highlightCursor: Bool = false
     
     var body: some View {
        
         VStack{
             HStack{
-                CustomTextFieldView(content: $content, contentInd: $contentInd)
+                CustomTextFieldView(content: $content, contentInd: $contentInd, highlightCursor: $highlightCursor)
                     .padding()
                 Spacer()
                 Button(action: {deleteChar()}) {
@@ -59,20 +59,6 @@ struct ContentView: View {
                 }
                 .padding()
                 Spacer()
-                Button(action: {tutorial()}) {
-                    Text("?")
-                        .foregroundColor(.black)
-                        .overlay(
-                            Circle()
-                                .stroke(Color.black)
-                                .frame(width: 20, height: 20)
-                        )
-                }
-                .scaleEffect(showHelpButton ? 1 : 0.001)
-                .onReceive(tutorialTimer) {_ in
-                    showHelpButton = true
-                }
-                Spacer()
                 Button(action: moveCursorRight){
                     Text("Cursor Right")
                 }
@@ -80,13 +66,13 @@ struct ContentView: View {
             }
             Spacer()
             if state == 0{
-                CoverButtons(state: $state, rowState: $rowState, content: $content, contentInd: $contentInd, prevState: $prevState, selectState: $selectState, highlightBackspace: $highlightBackspace, queue: $viewModel.queue, value: $viewModel.value)
+                CoverButtons(state: $state, rowState: $rowState, content: $content, contentInd: $contentInd, prevState: $prevState, selectState: $selectState, highlightBackspace: $highlightBackspace, queue: $viewModel.queue, value: $viewModel.value, showHelpButton: $showHelpButton, highlightCursor: $highlightCursor)
             } else if state == 1{
-                RowsView(state: $state, rowState: $rowState, charState: $charState, prevState: $prevState, selectState: $selectState, highlightBackspace: $highlightBackspace, queue: $viewModel.queue, value: $viewModel.value, content: $content, contentInd: $contentInd)
+                RowsView(state: $state, rowState: $rowState, charState: $charState, prevState: $prevState, selectState: $selectState, highlightBackspace: $highlightBackspace, queue: $viewModel.queue, value: $viewModel.value, content: $content, contentInd: $contentInd, highlightCursor: $highlightCursor)
             } else if state == 2 {
-                CharView(state: $state, rowState: $rowState, charState: $charState, content: $content, contentInd: $contentInd, prevState: $prevState, selectState: $selectState, highlightBackspace: $highlightBackspace, queue: $viewModel.queue, value: $viewModel.value)
+                CharView(state: $state, rowState: $rowState, charState: $charState, content: $content, contentInd: $contentInd, prevState: $prevState, selectState: $selectState, highlightBackspace: $highlightBackspace, queue: $viewModel.queue, value: $viewModel.value, highlightCursor: $highlightCursor)
             } else if state == 4 {
-                ConfirmationPopup(state: $state, rowState: $rowState, charState: $charState, prevState: $prevState, selectState: $selectState, content: $content, contentInd: $contentInd, queue: $viewModel.queue, value: $viewModel.value, highlightBackspace: $highlightBackspace)
+                ConfirmationPopup(state: $state, rowState: $rowState, charState: $charState, prevState: $prevState, selectState: $selectState, content: $content, contentInd: $contentInd, queue: $viewModel.queue, value: $viewModel.value, highlightBackspace: $highlightBackspace, highlightCursor: $highlightCursor)
                 Spacer()
             }
             Spacer()
@@ -123,8 +109,7 @@ struct ContentView: View {
                     content = content1 + content2
                     contentInd = contentInd - 1
                 }
-//                highlightBackspace = false
-//                selectState.clickState = 0
+
             } else {
                 selectState.buttonType = ButtonType.backspace
                 selectState.buttonId = 0
@@ -137,7 +122,6 @@ struct ContentView: View {
         if contentInd > 0 {
             contentInd = contentInd - 1
         }
-        print(contentInd)
     }
     
     private func moveCursorRight() {

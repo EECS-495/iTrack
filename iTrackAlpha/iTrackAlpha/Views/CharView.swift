@@ -18,6 +18,7 @@ struct CharView: View {
     @Binding var highlightBackspace: Bool
     @Binding var queue: [Action]
     @Binding var value: Int
+    @Binding var highlightCursor: Bool
     
     var charRows: [CharRow] {
         CharRows.filter { row in
@@ -69,22 +70,84 @@ struct CharView: View {
     
     private func registerGaze(action: ActionType) {
         if action == ActionType.up {
-            if selectState.buttonType == ButtonType.char && selectState.buttonId - getFirstChar() == 0 {
-                // go to backspace
-                goToBackspace()
-            } else if selectState.buttonType == ButtonType.char && selectState.buttonId - getFirstChar() > 0 && selectState.buttonId - getFirstChar() < charRows.count {
-                // go to button(id-1)
-                goToChar(id: selectState.buttonId-1)
-            }
+            goUp()
         } else if action == ActionType.down {
-            if selectState.buttonType == ButtonType.backspace {
-                // go to button(0)
-                goToChar(id: getFirstChar())
-                highlightBackspace = false
-            } else if selectState.buttonType == ButtonType.char && selectState.buttonId - getFirstChar() < charRows.count - 1 {
-                // go to button(id + 1
-                goToChar(id: selectState.buttonId + 1)
+            goDown()
+        } else if action == ActionType.left {
+            goLeft()
+        } else if action == ActionType.right {
+            goRight()
+        }
+    }
+    
+    private func goUp() {
+        let curType = selectState.buttonType
+        let curId = selectState.buttonId
+        if curType == ButtonType.char && curId - getFirstChar() == 0 {
+            // go to backspace
+            goToBackspace()
+        } else if curType == ButtonType.char && curId - getFirstChar() > 0 && curId - getFirstChar() < charRows.count {
+            // go to button(id-1)
+            goToChar(id: curId-1)
+        }
+    }
+    
+    private func goDown() {
+        let curType = selectState.buttonType
+        let curId = selectState.buttonId
+        if curType == ButtonType.backspace {
+            // go to button(0)
+            goToChar(id: getFirstChar())
+            highlightBackspace = false
+        } else if curType == ButtonType.char && curId - getFirstChar() < charRows.count - 1 {
+            // go to button(id + 1
+            goToChar(id: curId + 1)
+        } else if curType == ButtonType.cursor {
+            goToChar(id: getFirstChar())
+            highlightCursor = false
+        }
+    }
+    
+    private func goLeft() {
+        let curType = selectState.buttonType
+        if curType == ButtonType.char {
+            // go to row view amybe with confirmation screen
+        } else if curType == ButtonType.backspace {
+            highlightBackspace = false
+            goToCursor()
+        } else if curType == ButtonType.cursor {
+            moveCursorLeft()
+        }
+    }
+    
+    private func goRight() {
+        let curType = selectState.buttonType
+        if curType == ButtonType.cursor {
+            if contentInd == content.count {
+                highlightCursor = false
+                goToBackspace()
+            } else {
+                moveCursorRight()
             }
+        }
+    }
+    
+    private func goToCursor() {
+        highlightCursor = true
+        selectState.clickState = 1
+        selectState.buttonId = 0
+        selectState.buttonType = ButtonType.cursor
+    }
+    
+    private func moveCursorLeft() {
+        if contentInd > 0 {
+            contentInd = contentInd - 1
+        }
+    }
+    
+    private func moveCursorRight() {
+        if contentInd < content.count {
+            contentInd = contentInd + 1
         }
     }
     
@@ -155,7 +218,6 @@ struct CharView: View {
     }
     
     private func clickChar(character: CharRow) {
-        print(selectState.clickState)
         if selectState.clickState == 0 {
             selectState.clickState = 1
             selectState.buttonType = ButtonType.char
@@ -198,7 +260,7 @@ struct CharView_Previews: PreviewProvider {
     static var tempSelect = selectedState(buttonType: ButtonType.cover, buttonId: 0, clickState: 0, isNo: false)
     
     static var previews: some View {
-        CharView(state: .constant(2), rowState: .constant(0), charState: .constant(0), content: .constant(""), contentInd: .constant(0), prevState: .constant(2), selectState: .constant(tempSelect), highlightBackspace: .constant(false), queue: .constant([]), value: .constant(0))
+        CharView(state: .constant(2), rowState: .constant(0), charState: .constant(0), content: .constant(""), contentInd: .constant(0), prevState: .constant(2), selectState: .constant(tempSelect), highlightBackspace: .constant(false), queue: .constant([]), value: .constant(0), highlightCursor: .constant(false))
     }
 }
 

@@ -9,6 +9,7 @@ import SwiftUI
 
 struct CoverButtons: View {
     
+    @State var tutorialTimer = Timer.publish(every: 5, on: .main, in: .common).autoconnect()
     @Binding var state: Int
     @Binding var rowState: Int
     @Binding var content: String
@@ -16,12 +17,29 @@ struct CoverButtons: View {
     @Binding var prevState: Int
     @Binding var selectState: selectedState
     @Binding var highlightBackspace: Bool
-    // @Binding var viewModel: ViewModel
     @Binding var queue: [Action]
     @Binding var value: Int
+    @Binding var showHelpButton: Bool
+    @Binding var highlightCursor: Bool
         
     var body: some View {
         VStack{
+            Button(action: {tutorial()}) {
+                Text("?")
+                    .foregroundColor(.black)
+                    .overlay(
+                        Circle()
+                            .stroke(Color.black)
+                            .frame(width: 20, height: 20)
+                    )
+            }
+            .scaleEffect(showHelpButton ? 1 : 0.001)
+            .onReceive(tutorialTimer) {_ in
+                if(state == 0){
+                    showHelpButton = true
+                }
+            }
+            Spacer()
             Button(action: {toNextState(buttonID: 0)}){
                 Image("uppercover")
                     .resizable()
@@ -65,6 +83,7 @@ struct CoverButtons: View {
                     .frame(width: scaleDim(buttonType: ButtonType.cover, buttonId: 3), height: scaleDim(buttonType: ButtonType.cover, buttonId: 3))
                     .cornerRadius(8)
             }
+            Spacer()
         }
         .padding()
         .onChange(of: value ) { _ in
@@ -79,6 +98,10 @@ struct CoverButtons: View {
                 }
             }
         }
+    }
+    
+    private func tutorial() {
+        print("tutorial")
     }
     
     private func registerGaze(action: ActionType) {
@@ -130,6 +153,10 @@ struct CoverButtons: View {
             //go to upper
             highlightBackspace = false
             goToCover(buttonId: 0)
+        } else if curType == ButtonType.cursor {
+            // go to upper
+            highlightCursor = false
+            goToCover(buttonId: 0)
         }
     }
     
@@ -147,6 +174,16 @@ struct CoverButtons: View {
         } else if curType == ButtonType.space {
             // go to numbers
             goToCover(buttonId: 2)
+        } else if curType == ButtonType.cursor {
+            // if cursorInd is at end of word, move to backspace, highlight cursor = false
+            // call cursorRight
+            if contentInd == content.count {
+                goToBackspace()
+                highlightCursor = false
+            }
+            else {
+                moveCursorRight()
+            }
         }
     }
     
@@ -164,6 +201,32 @@ struct CoverButtons: View {
         } else if curType == ButtonType.space {
             // go to symbols
             goToCover(buttonId: 1)
+        } else if curType == ButtonType.backspace {
+            // go to cursor
+            highlightBackspace = false
+            goToCursor()
+        } else if curType == ButtonType.cursor {
+            // call cursorLeft
+            moveCursorLeft()
+        }
+    }
+    
+    private func goToCursor() {
+        selectState.clickState = 1
+        selectState.buttonType = ButtonType.cursor
+        selectState.buttonId = 0
+        highlightCursor = true
+    }
+    
+    private func moveCursorLeft() {
+        if contentInd > 0 {
+            contentInd = contentInd - 1
+        }
+    }
+    
+    private func moveCursorRight() {
+        if contentInd < content.count {
+            contentInd = contentInd + 1
         }
     }
     
@@ -215,6 +278,7 @@ struct CoverButtons: View {
         else {
             // cover was selected
             state = 4
+            showHelpButton = false
             rowState = selectState.buttonId
             selectState.clickState = 1
             selectState.buttonType = ButtonType.confirm
@@ -281,6 +345,7 @@ struct CoverButtons: View {
             if(selectState.buttonId == buttonID && selectState.buttonType == ButtonType.cover) {
                 self.prevState = 0
                 self.state = 4
+                showHelpButton = false
                 self.rowState = buttonID
                 selectState.clickState = 0
             } else {
@@ -331,9 +396,10 @@ struct CoverButtons: View {
 struct CoverButtons_Previews: PreviewProvider {
     static var tempSelect = selectedState(buttonType: ButtonType.cover, buttonId: 0, clickState: 0, isNo: false)
     static var tempVm = ViewModel()
+    static var tempTimer = Timer()
     
     static var previews: some View {
         
-        CoverButtons(state: .constant(0), rowState: .constant(0), content: .constant(""), contentInd: .constant(0), prevState: .constant(0), selectState: .constant(tempSelect), highlightBackspace: .constant(false), queue: .constant([]), value: .constant(0))
+        CoverButtons(state: .constant(0), rowState: .constant(0), content: .constant(""), contentInd: .constant(0), prevState: .constant(0), selectState: .constant(tempSelect), highlightBackspace: .constant(false), queue: .constant([]), value: .constant(0), showHelpButton: .constant(false), highlightCursor: .constant(false))
     }
 }

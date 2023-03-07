@@ -11,6 +11,7 @@ struct CustomTextFieldView: View {
     @State var refresh: Int = 0
     @Binding var content: String
     @Binding var contentInd: Int
+    @Binding var highlightCursor: Bool
     var cursorColors: [Color] = [.blue, .white]
     @State private var currentColor: Color = .blue
     @State private var currentColorInd: Int = 0
@@ -19,6 +20,9 @@ struct CustomTextFieldView: View {
     
     var body: some View {
         HStack{
+            Button(action: switchHighlight){
+                Text(String(highlightCursor))
+            }
             if content == "" {
                 Text("Enter Text Using Buttons Below")
                     .foregroundColor(.gray)
@@ -27,15 +31,20 @@ struct CustomTextFieldView: View {
                     Text(firstHalf(content: content))
                         .foregroundColor(.black) +
                     Text("|")
-                        .font(.system(size: 22, weight: .medium))
+                        .font(.system(size: 22, weight: highlightCursor ? .heavy : .medium))
                         .kerning(-5)
                         .foregroundColor(currentColor) +
                     Text(secHalf(content: content) + " ")
                         .foregroundColor(.black)
                 }
                 .onReceive(timer) {_ in
-                    currentColorInd = (currentColorInd + 1) % 2
-                    currentColor = cursorColors[currentColorInd]
+                    if(highlightCursor) {
+                        currentColor = Color.blue
+                    }
+                    else {
+                        currentColorInd = (currentColorInd + 1) % 2
+                        currentColor = cursorColors[currentColorInd]
+                    }
                 }
             }
         }
@@ -44,6 +53,7 @@ struct CustomTextFieldView: View {
         }
         
     }
+                     
     
     private func firstHalf(content: String) -> String{
         var content1: String = ""
@@ -77,10 +87,14 @@ struct CustomTextFieldView: View {
                 }
     }
     
+    private func switchHighlight() {
+        highlightCursor = !highlightCursor
+    }
+    
 }
 
 struct CustomTextFieldView_Previews: PreviewProvider {
     static var previews: some View {
-        CustomTextFieldView(content: .constant("word"), contentInd: .constant(2))
+        CustomTextFieldView(content: .constant("word"), contentInd: .constant(2), highlightCursor: .constant(false))
     }
 }

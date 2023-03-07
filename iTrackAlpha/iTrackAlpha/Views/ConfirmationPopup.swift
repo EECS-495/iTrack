@@ -18,6 +18,7 @@ struct ConfirmationPopup: View {
     @Binding var queue: [Action]
     @Binding var value: Int
     @Binding var highlightBackspace: Bool
+    @Binding var highlightCursor: Bool
         
     
     var body: some View {
@@ -114,20 +115,38 @@ struct ConfirmationPopup: View {
                 goToBackspace()
             }
         } else if action == ActionType.down {
-            if selectState.buttonType == ButtonType.backspace {
+            let curType = selectState.buttonType
+            if curType == ButtonType.backspace {
                 // go to yes
                 highlightBackspace = false
                 goToYes()
+            } else if curType == ButtonType.cursor {
+                highlightCursor = false
+                goToYes()
             }
         } else if action == ActionType.right {
-            if selectState.buttonType == ButtonType.confirm && !selectState.isNo {
+            let curType = selectState.buttonType
+            if curType == ButtonType.confirm && !selectState.isNo {
                 // go to no
                 goToNo()
+            } else if curType == ButtonType.cursor {
+                if contentInd == content.count {
+                    highlightCursor = false
+                    goToBackspace()
+                } else {
+                    moveCursorRight()
+                }
             }
         } else if action == ActionType.left {
-            if selectState.buttonType == ButtonType.confirm && selectState.isNo {
+            let curType = selectState.buttonType
+            if curType == ButtonType.confirm && selectState.isNo {
                 // go to yes
                 goToYes()
+            } else if curType == ButtonType.backspace {
+                highlightBackspace = false
+                goToCursor()
+            } else if curType == ButtonType.cursor {
+                moveCursorLeft()
             }
         }
     }
@@ -139,17 +158,34 @@ struct ConfirmationPopup: View {
     }
     
     private func goToYes() {
-        print("in yes")
         selectState.clickState = 1
         selectState.buttonType = ButtonType.confirm
         selectState.isNo = false
     }
     
     private func goToNo() {
-        print("in no")
         selectState.clickState = 1
         selectState.buttonType = ButtonType.confirm
         selectState.isNo = true
+    }
+    
+    private func goToCursor() {
+        highlightCursor = true
+        selectState.clickState = 1
+        selectState.buttonId = 0
+        selectState.buttonType = ButtonType.cursor
+    }
+    
+    private func moveCursorLeft() {
+        if contentInd > 0 {
+            contentInd = contentInd - 1
+        }
+    }
+    
+    private func moveCursorRight() {
+        if contentInd < content.count {
+            contentInd = contentInd + 1
+        }
     }
     
     private func nextState() {
@@ -158,7 +194,6 @@ struct ConfirmationPopup: View {
             selectState.clickState = 1
             selectState.buttonType = ButtonType.row
             selectState.buttonId = getFirstRow()
-            print(selectState.buttonId)
         } else if prevState == 1{
             state = 2
             selectState.clickState = 1
@@ -284,7 +319,6 @@ struct ConfirmationPopup: View {
         let rows = Rows.filter { row in
             row.id == selectState.buttonId
         }
-        print(rows)
         if !rows.isEmpty {
             let row = rows[0]
             return "Did you mean to select: \(row.image)"
@@ -313,6 +347,6 @@ struct ConfirmationPopup_Previews: PreviewProvider {
     static var tempSelect = selectedState(buttonType: ButtonType.cover, buttonId: 0, clickState: 0, isNo: false)
     
     static var previews: some View {
-        ConfirmationPopup(state: .constant(1), rowState: .constant(1), charState: .constant(0), prevState: .constant(0), selectState: .constant(tempSelect), content: .constant(""), contentInd: .constant(0), queue: .constant([]), value: .constant(0), highlightBackspace: .constant(false))
+        ConfirmationPopup(state: .constant(1), rowState: .constant(1), charState: .constant(0), prevState: .constant(0), selectState: .constant(tempSelect), content: .constant(""), contentInd: .constant(0), queue: .constant([]), value: .constant(0), highlightBackspace: .constant(false), highlightCursor: .constant(false))
     }
 }

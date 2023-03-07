@@ -18,6 +18,7 @@ struct RowsView: View {
     @Binding var value: Int
     @Binding var content: String
     @Binding var contentInd: Int
+    @Binding var highlightCursor: Bool
     
     var rows: [Row] {
         Rows.filter { row in
@@ -66,9 +67,7 @@ struct RowsView: View {
             // button type is row
             prevState = 1
             state = 4
-            print(rows[selectState.buttonId - getFirstRow()].CharType)
             charState = rows[selectState.buttonId - getFirstRow()].CharType
-            print(charState)
             selectState.clickState = 1
             
             selectState.buttonType = ButtonType.confirm
@@ -78,22 +77,86 @@ struct RowsView: View {
     
     private func registerGaze(action: ActionType) {
         if action == ActionType.up {
-            if selectState.buttonType == ButtonType.row && selectState.buttonId - getFirstRow() == 0 {
-                // go to backspace
-                goToBackspace()
-            } else if selectState.buttonType == ButtonType.row && selectState.buttonId - getFirstRow() > 0 && selectState.buttonId - getFirstRow() < rows.count {
-                // go to button(id-1)
-                goToRow(id: selectState.buttonId-1)
-            }
+            goUp()
         } else if action == ActionType.down {
-            if selectState.buttonType == ButtonType.backspace {
-                // go to button(0)
-                goToRow(id: getFirstRow())
-                highlightBackspace = false
-            } else if selectState.buttonType == ButtonType.row && selectState.buttonId - getFirstRow() < rows.count - 1 {
-                // go to button(id + 1
-                goToRow(id: selectState.buttonId + 1)
+            goDown()
+        } else if action == ActionType.left {
+            goLeft()
+        } else if action == ActionType.right {
+            goRight()
+        }
+    }
+    
+    private func goUp() {
+        let curType = selectState.buttonType
+        let curId = selectState.buttonId
+        if curType == ButtonType.row && curId - getFirstRow() == 0 {
+            // go to backspace
+            goToBackspace()
+        } else if curType == ButtonType.row && curId - getFirstRow() > 0 && curId - getFirstRow() < rows.count {
+            // go to button(id-1)
+            goToRow(id: curId-1)
+        }
+    }
+    
+    private func goDown() {
+        let curType = selectState.buttonType
+        let curId = selectState.buttonId
+        if curType == ButtonType.backspace {
+            // go to button(0)
+            goToRow(id: getFirstRow())
+            highlightBackspace = false
+        } else if curType == ButtonType.row && curId - getFirstRow() < rows.count - 1 {
+            // go to button(id + 1
+            goToRow(id: curId + 1)
+        } else if curType == ButtonType.cursor {
+            highlightCursor = false
+            goToRow(id: getFirstRow())
+        }
+    }
+    
+    private func goLeft() {
+        let curType = selectState.buttonType
+        if curType == ButtonType.row {
+            // go back to cover, without confirmation screen if set that way
+        } else if curType == ButtonType.backspace {
+            // go to cursor
+            highlightBackspace = false
+            goToCursor()
+        } else if curType == ButtonType.cursor {
+            moveCursorLeft()
+        }
+    }
+    
+    private func goRight() {
+        let curType = selectState.buttonType
+        if curType == ButtonType.cursor {
+            if contentInd == content.count {
+                highlightCursor = false
+                goToBackspace()
             }
+            else {
+                moveCursorRight()
+            }
+        }
+    }
+    
+    private func goToCursor() {
+        highlightCursor = true
+        selectState.clickState = 1
+        selectState.buttonId = 0
+        selectState.buttonType = ButtonType.cursor
+    }
+    
+    private func moveCursorLeft() {
+        if contentInd > 0 {
+            contentInd = contentInd - 1
+        }
+    }
+    
+    private func moveCursorRight() {
+        if contentInd < content.count {
+            contentInd = contentInd + 1
         }
     }
     
@@ -208,6 +271,6 @@ struct RowsView_Previews: PreviewProvider {
     static var tempSelect = selectedState(buttonType: ButtonType.cover, buttonId: 0, clickState: 0, isNo: false)
     
     static var previews: some View {
-        RowsView(state: .constant(2), rowState: .constant(0), charState: .constant(0), prevState: .constant(1), selectState: .constant(tempSelect), highlightBackspace: .constant(false), queue: .constant([]), value: .constant(0), content: .constant(""), contentInd: .constant(0))
+        RowsView(state: .constant(2), rowState: .constant(0), charState: .constant(0), prevState: .constant(1), selectState: .constant(tempSelect), highlightBackspace: .constant(false), queue: .constant([]), value: .constant(0), content: .constant(""), contentInd: .constant(0), highlightCursor: .constant(false))
     }
 }
