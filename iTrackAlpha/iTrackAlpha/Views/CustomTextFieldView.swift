@@ -20,9 +20,6 @@ struct CustomTextFieldView: View {
     
     var body: some View {
         HStack{
-            Button(action: switchHighlight){
-                Text(String(highlightCursor))
-            }
             if content == "" {
                 Text("Enter Text Using Buttons Below")
                     .foregroundColor(.gray)

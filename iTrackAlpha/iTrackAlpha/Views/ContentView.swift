@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import AVFoundation
 
 enum ButtonType {
     case cover, row , char, space, backspace, confirm, cursor
@@ -28,6 +29,7 @@ struct ContentView: View {
     // remove later
     @State var lastAction: String
     // end remove later
+    @State var audioPlayer: AVAudioPlayer!
     @State var content: String = ""
     @State var contentInd: Int = 0
     @State var state: Int = 0
@@ -53,31 +55,40 @@ struct ContentView: View {
                         .padding()
                 }
             }
-            HStack {
-                Button(action: moveCursorLeft){
-                    Text("Cursor Left")
-                }
-                .padding()
-                Spacer()
-                Button(action: moveCursorRight){
-                    Text("Cursor Right")
-                }
-                .padding()
-            }
             Spacer()
             if state == 0{
                 CoverButtons(state: $state, rowState: $rowState, content: $content, contentInd: $contentInd, prevState: $prevState, selectState: $selectState, highlightBackspace: $highlightBackspace, queue: $viewModel.queue, value: $viewModel.value, showHelpButton: $showHelpButton, highlightCursor: $highlightCursor)
             } else if state == 1{
                 RowsView(state: $state, rowState: $rowState, charState: $charState, prevState: $prevState, selectState: $selectState, highlightBackspace: $highlightBackspace, queue: $viewModel.queue, value: $viewModel.value, content: $content, contentInd: $contentInd, highlightCursor: $highlightCursor)
             } else if state == 2 {
-                CharView(state: $state, rowState: $rowState, charState: $charState, content: $content, contentInd: $contentInd, prevState: $prevState, selectState: $selectState, highlightBackspace: $highlightBackspace, queue: $viewModel.queue, value: $viewModel.value, highlightCursor: $highlightCursor)
+                CharView(state: $state, rowState: $rowState, charState: $charState, content: $content, contentInd: $contentInd, prevState: $prevState, selectState: $selectState, highlightBackspace: $highlightBackspace, queue: $viewModel.queue, value: $viewModel.value, highlightCursor: $highlightCursor, currentCharId: 0)
             } else if state == 4 {
                 ConfirmationPopup(state: $state, rowState: $rowState, charState: $charState, prevState: $prevState, selectState: $selectState, content: $content, contentInd: $contentInd, queue: $viewModel.queue, value: $viewModel.value, highlightBackspace: $highlightBackspace, highlightCursor: $highlightCursor)
                 Spacer()
             }
             Spacer()
         }
+        .onChange(of: state) { _ in
+            makeSound()
+        }
         .background(Color.white)
+    }
+    
+    private func makeSound() {
+        print("in make sound")
+        guard let soundURL = Bundle.main.url(forResource: "blinkTone.wav", withExtension: nil) else {
+                fatalError("Unable to find blinkTone.wav in bundle")
+        }
+        print("here1")
+        do {
+            audioPlayer = try AVAudioPlayer(contentsOf: soundURL)
+            print("here2")
+        } catch {
+            print(error.localizedDescription)
+        }
+        print("here3")
+        audioPlayer.play()
+        print("sound played")
     }
     
     private func deleteChar() {

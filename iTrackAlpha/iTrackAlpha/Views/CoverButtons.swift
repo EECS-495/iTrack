@@ -6,10 +6,12 @@
 //
 
 import SwiftUI
+import AVFoundation
 
 struct CoverButtons: View {
     
     @State var tutorialTimer = Timer.publish(every: 5, on: .main, in: .common).autoconnect()
+    @State var audioPlayer: AVAudioPlayer!
     @Binding var state: Int
     @Binding var rowState: Int
     @Binding var content: String
@@ -102,6 +104,23 @@ struct CoverButtons: View {
     
     private func tutorial() {
         print("tutorial")
+    }
+    
+    private func makeSound() {
+        print("in make sound")
+        guard let soundURL = Bundle.main.url(forResource: "blinkTone.wav", withExtension: nil) else {
+                fatalError("Unable to find blinkTone.wav in bundle")
+        }
+        print("here1")
+        do {
+            audioPlayer = try AVAudioPlayer(contentsOf: soundURL)
+            print("here2")
+        } catch {
+            print(error.localizedDescription)
+        }
+        print("here3")
+        audioPlayer.play()
+        print("sound played")
     }
     
     private func registerGaze(action: ActionType) {
@@ -253,6 +272,8 @@ struct CoverButtons: View {
     private func registerBlink() {
         print("register blink")
         if selectState.buttonType == ButtonType.space {
+            makeSound()
+            print("after blink make sound")
             var count: Int = 0
             var content1: String = ""
             var content2: String = ""
@@ -298,6 +319,7 @@ struct CoverButtons: View {
     
     private func deleteChar() {
         if contentInd > 0 {
+            makeSound()
             var count: Int = 0
             var content1: String = ""
             var content2: String = ""
@@ -337,6 +359,9 @@ struct CoverButtons: View {
     }
     
     private func toNextState(buttonID: Int) {
+        // maybe remove later
+        makeSound()
+        // end maybe remove later
         if selectState.clickState == 0 {
             selectState.clickState = 1
             selectState.buttonType = ButtonType.cover

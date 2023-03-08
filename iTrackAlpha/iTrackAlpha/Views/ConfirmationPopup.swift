@@ -6,8 +6,10 @@
 //
 
 import SwiftUI
+import AVFoundation
 
 struct ConfirmationPopup: View {
+    @State var audioPlayer: AVAudioPlayer!
     @Binding var state: Int
     @Binding var rowState: Int
     @Binding var charState: Int
@@ -86,6 +88,7 @@ struct ConfirmationPopup: View {
     
     private func deleteChar() {
         if contentInd > 0 {
+            makeSound()
             var count: Int = 0
             var content1: String = ""
             var content2: String = ""
@@ -186,6 +189,20 @@ struct ConfirmationPopup: View {
         if contentInd < content.count {
             contentInd = contentInd + 1
         }
+    }
+    
+    private func makeSound() {
+        print("in make sound")
+        guard let soundURL = Bundle.main.url(forResource: "blinkTone.wav", withExtension: nil) else {
+                    fatalError("Unable to find blinkTone.wav in bundle")
+            }
+
+            do {
+                audioPlayer = try AVAudioPlayer(contentsOf: soundURL)
+            } catch {
+                print(error.localizedDescription)
+            }
+            audioPlayer.play()
     }
     
     private func nextState() {

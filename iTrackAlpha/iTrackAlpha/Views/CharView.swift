@@ -6,8 +6,10 @@
 //
 
 import SwiftUI
+import AVFoundation
 
 struct CharView: View {
+    @State var audioPlayer: AVAudioPlayer!
     @Binding var state: Int
     @Binding var rowState: Int
     @Binding var charState: Int
@@ -19,6 +21,7 @@ struct CharView: View {
     @Binding var queue: [Action]
     @Binding var value: Int
     @Binding var highlightCursor: Bool
+    @State var currentCharId = 0
     
     var charRows: [CharRow] {
         CharRows.filter { row in
@@ -26,19 +29,26 @@ struct CharView: View {
         }
     }
     var body: some View {
-        ScrollView{
-            ForEach(charRows) { row in
-                Button(action: {clickChar(character: row)}){
-                    Text(row.character)
-                        .frame(width: scaleDim(row: row), height: scaleDim(row: row))
-                        .font(.largeTitle)
-                        .background(Color(red: 0.83, green: 0.83, blue: 0.83))
-                        .foregroundColor(.black)
-                        .border(.blue, width: addBorder(row: row))
-                        .cornerRadius(8)
+        ScrollViewReader { spot in
+            ScrollView{
+                ForEach(charRows) { row in
+                    Button(action: {clickChar(character: row)}){
+                        Text(row.character)
+                            .frame(width: scaleDim(row: row), height: scaleDim(row: row))
+                            .font(.largeTitle)
+                            .background(Color(red: 0.83, green: 0.83, blue: 0.83))
+                            .foregroundColor(.black)
+                            .border(.blue, width: addBorder(row: row))
+                            .cornerRadius(8)
+                    }
+                    .padding(.horizontal, 170)
+                    .padding(.vertical, 10)
+                    .id(row.id - getFirstChar())
                 }
-                .padding(.horizontal, 170)
-                .padding(.vertical, 10)
+            }
+            .onChange(of: currentCharId) { _ in
+                spot.scrollTo(currentCharId, anchor: .center)
+                print(currentCharId)
             }
         }
         .modifier(GestureSwipeRight(state: $state, selectState: $selectState, prevState: $prevState, rowState: $rowState))
@@ -89,6 +99,7 @@ struct CharView: View {
         } else if curType == ButtonType.char && curId - getFirstChar() > 0 && curId - getFirstChar() < charRows.count {
             // go to button(id-1)
             goToChar(id: curId-1)
+            currentCharId = curId - getFirstChar() - 1
         }
     }
     
@@ -99,9 +110,11 @@ struct CharView: View {
             // go to button(0)
             goToChar(id: getFirstChar())
             highlightBackspace = false
+            currentCharId = 0
         } else if curType == ButtonType.char && curId - getFirstChar() < charRows.count - 1 {
             // go to button(id + 1
             goToChar(id: curId + 1)
+            currentCharId = curId - getFirstChar() + 1
         } else if curType == ButtonType.cursor {
             goToChar(id: getFirstChar())
             highlightCursor = false
@@ -130,6 +143,20 @@ struct CharView: View {
                 moveCursorRight()
             }
         }
+    }
+    
+    private func makeSound() {
+        print("in make sound")
+        guard let soundURL = Bundle.main.url(forResource: "blinkTone.wav", withExtension: nil) else {
+                    fatalError("Unable to find blinkTone.wav in bundle")
+            }
+
+            do {
+                audioPlayer = try AVAudioPlayer(contentsOf: soundURL)
+            } catch {
+                print(error.localizedDescription)
+            }
+            audioPlayer.play()
     }
     
     private func goToCursor() {
@@ -195,6 +222,7 @@ struct CharView: View {
     
     private func deleteChar() {
         if contentInd > 0 {
+            makeSound()
             var count: Int = 0
             var content1: String = ""
             var content2: String = ""
@@ -260,7 +288,7 @@ struct CharView_Previews: PreviewProvider {
     static var tempSelect = selectedState(buttonType: ButtonType.cover, buttonId: 0, clickState: 0, isNo: false)
     
     static var previews: some View {
-        CharView(state: .constant(2), rowState: .constant(0), charState: .constant(0), content: .constant(""), contentInd: .constant(0), prevState: .constant(2), selectState: .constant(tempSelect), highlightBackspace: .constant(false), queue: .constant([]), value: .constant(0), highlightCursor: .constant(false))
+        CharView(state: .constant(2), rowState: .constant(0), charState: .constant(0), content: .constant(""), contentInd: .constant(0), prevState: .constant(2), selectState: .constant(tempSelect), highlightBackspace: .constant(false), queue: .constant([]), value: .constant(0), highlightCursor: .constant(false), currentCharId: 0)
     }
 }
 
