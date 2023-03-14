@@ -16,6 +16,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
     var actionDelay = false
     var blinkDelayTime = 1.0
     var lookDelayTime = 1.0
+    @ObservedObject var customizations = CustomizationObject()
     
     /*var upDelay = false
     var downDelay = false
@@ -32,7 +33,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         sceneView.delegate = self
         sceneView.backgroundColor = UIColor.white
         self.view.addSubview(sceneView)
-        let contentView = UIHostingController(rootView: ContentView(viewModel: self.viewModel, lastAction: "none"))
+        let contentView = UIHostingController(rootView: ContentView(viewModel: self.viewModel, lastAction: "none", customizations: self.customizations))
         addChild(contentView)
         view.addSubview(contentView.view)
         contentView.view.translatesAutoresizingMaskIntoConstraints = false
@@ -85,13 +86,14 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         
         let lookRightLeft = faceAnchor.blendShapes[.eyeLookOutLeft]?.doubleValue ?? 0
         let lookRightRight = faceAnchor.blendShapes[.eyeLookInRight]?.doubleValue ?? 0
-        
+        blinkDelayTime = customizations.blinkDelayAmt
+        lookDelayTime = customizations.gazeDelayAmt
         if !actionDelay {
             if leftBlink > 0.9 && rightBlink > 0.9 {
                 print("Blink")
-                // remove later?
+                print("blink delay \(blinkDelayTime)")
+                print("gaze delay \(lookDelayTime)")
                 viewModel.push(action: Action(actionType: ActionType.blink))
-                // end remove later
                 self.actionDelay = true
                 DispatchQueue.main.asyncAfter(deadline: .now() + blinkDelayTime){
                     self.actionDelay = false

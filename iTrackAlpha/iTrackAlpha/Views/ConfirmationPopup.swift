@@ -21,6 +21,7 @@ struct ConfirmationPopup: View {
     @Binding var value: Int
     @Binding var highlightBackspace: Bool
     @Binding var highlightCursor: Bool
+    @Binding var playSound: Bool
         
     
     var body: some View {
@@ -88,7 +89,9 @@ struct ConfirmationPopup: View {
     
     private func deleteChar() {
         if contentInd > 0 {
-            makeSound()
+            if playSound {
+                makeSound()
+            }
             var count: Int = 0
             var content1: String = ""
             var content2: String = ""
@@ -364,6 +367,6 @@ struct ConfirmationPopup_Previews: PreviewProvider {
     static var tempSelect = selectedState(buttonType: ButtonType.cover, buttonId: 0, clickState: 0, isNo: false)
     
     static var previews: some View {
-        ConfirmationPopup(state: .constant(1), rowState: .constant(1), charState: .constant(0), prevState: .constant(0), selectState: .constant(tempSelect), content: .constant(""), contentInd: .constant(0), queue: .constant([]), value: .constant(0), highlightBackspace: .constant(false), highlightCursor: .constant(false))
+        ConfirmationPopup(state: .constant(1), rowState: .constant(1), charState: .constant(0), prevState: .constant(0), selectState: .constant(tempSelect), content: .constant(""), contentInd: .constant(0), queue: .constant([]), value: .constant(0), highlightBackspace: .constant(false), highlightCursor: .constant(false), playSound: .constant(true))
     }
 }

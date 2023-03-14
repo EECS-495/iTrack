@@ -23,6 +23,7 @@ struct CoverButtons: View {
     @Binding var value: Int
     @Binding var showHelpButton: Bool
     @Binding var highlightCursor: Bool
+    @Binding var playSound: Bool
         
     var body: some View {
         VStack{
@@ -86,6 +87,15 @@ struct CoverButtons: View {
                     .cornerRadius(8)
             }
             Spacer()
+            HStack{
+                Spacer()
+                Button(action: {goToSettings()}){
+                   Image(getSettingsImage())
+                        .resizable()
+                        .frame(width: 40, height: 40)
+                }
+                .padding()
+            }
         }
         .padding()
         .onChange(of: value ) { _ in
@@ -102,25 +112,41 @@ struct CoverButtons: View {
         }
     }
     
+    private func highlightSettings() {
+        selectState.buttonId = 0
+        selectState.buttonType = ButtonType.enterSettings
+    }
+    
+    private func goToSettings() {
+        // change selectState
+        // change actual state
+        selectState.buttonType = ButtonType.settingToggle
+        selectState.buttonId = 0
+        state = 3
+    }
+    
     private func tutorial() {
         print("tutorial")
     }
     
+    private func getSettingsImage() -> String {
+        if selectState.buttonType == ButtonType.enterSettings {
+            return "blueGear"
+        } else {
+            return "greyGear"
+        }
+    }
+    
     private func makeSound() {
-        print("in make sound")
         guard let soundURL = Bundle.main.url(forResource: "blinkTone.wav", withExtension: nil) else {
                 fatalError("Unable to find blinkTone.wav in bundle")
         }
-        print("here1")
         do {
             audioPlayer = try AVAudioPlayer(contentsOf: soundURL)
-            print("here2")
         } catch {
             print(error.localizedDescription)
         }
-        print("here3")
         audioPlayer.play()
-        print("sound played")
     }
     
     private func registerGaze(action: ActionType) {
@@ -151,6 +177,8 @@ struct CoverButtons: View {
         } else if curType == ButtonType.space {
             // go to upper
             goToCover(buttonId: 0)
+        } else if curType == ButtonType.enterSettings {
+            goToCover(buttonId: 3)
         }
     }
     
@@ -164,6 +192,9 @@ struct CoverButtons: View {
             } else if curId == 1 || curId == 2 {
                 // go to lower
                 goToCover(buttonId: 3)
+            } else if curId == 3 {
+                // go to settings cover
+                highlightSettings()
             }
         } else if curType == ButtonType.space {
             // go to lower
@@ -270,10 +301,10 @@ struct CoverButtons: View {
     
     
     private func registerBlink() {
-        print("register blink")
         if selectState.buttonType == ButtonType.space {
-            makeSound()
-            print("after blink make sound")
+            if playSound {
+                makeSound()
+            }
             var count: Int = 0
             var content1: String = ""
             var content2: String = ""
@@ -295,8 +326,13 @@ struct CoverButtons: View {
             contentInd = contentInd + 1
         } else if selectState.buttonType == ButtonType.backspace {
             deleteChar()
-        }
-        else {
+        } else if selectState.buttonType == ButtonType.enterSettings {
+            // TO DO - later add in confirmation screen step??
+            if playSound {
+                makeSound()
+            }
+            goToSettings()
+        } else {
             // cover was selected
             state = 4
             showHelpButton = false
@@ -319,7 +355,9 @@ struct CoverButtons: View {
     
     private func deleteChar() {
         if contentInd > 0 {
-            makeSound()
+            if playSound {
+                makeSound()
+            }
             var count: Int = 0
             var content1: String = ""
             var content2: String = ""
@@ -359,9 +397,6 @@ struct CoverButtons: View {
     }
     
     private func toNextState(buttonID: Int) {
-        // maybe remove later
-        makeSound()
-        // end maybe remove later
         if selectState.clickState == 0 {
             selectState.clickState = 1
             selectState.buttonType = ButtonType.cover
@@ -425,6 +460,6 @@ struct CoverButtons_Previews: PreviewProvider {
     
     static var previews: some View {
         
-        CoverButtons(state: .constant(0), rowState: .constant(0), content: .constant(""), contentInd: .constant(0), prevState: .constant(0), selectState: .constant(tempSelect), highlightBackspace: .constant(false), queue: .constant([]), value: .constant(0), showHelpButton: .constant(false), highlightCursor: .constant(false))
+        CoverButtons(state: .constant(0), rowState: .constant(0), content: .constant(""), contentInd: .constant(0), prevState: .constant(0), selectState: .constant(tempSelect), highlightBackspace: .constant(false), queue: .constant([]), value: .constant(0), showHelpButton: .constant(false), highlightCursor: .constant(false), playSound: .constant(true))
     }
 }

@@ -9,7 +9,7 @@ import SwiftUI
 import AVFoundation
 
 enum ButtonType {
-    case cover, row , char, space, backspace, confirm, cursor
+    case cover, row , char, space, backspace, confirm, cursor, settingToggle, enterSettings
 }
 
 struct selectedState {
@@ -40,55 +40,63 @@ struct ContentView: View {
     @State var showHelpButton: Bool = false
     @State var highlightBackspace: Bool = false
     @State var highlightCursor: Bool = false
+    @ObservedObject var customizations: CustomizationObject
     
     var body: some View {
        
         VStack{
-            HStack{
-                CustomTextFieldView(content: $content, contentInd: $contentInd, highlightCursor: $highlightCursor)
-                    .padding()
-                Spacer()
-                Button(action: {deleteChar()}) {
-                    Image(backspaceImage())
-                        .resizable()
-                        .frame(width: backspaceWidth(), height: backspaceHeight())
+            if state != 3 {
+                HStack{
+                    CustomTextFieldView(content: $content, contentInd: $contentInd, highlightCursor: $highlightCursor)
                         .padding()
+                    Spacer()
+                    Button(action: {deleteChar()}) {
+                        Image(backspaceImage())
+                            .resizable()
+                            .frame(width: backspaceWidth(), height: backspaceHeight())
+                            .padding()
+                    }
                 }
+                Spacer()
             }
-            Spacer()
             if state == 0{
-                CoverButtons(state: $state, rowState: $rowState, content: $content, contentInd: $contentInd, prevState: $prevState, selectState: $selectState, highlightBackspace: $highlightBackspace, queue: $viewModel.queue, value: $viewModel.value, showHelpButton: $showHelpButton, highlightCursor: $highlightCursor)
+                CoverButtons(state: $state, rowState: $rowState, content: $content, contentInd: $contentInd, prevState: $prevState, selectState: $selectState, highlightBackspace: $highlightBackspace, queue: $viewModel.queue, value: $viewModel.value, showHelpButton: $showHelpButton, highlightCursor: $highlightCursor, playSound: $customizations.playSound)
             } else if state == 1{
-                RowsView(state: $state, rowState: $rowState, charState: $charState, prevState: $prevState, selectState: $selectState, highlightBackspace: $highlightBackspace, queue: $viewModel.queue, value: $viewModel.value, content: $content, contentInd: $contentInd, highlightCursor: $highlightCursor)
+                RowsView(state: $state, rowState: $rowState, charState: $charState, prevState: $prevState, selectState: $selectState, highlightBackspace: $highlightBackspace, queue: $viewModel.queue, value: $viewModel.value, content: $content, contentInd: $contentInd, highlightCursor: $highlightCursor, playSound: $customizations.playSound)
             } else if state == 2 {
-                CharView(state: $state, rowState: $rowState, charState: $charState, content: $content, contentInd: $contentInd, prevState: $prevState, selectState: $selectState, highlightBackspace: $highlightBackspace, queue: $viewModel.queue, value: $viewModel.value, highlightCursor: $highlightCursor, currentCharId: 0)
+                CharView(state: $state, rowState: $rowState, charState: $charState, content: $content, contentInd: $contentInd, prevState: $prevState, selectState: $selectState, highlightBackspace: $highlightBackspace, queue: $viewModel.queue, value: $viewModel.value, highlightCursor: $highlightCursor, playSound: $customizations.playSound, currentCharId: 0)
+            } else if state == 3 {
+                SettingsView(blinkDelay: $customizations.blinkDelayAmt, gazeDelay: $customizations.gazeDelayAmt, playSound: $customizations.playSound, showConfirmationScreen: $customizations.showConfirmationScreen, selectState: $selectState, queue: $viewModel.queue, value: $viewModel.value, state: $state)
             } else if state == 4 {
-                ConfirmationPopup(state: $state, rowState: $rowState, charState: $charState, prevState: $prevState, selectState: $selectState, content: $content, contentInd: $contentInd, queue: $viewModel.queue, value: $viewModel.value, highlightBackspace: $highlightBackspace, highlightCursor: $highlightCursor)
+                ConfirmationPopup(state: $state, rowState: $rowState, charState: $charState, prevState: $prevState, selectState: $selectState, content: $content, contentInd: $contentInd, queue: $viewModel.queue, value: $viewModel.value, highlightBackspace: $highlightBackspace, highlightCursor: $highlightCursor, playSound: $customizations.playSound)
                 Spacer()
             }
             Spacer()
         }
         .onChange(of: state) { _ in
-            makeSound()
+            if customizations.playSound {
+                makeSound()
+            }
         }
         .background(Color.white)
     }
     
     private func makeSound() {
-        print("in make sound")
+        
         guard let soundURL = Bundle.main.url(forResource: "blinkTone.wav", withExtension: nil) else {
                 fatalError("Unable to find blinkTone.wav in bundle")
         }
-        print("here1")
+        
         do {
             audioPlayer = try AVAudioPlayer(contentsOf: soundURL)
-            print("here2")
         } catch {
             print(error.localizedDescription)
         }
-        print("here3")
         audioPlayer.play()
-        print("sound played")
+    }
+    
+    private func goToState(stateIn: Int) {
+        state = stateIn
     }
     
     private func deleteChar() {
@@ -173,8 +181,9 @@ struct ContentView: View {
 
 struct ContentView_Previews: PreviewProvider {
     static private var tempVm = ViewModel()
+    static private var tempCust = CustomizationObject()
     static var previews: some View {
-        ContentView(viewModel: tempVm, lastAction: "")
+        ContentView(viewModel: tempVm, lastAction: "", customizations: tempCust)
             .previewInterfaceOrientation(.portrait)
     }
 }

@@ -21,6 +21,7 @@ struct CharView: View {
     @Binding var queue: [Action]
     @Binding var value: Int
     @Binding var highlightCursor: Bool
+    @Binding var playSound: Bool
     @State var currentCharId = 0
     
     var charRows: [CharRow] {
@@ -146,7 +147,6 @@ struct CharView: View {
     }
     
     private func makeSound() {
-        print("in make sound")
         guard let soundURL = Bundle.main.url(forResource: "blinkTone.wav", withExtension: nil) else {
                     fatalError("Unable to find blinkTone.wav in bundle")
             }
@@ -288,7 +288,7 @@ struct CharView_Previews: PreviewProvider {
     static var tempSelect = selectedState(buttonType: ButtonType.cover, buttonId: 0, clickState: 0, isNo: false)
     
     static var previews: some View {
-        CharView(state: .constant(2), rowState: .constant(0), charState: .constant(0), content: .constant(""), contentInd: .constant(0), prevState: .constant(2), selectState: .constant(tempSelect), highlightBackspace: .constant(false), queue: .constant([]), value: .constant(0), highlightCursor: .constant(false), currentCharId: 0)
+        CharView(state: .constant(2), rowState: .constant(0), charState: .constant(0), content: .constant(""), contentInd: .constant(0), prevState: .constant(2), selectState: .constant(tempSelect), highlightBackspace: .constant(false), queue: .constant([]), value: .constant(0), highlightCursor: .constant(false), playSound: .constant(true), currentCharId: 0)
     }
 }
 

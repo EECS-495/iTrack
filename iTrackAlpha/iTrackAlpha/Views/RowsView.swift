@@ -21,6 +21,7 @@ struct RowsView: View {
     @Binding var content: String
     @Binding var contentInd: Int
     @Binding var highlightCursor: Bool
+    @Binding var playSound: Bool
     
     var rows: [Row] {
         Rows.filter { row in
@@ -164,7 +165,9 @@ struct RowsView: View {
     
     private func deleteChar() {
         if contentInd > 0 {
-            makeSound()
+            if playSound {
+                makeSound()
+            }
             var count: Int = 0
             var content1: String = ""
             var content2: String = ""
@@ -245,7 +248,6 @@ struct RowsView: View {
     }
     
     private func makeSound() {
-        print("in make sound")
         guard let soundURL = Bundle.main.url(forResource: "blinkTone.wav", withExtension: nil) else {
                     fatalError("Unable to find blinkTone.wav in bundle")
             }
@@ -288,6 +290,6 @@ struct RowsView_Previews: PreviewProvider {
     static var tempSelect = selectedState(buttonType: ButtonType.cover, buttonId: 0, clickState: 0, isNo: false)
     
     static var previews: some View {
-        RowsView(state: .constant(2), rowState: .constant(0), charState: .constant(0), prevState: .constant(1), selectState: .constant(tempSelect), highlightBackspace: .constant(false), queue: .constant([]), value: .constant(0), content: .constant(""), contentInd: .constant(0), highlightCursor: .constant(false))
+        RowsView(state: .constant(2), rowState: .constant(0), charState: .constant(0), prevState: .constant(1), selectState: .constant(tempSelect), highlightBackspace: .constant(false), queue: .constant([]), value: .constant(0), content: .constant(""), contentInd: .constant(0), highlightCursor: .constant(false), playSound: .constant(true))
     }
 }
