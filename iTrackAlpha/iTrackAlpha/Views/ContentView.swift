@@ -60,11 +60,11 @@ struct ContentView: View {
                 Spacer()
             }
             if state == 0{
-                CoverButtons(state: $state, rowState: $rowState, content: $content, contentInd: $contentInd, prevState: $prevState, selectState: $selectState, highlightBackspace: $highlightBackspace, queue: $viewModel.queue, value: $viewModel.value, showHelpButton: $showHelpButton, highlightCursor: $highlightCursor, playSound: $customizations.playSound)
+                CoverButtons(state: $state, rowState: $rowState, content: $content, contentInd: $contentInd, prevState: $prevState, selectState: $selectState, highlightBackspace: $highlightBackspace, queue: $viewModel.queue, value: $viewModel.value, showHelpButton: $showHelpButton, highlightCursor: $highlightCursor, playSound: $customizations.playSound, showConfirmation: $customizations.showConfirmationScreen)
             } else if state == 1{
-                RowsView(state: $state, rowState: $rowState, charState: $charState, prevState: $prevState, selectState: $selectState, highlightBackspace: $highlightBackspace, queue: $viewModel.queue, value: $viewModel.value, content: $content, contentInd: $contentInd, highlightCursor: $highlightCursor, playSound: $customizations.playSound)
+                RowsView(state: $state, rowState: $rowState, charState: $charState, prevState: $prevState, selectState: $selectState, highlightBackspace: $highlightBackspace, queue: $viewModel.queue, value: $viewModel.value, content: $content, contentInd: $contentInd, highlightCursor: $highlightCursor, playSound: $customizations.playSound, showConfirmation: $customizations.showConfirmationScreen)
             } else if state == 2 {
-                CharView(state: $state, rowState: $rowState, charState: $charState, content: $content, contentInd: $contentInd, prevState: $prevState, selectState: $selectState, highlightBackspace: $highlightBackspace, queue: $viewModel.queue, value: $viewModel.value, highlightCursor: $highlightCursor, playSound: $customizations.playSound, currentCharId: 0)
+                CharView(state: $state, rowState: $rowState, charState: $charState, content: $content, contentInd: $contentInd, prevState: $prevState, selectState: $selectState, highlightBackspace: $highlightBackspace, queue: $viewModel.queue, value: $viewModel.value, highlightCursor: $highlightCursor, playSound: $customizations.playSound, currentCharId: 0, showConfirmation: $customizations.showConfirmationScreen)
             } else if state == 3 {
                 SettingsView(blinkDelay: $customizations.blinkDelayAmt, gazeDelay: $customizations.gazeDelayAmt, playSound: $customizations.playSound, showConfirmationScreen: $customizations.showConfirmationScreen, selectState: $selectState, queue: $viewModel.queue, value: $viewModel.value, state: $state)
             } else if state == 4 {

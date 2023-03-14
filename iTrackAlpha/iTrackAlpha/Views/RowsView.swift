@@ -22,6 +22,7 @@ struct RowsView: View {
     @Binding var contentInd: Int
     @Binding var highlightCursor: Bool
     @Binding var playSound: Bool
+    @Binding var showConfirmation: Bool
     
     var rows: [Row] {
         Rows.filter { row in
@@ -68,13 +69,21 @@ struct RowsView: View {
             deleteChar()
         } else {
             // button type is row
-            prevState = 1
-            state = 4
-            charState = rows[selectState.buttonId - getFirstRow()].CharType
-            selectState.clickState = 1
-            
-            selectState.buttonType = ButtonType.confirm
-            selectState.isNo = false
+            if showConfirmation {
+                prevState = 1
+                state = 4
+                charState = rows[selectState.buttonId - getFirstRow()].CharType
+                selectState.clickState = 1
+                
+                selectState.buttonType = ButtonType.confirm
+                selectState.isNo = false
+            } else {
+                charState = rows[selectState.buttonId - getFirstRow()].CharType
+                state = 2
+                selectState.clickState = 1
+                selectState.buttonType = ButtonType.char
+                selectState.buttonId = getFirstChar()
+            }
         }
     }
     
@@ -215,6 +224,35 @@ struct RowsView: View {
         }
     }
     
+    private func getFirstChar() -> Int {
+        if charState == 0 {
+            return 0
+        } else if charState == 1 {
+            return 10
+        } else if charState == 2 {
+            return 19
+        } else if charState == 3 {
+            return 52
+        } else if charState == 4 {
+            return 62
+        } else if charState == 5 {
+            return 72
+        } else if charState == 6 {
+            return 82
+        } else if charState == 7 {
+            return 87
+        } else if charState == 8 {
+            return 92
+        } else if charState == 9 {
+            return 26
+        } else if charState == 10 {
+            return 36
+        } else {
+            // charState == 11
+            return 45
+        }
+    }
+    
     private func scaleDimWidth(buttonId: Int) -> CGFloat {
         if selectState.buttonType == ButtonType.row && selectState.buttonId == buttonId && selectState.clickState == 1 {
             return 380
@@ -261,19 +299,24 @@ struct RowsView: View {
     }
     
     private func clickRow(_ row: Row){
-//        self.state = 4
-//        self.prevState = 1
-//        self.charState = row.CharType
         if selectState.clickState == 0 {
             selectState.clickState = 1
             selectState.buttonType = ButtonType.row
             selectState.buttonId = row.id
         } else if selectState.clickState == 1 {
             if(selectState.buttonId == row.id && selectState.buttonType == ButtonType.row) {
-                self.prevState = 1
-                self.state = 4
-                self.charState = row.CharType
-                selectState.clickState = 0
+                if showConfirmation {
+                    self.prevState = 1
+                    self.state = 4
+                    self.charState = row.CharType
+                    selectState.clickState = 0
+                } else {
+                    self.charState = row.CharType
+                    state = 2
+                    selectState.clickState = 1
+                    selectState.buttonType = ButtonType.char
+                    selectState.buttonId = getFirstChar()
+                }
             } else {
                 selectState.buttonType = ButtonType.row
                 selectState.buttonId = row.id
@@ -290,6 +333,6 @@ struct RowsView_Previews: PreviewProvider {
     static var tempSelect = selectedState(buttonType: ButtonType.cover, buttonId: 0, clickState: 0, isNo: false)
     
     static var previews: some View {
-        RowsView(state: .constant(2), rowState: .constant(0), charState: .constant(0), prevState: .constant(1), selectState: .constant(tempSelect), highlightBackspace: .constant(false), queue: .constant([]), value: .constant(0), content: .constant(""), contentInd: .constant(0), highlightCursor: .constant(false), playSound: .constant(true))
+        RowsView(state: .constant(2), rowState: .constant(0), charState: .constant(0), prevState: .constant(1), selectState: .constant(tempSelect), highlightBackspace: .constant(false), queue: .constant([]), value: .constant(0), content: .constant(""), contentInd: .constant(0), highlightCursor: .constant(false), playSound: .constant(true), showConfirmation: .constant(true))
     }
 }

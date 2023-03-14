@@ -79,10 +79,11 @@ struct SettingsView: View {
             .onChange(of: playSoundToggleOn) { playSoundOn in
                 print("in change playSound")
                 if playSoundToggleOn {
-                    playSound = false
-                } else {
                     playSound = true
+                } else {
+                    playSound = false
                 }
+                print("play Sound = \(playSound)")
             }
             HStack{
                 Text("Show Confirmation Screen")
@@ -99,9 +100,9 @@ struct SettingsView: View {
             }
             .onChange(of: showConfirmationToggleOn) { showConfirmationToggleOn in
                 if showConfirmationToggleOn {
-                    showConfirmationScreen = false
-                } else {
                     showConfirmationScreen = true
+                } else {
+                    showConfirmationScreen = false
                 }
             }
             Spacer()
@@ -174,6 +175,7 @@ struct SettingsView: View {
             } else {
                 playSoundToggleOn = true
             }
+            print("play sound toggle = \(playSoundToggleOn)")
         } else if curId == 3 {
             if showConfirmationToggleOn {
                 showConfirmationToggleOn = false

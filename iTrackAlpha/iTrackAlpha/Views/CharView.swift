@@ -23,6 +23,7 @@ struct CharView: View {
     @Binding var highlightCursor: Bool
     @Binding var playSound: Bool
     @State var currentCharId = 0
+    @Binding var showConfirmation: Bool
     
     var charRows: [CharRow] {
         CharRows.filter { row in
@@ -71,11 +72,41 @@ struct CharView: View {
         if selectState.buttonType == ButtonType.backspace {
             deleteChar()
         } else {
-            prevState = 2
-            state = 4
-            selectState.clickState = 1
-            selectState.buttonType = ButtonType.confirm
-            selectState.isNo = false
+            if showConfirmation {
+                prevState = 2
+                state = 4
+                selectState.clickState = 1
+                selectState.buttonType = ButtonType.confirm
+                selectState.isNo = false
+            } else {
+                // add text to content
+                var count: Int = 0
+                var content1: String = ""
+                var content2: String = ""
+                let character = CharRows.filter { row in
+                    row.id == selectState.buttonId
+                }[0]
+                for char in Array(content) {
+                    if count >= contentInd {
+                        break
+                    }
+                    content1 = content1 + String(char)
+                    count = count + 1
+                }
+                count = 0
+                for char in Array(content) {
+                    if count >= contentInd {
+                        content2 = content2 + String(char)
+                    }
+                    count = count + 1
+                }
+                content = content1 + character.character + content2
+                contentInd = contentInd + 1
+                state = 1
+                selectState.clickState = 1
+                selectState.buttonType = ButtonType.row
+                selectState.buttonId = getFirstRow()
+            }
         }
     }
     
@@ -191,6 +222,18 @@ struct CharView: View {
         selectState.buttonId = id
     }
     
+    private func getFirstRow() -> Int {
+        if rowState == 0 {
+            return 0
+        } else if rowState == 1 {
+            return 6
+        } else if rowState == 2 {
+            return 10
+        } else {
+            return 3
+        }
+    }
+    
     private func getFirstChar() -> Int {
         if charState == 0 {
             return 0
@@ -252,9 +295,39 @@ struct CharView: View {
             selectState.buttonId = character.id
         } else if selectState.clickState == 1 {
             if selectState.buttonType == ButtonType.char && selectState.buttonId == character.id {
-                prevState = 2
-                state = 4
-                selectState.clickState = 0
+                if showConfirmation {
+                    prevState = 2
+                    state = 4
+                    selectState.clickState = 0
+                } else {
+                    // add text to content
+                    var count: Int = 0
+                    var content1: String = ""
+                    var content2: String = ""
+                    let character = CharRows.filter { row in
+                        row.id == selectState.buttonId
+                    }[0]
+                    for char in Array(content) {
+                        if count >= contentInd {
+                            break
+                        }
+                        content1 = content1 + String(char)
+                        count = count + 1
+                    }
+                    count = 0
+                    for char in Array(content) {
+                        if count >= contentInd {
+                            content2 = content2 + String(char)
+                        }
+                        count = count + 1
+                    }
+                    content = content1 + character.character + content2
+                    contentInd = contentInd + 1
+                    state = 1
+                    selectState.clickState = 1
+                    selectState.buttonType = ButtonType.row
+                    selectState.buttonId = getFirstRow()
+                }
             } else {
                 selectState.buttonId = character.id
                 selectState.buttonType = ButtonType.char
@@ -288,7 +361,7 @@ struct CharView_Previews: PreviewProvider {
     static var tempSelect = selectedState(buttonType: ButtonType.cover, buttonId: 0, clickState: 0, isNo: false)
     
     static var previews: some View {
-        CharView(state: .constant(2), rowState: .constant(0), charState: .constant(0), content: .constant(""), contentInd: .constant(0), prevState: .constant(2), selectState: .constant(tempSelect), highlightBackspace: .constant(false), queue: .constant([]), value: .constant(0), highlightCursor: .constant(false), playSound: .constant(true), currentCharId: 0)
+        CharView(state: .constant(2), rowState: .constant(0), charState: .constant(0), content: .constant(""), contentInd: .constant(0), prevState: .constant(2), selectState: .constant(tempSelect), highlightBackspace: .constant(false), queue: .constant([]), value: .constant(0), highlightCursor: .constant(false), playSound: .constant(true), currentCharId: 0, showConfirmation: .constant(true))
     }
 }
 

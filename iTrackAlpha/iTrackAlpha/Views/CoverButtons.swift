@@ -24,6 +24,7 @@ struct CoverButtons: View {
     @Binding var showHelpButton: Bool
     @Binding var highlightCursor: Bool
     @Binding var playSound: Bool
+    @Binding var showConfirmation: Bool
         
     var body: some View {
         VStack{
@@ -334,16 +335,36 @@ struct CoverButtons: View {
             goToSettings()
         } else {
             // cover was selected
-            state = 4
-            showHelpButton = false
-            rowState = selectState.buttonId
-            selectState.clickState = 1
-            selectState.buttonType = ButtonType.confirm
-            selectState.isNo = false
-            prevState = 0
+            if showConfirmation {
+                state = 4
+                showHelpButton = false
+                rowState = selectState.buttonId
+                selectState.clickState = 1
+                selectState.buttonType = ButtonType.confirm
+                selectState.isNo = false
+                prevState = 0
+            } else {
+                showHelpButton = false
+                rowState = selectState.buttonId
+                state = 1
+                selectState.clickState = 1
+                selectState.buttonType = ButtonType.row
+                selectState.buttonId = getFirstRow()
+            }
         }
     }
     
+    private func getFirstRow() -> Int {
+        if rowState == 0 {
+            return 0
+        } else if rowState == 1 {
+            return 6
+        } else if rowState == 2 {
+            return 10
+        } else {
+            return 3
+        }
+    }
     
     private func addBorder(buttonType: ButtonType, buttonId: Int) -> CGFloat {
         if selectState.buttonType == buttonType && selectState.buttonId == buttonId && selectState.clickState == 1{
@@ -403,11 +424,20 @@ struct CoverButtons: View {
             selectState.buttonId = buttonID
         } else if selectState.clickState == 1{
             if(selectState.buttonId == buttonID && selectState.buttonType == ButtonType.cover) {
-                self.prevState = 0
-                self.state = 4
-                showHelpButton = false
-                self.rowState = buttonID
-                selectState.clickState = 0
+                if showConfirmation {
+                    self.prevState = 0
+                    self.state = 4
+                    showHelpButton = false
+                    self.rowState = buttonID
+                    selectState.clickState = 0
+                } else {
+                    showHelpButton = false
+                    self.rowState = buttonID
+                    state = 1
+                    selectState.clickState = 1
+                    selectState.buttonType = ButtonType.row
+                    selectState.buttonId = getFirstRow()
+                }
             } else {
                 selectState.buttonType = ButtonType.cover
                 selectState.buttonId = buttonID
@@ -460,6 +490,6 @@ struct CoverButtons_Previews: PreviewProvider {
     
     static var previews: some View {
         
-        CoverButtons(state: .constant(0), rowState: .constant(0), content: .constant(""), contentInd: .constant(0), prevState: .constant(0), selectState: .constant(tempSelect), highlightBackspace: .constant(false), queue: .constant([]), value: .constant(0), showHelpButton: .constant(false), highlightCursor: .constant(false), playSound: .constant(true))
+        CoverButtons(state: .constant(0), rowState: .constant(0), content: .constant(""), contentInd: .constant(0), prevState: .constant(0), selectState: .constant(tempSelect), highlightBackspace: .constant(false), queue: .constant([]), value: .constant(0), showHelpButton: .constant(false), highlightCursor: .constant(false), playSound: .constant(true), showConfirmation: .constant(true))
     }
 }
