@@ -88,6 +88,10 @@ struct CoverButtons: View {
                     .cornerRadius(8)
             }
             Spacer()
+            Button(action: {goToCustomPhrases()}){
+                Text("Custom Phrases")
+            }
+            Spacer()
             HStack{
                 Spacer()
                 Button(action: {goToSettings()}){
@@ -124,6 +128,12 @@ struct CoverButtons: View {
         selectState.buttonType = ButtonType.settingToggle
         selectState.buttonId = 0
         state = 3
+    }
+    
+    private func goToCustomPhrases() {
+        selectState.buttonType = ButtonType.customPhrase
+        selectState.buttonId = 0
+        state = 5
     }
     
     private func tutorial() {
