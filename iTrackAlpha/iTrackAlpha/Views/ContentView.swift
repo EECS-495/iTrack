@@ -9,7 +9,7 @@ import SwiftUI
 import AVFoundation
 
 enum ButtonType {
-    case cover, row , char, space, backspace, confirm, cursor, settingToggle, enterSettings
+    case cover, row , char, space, backspace, confirm, cursor, settingToggle, enterSettings, customPhrase
 }
 
 struct selectedState {
@@ -21,6 +21,11 @@ struct selectedState {
 
 struct CustomColor {
     static let lightgray = Color("lightgray")
+}
+
+struct CustomPhrase: Identifiable {
+    var id: Int
+    var content: String = ""
 }
 
 
@@ -40,6 +45,7 @@ struct ContentView: View {
     @State var showHelpButton: Bool = false
     @State var highlightBackspace: Bool = false
     @State var highlightCursor: Bool = false
+    @State var customPhraseList: [CustomPhrase] = [CustomPhrase(id: 0, content: "Hello!")]
     @ObservedObject var customizations: CustomizationObject
     
     var body: some View {
@@ -70,6 +76,8 @@ struct ContentView: View {
             } else if state == 4 {
                 ConfirmationPopup(state: $state, rowState: $rowState, charState: $charState, prevState: $prevState, selectState: $selectState, content: $content, contentInd: $contentInd, queue: $viewModel.queue, value: $viewModel.value, highlightBackspace: $highlightBackspace, highlightCursor: $highlightCursor, playSound: $customizations.playSound)
                 Spacer()
+            } else if state == 5 {
+                CustomPhrasesView(customList: $customPhraseList, content: $content, contentInd: $contentInd, state: $state)
             }
             Spacer()
         }
