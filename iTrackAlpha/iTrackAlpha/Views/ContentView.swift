@@ -41,6 +41,8 @@ struct ContentView: View {
     @State var highlightBackspace: Bool = false
     @State var highlightCursor: Bool = false
     @ObservedObject var customizations: CustomizationObject
+    var longDelay: CGFloat = 2.0
+    var shortDelay: CGFloat = 1.0
     
     var body: some View {
        
@@ -66,7 +68,7 @@ struct ContentView: View {
             } else if state == 2 {
                 CharView(state: $state, rowState: $rowState, charState: $charState, content: $content, contentInd: $contentInd, prevState: $prevState, selectState: $selectState, highlightBackspace: $highlightBackspace, queue: $viewModel.queue, value: $viewModel.value, highlightCursor: $highlightCursor, playSound: $customizations.playSound, currentCharId: 0, showConfirmation: $customizations.showConfirmationScreen)
             } else if state == 3 {
-                SettingsView(blinkDelay: $customizations.blinkDelayAmt, gazeDelay: $customizations.gazeDelayAmt, playSound: $customizations.playSound, showConfirmationScreen: $customizations.showConfirmationScreen, selectState: $selectState, queue: $viewModel.queue, value: $viewModel.value, state: $state)
+                SettingsView(longerBlinkDelay: $customizations.longerBlinkDelay, longerGazeDelay: $customizations.longerGazeDelay, playSound: $customizations.playSound, showConfirmationScreen: $customizations.showConfirmationScreen, selectState: $selectState, queue: $viewModel.queue, value: $viewModel.value, state: $state)
             } else if state == 4 {
                 ConfirmationPopup(state: $state, rowState: $rowState, charState: $charState, prevState: $prevState, selectState: $selectState, content: $content, contentInd: $contentInd, queue: $viewModel.queue, value: $viewModel.value, highlightBackspace: $highlightBackspace, highlightCursor: $highlightCursor, playSound: $customizations.playSound)
                 Spacer()

@@ -27,9 +27,9 @@ struct CustomTextFieldView: View {
                 Group {
                     Text(firstHalf(content: content))
                         .foregroundColor(.black) +
-                    Text("|")
+                    Text("| ")
                         .font(.system(size: 22, weight: highlightCursor ? .heavy : .medium))
-                        .kerning(-5)
+                        .kerning(-4)
                         .foregroundColor(currentColor) +
                     Text(secHalf(content: content) + " ")
                         .foregroundColor(.black)
@@ -92,6 +92,6 @@ struct CustomTextFieldView: View {
 
 struct CustomTextFieldView_Previews: PreviewProvider {
     static var previews: some View {
-        CustomTextFieldView(content: .constant("word"), contentInd: .constant(2), highlightCursor: .constant(false))
+        CustomTextFieldView(content: .constant("illi"), contentInd: .constant(2), highlightCursor: .constant(false))
     }
 }

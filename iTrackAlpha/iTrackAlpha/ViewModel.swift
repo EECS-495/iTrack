@@ -42,8 +42,8 @@ class ViewModel: ObservableObject {
 }
 
 class CustomizationObject: ObservableObject {
-    @Published var blinkDelayAmt: CGFloat = 1.0
-    @Published var gazeDelayAmt: CGFloat = 1.0
+    @Published var longerBlinkDelay: Bool = false
+    @Published var longerGazeDelay: Bool = false
     @Published var playSound: Bool = true
     @Published var showConfirmationScreen: Bool = true
 }

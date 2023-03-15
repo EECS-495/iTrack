@@ -6,20 +6,18 @@
 //
 
 import SwiftUI
+import AVFoundation
 
 struct SettingsView: View {
-    @Binding var blinkDelay: CGFloat
-    @Binding var gazeDelay: CGFloat
+    @Binding var longerBlinkDelay: Bool
+    @Binding var longerGazeDelay: Bool
     @Binding var playSound: Bool
     @Binding var showConfirmationScreen: Bool
     @Binding var selectState: selectedState
     @Binding var queue: [Action]
     @Binding var value: Int
     @Binding var state: Int
-    @State var longerBlinkDelay: Bool = false
-    @State var longerGazeDelay: Bool = false
-    @State var playSoundToggleOn: Bool = true
-    @State var showConfirmationToggleOn: Bool = true
+    @State var audioPlayer: AVAudioPlayer!
     
     var body: some View {
         VStack{
@@ -37,11 +35,11 @@ struct SettingsView: View {
                     .padding([.leading, .trailing])
 
             }
-            .onChange(of: longerBlinkDelay) { longerBlinkDelay in
+            .onChange(of: longerBlinkDelay) { _ in
                 if longerBlinkDelay {
-                    blinkDelay = 2.0
+                    longerBlinkDelay = true
                 } else {
-                    blinkDelay = 1.0
+                    longerBlinkDelay = false
                 }
             }
             HStack{
@@ -56,11 +54,11 @@ struct SettingsView: View {
                     .border(.blue, width: addBorder(buttonId: 1))
                     .padding([.leading, .trailing])
             }
-            .onChange(of: longerGazeDelay) { longerGazeDelay in
+            .onChange(of: longerGazeDelay) { _ in
                 if longerGazeDelay {
-                    gazeDelay = 2.0
+                    longerGazeDelay = true
                 } else {
-                    gazeDelay = 1.0
+                    longerGazeDelay = false
                 }
             }
             HStack{
@@ -68,7 +66,7 @@ struct SettingsView: View {
                     .foregroundColor(.black)
                     .padding([.leading, .trailing])
                 Spacer()
-                Toggle(isOn: $playSoundToggleOn, label: {Text("")})
+                Toggle(isOn: $playSound, label: {Text("")})
                     .labelsHidden()
                     .toggleStyle(SwitchToggleStyle(tint: .blue))
                     .frame(width: 60, height: 50)
@@ -76,9 +74,9 @@ struct SettingsView: View {
                     .padding([.leading, .trailing])
 
             }
-            .onChange(of: playSoundToggleOn) { playSoundOn in
+            .onChange(of: playSound) { _ in
                 print("in change playSound")
-                if playSoundToggleOn {
+                if playSound {
                     playSound = true
                 } else {
                     playSound = false
@@ -90,7 +88,7 @@ struct SettingsView: View {
                     .foregroundColor(.black)
                     .padding([.leading, .trailing])
                 Spacer()
-                Toggle("", isOn: $showConfirmationToggleOn)
+                Toggle("", isOn: $showConfirmationScreen)
                     .labelsHidden()
                     .toggleStyle(SwitchToggleStyle(tint: .blue))
                     .frame(width: 60, height: 50)
@@ -98,8 +96,8 @@ struct SettingsView: View {
                     .padding([.leading, .trailing])
 
             }
-            .onChange(of: showConfirmationToggleOn) { showConfirmationToggleOn in
-                if showConfirmationToggleOn {
+            .onChange(of: showConfirmationScreen) { _ in
+                if showConfirmationScreen {
                     showConfirmationScreen = true
                 } else {
                     showConfirmationScreen = false
@@ -158,38 +156,60 @@ struct SettingsView: View {
     private func registerBlink() {
         let curId = selectState.buttonId
         if curId == 0 {
+            if playSound {
+                makeSound()
+            }
             if longerBlinkDelay {
                 longerBlinkDelay = false
             } else {
                 longerBlinkDelay = true
             }
         } else if curId == 1 {
+            if playSound {
+                makeSound()
+            }
             if longerGazeDelay {
                 longerGazeDelay = false
             } else {
                 longerGazeDelay = true
             }
         } else if curId == 2 {
-            if playSoundToggleOn {
-                playSoundToggleOn = false
+            if playSound {
+                playSound = false
             } else {
-                playSoundToggleOn = true
+                makeSound()
+                playSound = true
             }
-            print("play sound toggle = \(playSoundToggleOn)")
         } else if curId == 3 {
-            if showConfirmationToggleOn {
-                showConfirmationToggleOn = false
+            if playSound {
+                makeSound()
+            }
+            if showConfirmationScreen {
+                showConfirmationScreen = false
             } else {
-                showConfirmationToggleOn = true
+                showConfirmationScreen = true
             }
         }
     }
     
+    private func makeSound() {
+        guard let soundURL = Bundle.main.url(forResource: "blinkTone.wav", withExtension: nil) else {
+                    fatalError("Unable to find blinkTone.wav in bundle")
+            }
+
+            do {
+                audioPlayer = try AVAudioPlayer(contentsOf: soundURL)
+            } catch {
+                print(error.localizedDescription)
+            }
+            audioPlayer.play()
+    }
+    
     private func changeBlink(isLarge: Bool) {
         if isLarge {
-            blinkDelay = 2.0
+            longerBlinkDelay = true
         } else {
-            blinkDelay = 1.0
+            longerBlinkDelay = false
         }
     }
     
@@ -203,9 +223,9 @@ struct SettingsView: View {
     
     private func changeGaze(isLarge: Bool) {
         if isLarge {
-            gazeDelay = 2.0
+            longerGazeDelay = true
         } else {
-            gazeDelay = 1.0
+            longerGazeDelay = false
         }
     }
 }
@@ -214,6 +234,6 @@ struct SettingsView_Previews: PreviewProvider {
     static var tempSelect = selectedState(buttonType: ButtonType.settingToggle, buttonId: 0, clickState: 1, isNo: false)
     
     static var previews: some View {
-        SettingsView(blinkDelay: .constant(1.0), gazeDelay: .constant(1.0), playSound: .constant(true), showConfirmationScreen: .constant(true), selectState: .constant(tempSelect), queue: .constant([]), value: .constant(0), state: .constant(3))
+        SettingsView(longerBlinkDelay: .constant(false), longerGazeDelay: .constant(false), playSound: .constant(true), showConfirmationScreen: .constant(true), selectState: .constant(tempSelect), queue: .constant([]), value: .constant(0), state: .constant(3))
     }
 }

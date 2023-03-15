@@ -89,8 +89,8 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         
         let mouthOpen = faceAnchor.blendShapes[.jawOpen]?.doubleValue ?? 0
         
-        blinkDelayTime = customizations.blinkDelayAmt
-        lookDelayTime = customizations.gazeDelayAmt
+        blinkDelayTime = customizations.longerBlinkDelay ? 2.0 : 1.0
+        lookDelayTime = customizations.longerGazeDelay ? 2.0 : 1.0
         if !actionDelay {
             if leftBlink > 0.9 && rightBlink > 0.9 {
                 print("Blink")
