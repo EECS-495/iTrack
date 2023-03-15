@@ -86,6 +86,9 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         
         let lookRightLeft = faceAnchor.blendShapes[.eyeLookOutLeft]?.doubleValue ?? 0
         let lookRightRight = faceAnchor.blendShapes[.eyeLookInRight]?.doubleValue ?? 0
+        
+        let mouthOpen = faceAnchor.blendShapes[.jawOpen]?.doubleValue ?? 0
+        
         blinkDelayTime = customizations.blinkDelayAmt
         lookDelayTime = customizations.gazeDelayAmt
         if !actionDelay {
@@ -127,6 +130,15 @@ class ViewController: UIViewController, ARSCNViewDelegate {
             if lookRightLeft > 0.7 && lookRightRight > 0.7 {
                 print("Right")
                 viewModel.push(action: Action(actionType: ActionType.right))
+                self.actionDelay = true
+                DispatchQueue.main.asyncAfter(deadline: .now() + lookDelayTime){
+                    self.actionDelay = false
+                }
+            }
+            if mouthOpen > 0.5
+            {
+                print("Mouth Open")
+                //ACTION
                 self.actionDelay = true
                 DispatchQueue.main.asyncAfter(deadline: .now() + lookDelayTime){
                     self.actionDelay = false
