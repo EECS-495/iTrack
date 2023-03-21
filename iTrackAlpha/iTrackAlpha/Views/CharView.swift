@@ -156,10 +156,13 @@ struct CharView: View {
     private func goLeft() {
         let curType = selectState.buttonType
         if curType == ButtonType.char {
-            // go to row view amybe with confirmation screen
+            // go to row view
+            goToRows()
         } else if curType == ButtonType.backspace {
-            highlightBackspace = false
-            goToCursor()
+            if content.count > 0 {
+                highlightBackspace = false
+                goToCursor()
+            }
         } else if curType == ButtonType.cursor {
             moveCursorLeft()
         }
@@ -175,6 +178,13 @@ struct CharView: View {
                 moveCursorRight()
             }
         }
+    }
+    
+    private func goToRows() {
+        selectState.clickState = 1
+        selectState.buttonType = ButtonType.row
+        selectState.buttonId = getFirstRow()
+        state = 1
     }
     
     private func makeSound() {

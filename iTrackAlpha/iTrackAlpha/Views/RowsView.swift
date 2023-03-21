@@ -131,10 +131,13 @@ struct RowsView: View {
         let curType = selectState.buttonType
         if curType == ButtonType.row {
             // go back to cover, without confirmation screen if set that way
+            goToCovers()
         } else if curType == ButtonType.backspace {
             // go to cursor
-            highlightBackspace = false
-            goToCursor()
+            if content.count > 0 {
+                highlightBackspace = false
+                goToCursor()
+            }
         } else if curType == ButtonType.cursor {
             moveCursorLeft()
         }
@@ -158,6 +161,13 @@ struct RowsView: View {
         selectState.clickState = 1
         selectState.buttonId = 0
         selectState.buttonType = ButtonType.cursor
+    }
+    
+    private func goToCovers() {
+        selectState.clickState = 1
+        selectState.buttonId = 0
+        selectState.buttonType = ButtonType.cover
+        state = 0
     }
     
     private func moveCursorLeft() {

@@ -149,8 +149,10 @@ struct ConfirmationPopup: View {
                 // go to yes
                 goToYes()
             } else if curType == ButtonType.backspace {
-                highlightBackspace = false
-                goToCursor()
+                if content.count > 0 {
+                    highlightBackspace = false
+                    goToCursor()
+                }
             } else if curType == ButtonType.cursor {
                 moveCursorLeft()
             }

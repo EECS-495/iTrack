@@ -9,7 +9,7 @@ import SwiftUI
 import AVFoundation
 
 enum ButtonType {
-    case cover, row , char, space, backspace, confirm, cursor, settingToggle, enterSettings, customPhrase
+    case cover, row , char, space, backspace, confirm, cursor, settingToggle, enterSettings, customPhrase, tutorial, settingTurotial
 }
 
 struct selectedState {
@@ -80,6 +80,8 @@ struct ContentView: View {
                 Spacer()
             } else if state == 5 {
                 CustomPhrasesView(customList: $customPhraseList, content: $content, contentInd: $contentInd, state: $state)
+            } else if state == 6 {
+                TutorialView(selectState: $selectState, queue: $viewModel.queue, value: $viewModel.value, state: $state, rowState: $rowState, prevState: $prevState)
             }
             Spacer()
         }

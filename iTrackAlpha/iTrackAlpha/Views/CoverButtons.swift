@@ -28,21 +28,6 @@ struct CoverButtons: View {
         
     var body: some View {
         VStack{
-            Button(action: {tutorial()}) {
-                Text("?")
-                    .foregroundColor(.black)
-                    .overlay(
-                        Circle()
-                            .stroke(Color.black)
-                            .frame(width: 20, height: 20)
-                    )
-            }
-            .scaleEffect(showHelpButton ? 1 : 0.001)
-            .onReceive(tutorialTimer) {_ in
-                if(state == 0){
-                    showHelpButton = true
-                }
-            }
             Spacer()
             Button(action: {toNextState(buttonID: 0)}){
                 Image("uppercover")
@@ -93,6 +78,23 @@ struct CoverButtons: View {
             }
             Spacer()
             HStack{
+                Button(action: {tutorial()}) {
+                    Text("?")
+                        .foregroundColor(isTutorialHighlighted() ? .blue : .black)
+                        .font(.system(size: isTutorialHighlighted() ? 30 : 20, weight: isTutorialHighlighted() ? .medium : .light))
+                        .overlay(
+                            Circle()
+                                .stroke(isTutorialHighlighted() ? Color.blue : Color.black, lineWidth: isTutorialHighlighted() ? 2.0 : 1.0)
+                                .frame(width: isTutorialHighlighted() ? 30: 20, height: isTutorialHighlighted() ? 30: 20)
+                        )
+                }
+                .scaleEffect(showHelpButton ? 1 : 0.001)
+                .padding()
+                .onReceive(tutorialTimer) {_ in
+                    if(state == 0){
+                        showHelpButton = true
+                    }
+                }
                 Spacer()
                 Button(action: {goToSettings()}){
                    Image(getSettingsImage())
@@ -136,8 +138,14 @@ struct CoverButtons: View {
         state = 5
     }
     
+    private func isTutorialHighlighted() -> Bool {
+        // exists to leave room to expand later if we need to check more conditions than just selectState button type to check if we should highlight the tutorial button
+        return selectState.buttonType == ButtonType.tutorial
+    }
+    
     private func tutorial() {
-        print("tutorial")
+        state = 6
+        // change selectState here if you add buttons within the tutorial later that require eye tracking
     }
     
     private func getSettingsImage() -> String {
@@ -189,6 +197,8 @@ struct CoverButtons: View {
             // go to upper
             goToCover(buttonId: 0)
         } else if curType == ButtonType.enterSettings {
+            goToCover(buttonId: 3)
+        } else if curType == ButtonType.tutorial {
             goToCover(buttonId: 3)
         }
     }
@@ -245,6 +255,8 @@ struct CoverButtons: View {
             else {
                 moveCursorRight()
             }
+        } else if curType == ButtonType.tutorial {
+            goToSettings()
         }
     }
     
@@ -264,12 +276,24 @@ struct CoverButtons: View {
             goToCover(buttonId: 1)
         } else if curType == ButtonType.backspace {
             // go to cursor
-            highlightBackspace = false
-            goToCursor()
+            if content.count > 0 {
+                highlightBackspace = false
+                goToCursor()
+            }
         } else if curType == ButtonType.cursor {
             // call cursorLeft
             moveCursorLeft()
+        } else if curType == ButtonType.enterSettings {
+            // go to enter tutorial button
+            if showHelpButton {
+                highlightTutorial()
+            }
         }
+    }
+    
+    private func highlightTutorial() {
+        selectState.buttonType = ButtonType.tutorial
+        selectState.buttonId = 0
     }
     
     private func goToCursor() {
