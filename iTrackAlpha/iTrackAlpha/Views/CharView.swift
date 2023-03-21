@@ -24,6 +24,8 @@ struct CharView: View {
     @Binding var playSound: Bool
     @State var currentCharId = 0
     @Binding var showConfirmation: Bool
+    @Binding var showSave: Bool
+    @Binding var customList: [CustomPhrase]
     
     var charRows: [CharRow] {
         CharRows.filter { row in
@@ -71,6 +73,11 @@ struct CharView: View {
     private func registerBlink() {
         if selectState.buttonType == ButtonType.backspace {
             deleteChar()
+        } else if selectState.buttonType == ButtonType.addNewPhrase {
+            if playSound {
+                makeSound()
+            }
+            savePhrase()
         } else {
             if showConfirmation {
                 prevState = 2
@@ -126,12 +133,18 @@ struct CharView: View {
         let curType = selectState.buttonType
         let curId = selectState.buttonId
         if curType == ButtonType.char && curId - getFirstChar() == 0 {
-            // go to backspace
-            goToBackspace()
+            if showSave {
+                highlightAddPhrase()
+            } else {
+                // go to backspace
+                goToBackspace()
+            }
         } else if curType == ButtonType.char && curId - getFirstChar() > 0 && curId - getFirstChar() < charRows.count {
             // go to button(id-1)
             goToChar(id: curId-1)
             currentCharId = curId - getFirstChar() - 1
+        } else if curType == ButtonType.addNewPhrase {
+            goToBackspace()
         }
     }
     
@@ -139,17 +152,29 @@ struct CharView: View {
         let curType = selectState.buttonType
         let curId = selectState.buttonId
         if curType == ButtonType.backspace {
-            // go to button(0)
-            goToChar(id: getFirstChar())
             highlightBackspace = false
-            currentCharId = 0
+            if showSave {
+                highlightAddPhrase()
+            } else {
+                // go to button(0)
+                goToChar(id: getFirstChar())
+                currentCharId = 0
+            }
         } else if curType == ButtonType.char && curId - getFirstChar() < charRows.count - 1 {
             // go to button(id + 1
             goToChar(id: curId + 1)
             currentCharId = curId - getFirstChar() + 1
         } else if curType == ButtonType.cursor {
-            goToChar(id: getFirstChar())
             highlightCursor = false
+            if showSave {
+                highlightAddPhrase()
+            } else {
+                goToChar(id: getFirstChar())
+                currentCharId = 0
+            }
+        } else if curType == ButtonType.addNewPhrase {
+            goToChar(id: getFirstChar())
+            currentCharId = 0
         }
     }
     
@@ -363,7 +388,21 @@ struct CharView: View {
         }
     }
     
+    private func savePhrase() {
+        let newId = customList.count
+        customList.append(CustomPhrase(id: newId, content: self.content))
+        showSave = false
+        content = ""
+        selectState.buttonType = ButtonType.customPhrase
+        selectState.buttonId = 0
+        state = 5
+    }
     
+    private func highlightAddPhrase() {
+        selectState.buttonId = 0
+        selectState.buttonType = ButtonType.addNewPhrase
+        selectState.clickState = 1
+    }
     
 }
 
@@ -371,7 +410,6 @@ struct CharView_Previews: PreviewProvider {
     static var tempSelect = selectedState(buttonType: ButtonType.cover, buttonId: 0, clickState: 0, isNo: false)
     
     static var previews: some View {
-        CharView(state: .constant(2), rowState: .constant(0), charState: .constant(0), content: .constant(""), contentInd: .constant(0), prevState: .constant(2), selectState: .constant(tempSelect), highlightBackspace: .constant(false), queue: .constant([]), value: .constant(0), highlightCursor: .constant(false), playSound: .constant(true), currentCharId: 0, showConfirmation: .constant(true))
+        CharView(state: .constant(2), rowState: .constant(0), charState: .constant(0), content: .constant(""), contentInd: .constant(0), prevState: .constant(2), selectState: .constant(tempSelect), highlightBackspace: .constant(false), queue: .constant([]), value: .constant(0), highlightCursor: .constant(false), playSound: .constant(true), currentCharId: 0, showConfirmation: .constant(true), showSave: .constant(false), customList: .constant([]))
     }
 }
-

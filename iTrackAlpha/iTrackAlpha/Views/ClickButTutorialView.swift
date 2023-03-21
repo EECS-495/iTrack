@@ -20,6 +20,7 @@ struct ClickButTutorialView: View {
             Text("When a button is highlighted with a blue border, as shown in the picture above, blink to click the button like how touch activates typical screen buttons")
                 .padding([.leading, .trailing], 20)
                 .padding(.top, 0.1)
+                .foregroundColor(.black)
             
         }
     }

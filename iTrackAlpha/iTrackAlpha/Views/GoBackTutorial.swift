@@ -21,6 +21,7 @@ struct GoBackTutorial: View {
                 .padding([.top], 0.1)
                 .padding([.leading], 17)
                 .padding([.trailing], 17)
+                .foregroundColor(.black)
         }
     }
 }

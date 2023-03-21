@@ -202,7 +202,7 @@ struct SettingsView: View {
     private func goUp() {
         let curType = selectState.buttonType
         let curId = selectState.buttonId
-        if (curType == ButtonType.settingToggle || curType == ButtonType.settingTurotial) && curId > 0{
+        if (curType == ButtonType.settingToggle || curType == ButtonType.settingTutorial) && curId > 0{
             selectState.buttonId = curId - 1
         }
     }
@@ -210,7 +210,7 @@ struct SettingsView: View {
     private func goDown() {
         let curType = selectState.buttonType
         let curId = selectState.buttonId
-        if (curType == ButtonType.settingToggle || curType == ButtonType.settingTurotial) && curId < 3{
+        if (curType == ButtonType.settingToggle || curType == ButtonType.settingTutorial) && curId < 3{
             selectState.buttonId = curId + 1
         }
     }
@@ -221,7 +221,7 @@ struct SettingsView: View {
             selectState.buttonId = 0
             selectState.buttonType = ButtonType.cover
             state = 0
-        } else if curType == ButtonType.settingTurotial {
+        } else if curType == ButtonType.settingTutorial {
             selectState.buttonType = ButtonType.settingToggle
         }
     }
@@ -229,7 +229,7 @@ struct SettingsView: View {
     private func goRight() {
         let curType = selectState.buttonType
         if curType == ButtonType.settingToggle {
-            selectState.buttonType = ButtonType.settingTurotial
+            selectState.buttonType = ButtonType.settingTutorial
         }
     }
     
@@ -272,7 +272,7 @@ struct SettingsView: View {
                     showConfirmationScreen = true
                 }
             }
-        } else if curType == ButtonType.settingTurotial {
+        } else if curType == ButtonType.settingTutorial {
             // call tutorial func to change bools to achieve lift off
             tutorial(buttonId: curId)
         }
@@ -309,7 +309,7 @@ struct SettingsView: View {
     }
     
     private func isTutorialSelected(buttonId: Int) -> Bool{
-        if selectState.buttonType == ButtonType.settingTurotial {
+        if selectState.buttonType == ButtonType.settingTutorial {
             if buttonId == selectState.buttonId {
                 return true
             } else {

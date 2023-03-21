@@ -25,6 +25,8 @@ struct CoverButtons: View {
     @Binding var highlightCursor: Bool
     @Binding var playSound: Bool
     @Binding var showConfirmation: Bool
+    @Binding var showSave: Bool
+    @Binding var customList: [CustomPhrase]
         
     var body: some View {
         VStack{
@@ -75,6 +77,11 @@ struct CoverButtons: View {
             Spacer()
             Button(action: {goToCustomPhrases()}){
                 Text("Custom Phrases")
+                    .frame(width: widthDim(), height: heightDim())
+                    .foregroundColor(.black)
+                    .background(Color(red: 0.83, green: 0.83, blue: 0.83))
+                    .border(.blue, width: addBorder(buttonType: ButtonType.enterPhrases, buttonId: 0))
+                    .cornerRadius(8)
             }
             Spacer()
             HStack{
@@ -119,9 +126,37 @@ struct CoverButtons: View {
         }
     }
     
+    private func widthDim() -> CGFloat {
+        if selectState.buttonType == ButtonType.enterPhrases {
+            return 160
+        } else {
+            return 140
+        }
+    }
+    
+    private func heightDim() -> CGFloat {
+        if selectState.buttonType == ButtonType.enterPhrases {
+            return 65
+        } else {
+            return 45
+        }
+    }
+    
     private func highlightSettings() {
         selectState.buttonId = 0
         selectState.buttonType = ButtonType.enterSettings
+    }
+    
+    private func highlightCustomPhrase() {
+        selectState.buttonId = 0
+        selectState.buttonType = ButtonType.enterPhrases
+        selectState.clickState = 1
+    }
+    
+    private func highlightAddPhrase() {
+        selectState.buttonId = 0
+        selectState.buttonType = ButtonType.addNewPhrase
+        selectState.clickState = 1
     }
     
     private func goToSettings() {
@@ -135,6 +170,7 @@ struct CoverButtons: View {
     private func goToCustomPhrases() {
         selectState.buttonType = ButtonType.customPhrase
         selectState.buttonId = 0
+        selectState.clickState = 0
         state = 5
     }
     
@@ -185,7 +221,11 @@ struct CoverButtons: View {
         let curId = selectState.buttonId
         if curType == ButtonType.cover {
             if curId == 0 {
-                goToBackspace()
+                if showSave {
+                    highlightAddPhrase()
+                } else {
+                    goToBackspace()
+                }
             } else if curId == 1 || curId == 2 {
                 // go to upper
                 goToCover(buttonId: 0)
@@ -197,9 +237,13 @@ struct CoverButtons: View {
             // go to upper
             goToCover(buttonId: 0)
         } else if curType == ButtonType.enterSettings {
+            highlightCustomPhrase()
+        } else if curType == ButtonType.enterPhrases {
             goToCover(buttonId: 3)
         } else if curType == ButtonType.tutorial {
             goToCover(buttonId: 3)
+        } else if curType == ButtonType.addNewPhrase {
+            goToBackspace()
         }
     }
     
@@ -215,7 +259,8 @@ struct CoverButtons: View {
                 goToCover(buttonId: 3)
             } else if curId == 3 {
                 // go to settings cover
-                highlightSettings()
+                // highlightSettings()
+                highlightCustomPhrase()
             }
         } else if curType == ButtonType.space {
             // go to lower
@@ -223,9 +268,22 @@ struct CoverButtons: View {
         } else if curType == ButtonType.backspace {
             //go to upper
             highlightBackspace = false
-            goToCover(buttonId: 0)
+            if showSave {
+                highlightAddPhrase()
+            } else {
+                goToCover(buttonId: 0)
+            }
         } else if curType == ButtonType.cursor {
             // go to upper
+            highlightCursor = false
+            if showSave {
+                highlightAddPhrase()
+            } else {
+                goToCover(buttonId: 0)
+            }
+        } else if curType == ButtonType.enterPhrases {
+            highlightSettings()
+        } else if curType == ButtonType.addNewPhrase {
             highlightCursor = false
             goToCover(buttonId: 0)
         }
@@ -336,6 +394,7 @@ struct CoverButtons: View {
     
     
     private func registerBlink() {
+        makeSound()
         if selectState.buttonType == ButtonType.space {
             if playSound {
                 makeSound()
@@ -367,7 +426,19 @@ struct CoverButtons: View {
                 makeSound()
             }
             goToSettings()
-        } else {
+        } else if selectState.buttonType == ButtonType.enterPhrases {
+            if playSound {
+                makeSound()
+            }
+            goToCustomPhrases()
+        } else if selectState.buttonType == ButtonType.addNewPhrase {
+            if playSound {
+                makeSound()
+            }
+            savePhrase()
+        } else if selectState.buttonType == ButtonType.tutorial {
+            tutorial()
+        } else if selectState.buttonType == ButtonType.cover {
             // cover was selected
             if showConfirmation {
                 state = 4
@@ -515,6 +586,16 @@ struct CoverButtons: View {
         // tells backspace another button has been pushed
         highlightBackspace = false
     }
+    
+    private func savePhrase() {
+        let newId = customList.count
+        customList.append(CustomPhrase(id: newId, content: self.content))
+        showSave = false
+        content = ""
+        selectState.buttonType = ButtonType.customPhrase
+        selectState.buttonId = 0
+        state = 5
+    }
 }
 
 struct CoverButtons_Previews: PreviewProvider {
@@ -524,6 +605,6 @@ struct CoverButtons_Previews: PreviewProvider {
     
     static var previews: some View {
         
-        CoverButtons(state: .constant(0), rowState: .constant(0), content: .constant(""), contentInd: .constant(0), prevState: .constant(0), selectState: .constant(tempSelect), highlightBackspace: .constant(false), queue: .constant([]), value: .constant(0), showHelpButton: .constant(false), highlightCursor: .constant(false), playSound: .constant(true), showConfirmation: .constant(true))
+        CoverButtons(state: .constant(0), rowState: .constant(0), content: .constant(""), contentInd: .constant(0), prevState: .constant(0), selectState: .constant(tempSelect), highlightBackspace: .constant(false), queue: .constant([]), value: .constant(0), showHelpButton: .constant(false), highlightCursor: .constant(false), playSound: .constant(true), showConfirmation: .constant(true), showSave: .constant(false), customList: .constant([]))
     }
 }

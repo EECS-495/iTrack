@@ -23,6 +23,8 @@ struct RowsView: View {
     @Binding var highlightCursor: Bool
     @Binding var playSound: Bool
     @Binding var showConfirmation: Bool
+    @Binding var showSave: Bool
+    @Binding var customList: [CustomPhrase]
     
     var rows: [Row] {
         Rows.filter { row in
@@ -67,6 +69,11 @@ struct RowsView: View {
     private func registerBlink() {
         if selectState.buttonType == ButtonType.backspace {
             deleteChar()
+        } else if selectState.buttonType == ButtonType.addNewPhrase {
+            if playSound {
+                makeSound()
+            }
+            savePhrase()
         } else {
             // button type is row
             if showConfirmation {
@@ -103,11 +110,18 @@ struct RowsView: View {
         let curType = selectState.buttonType
         let curId = selectState.buttonId
         if curType == ButtonType.row && curId - getFirstRow() == 0 {
-            // go to backspace
-            goToBackspace()
+            if showSave {
+                // go to add phrase
+                highlightAddPhrase()
+            } else {
+                // go to backspace
+                goToBackspace()
+            }
         } else if curType == ButtonType.row && curId - getFirstRow() > 0 && curId - getFirstRow() < rows.count {
             // go to button(id-1)
             goToRow(id: curId-1)
+        } else if curType == ButtonType.addNewPhrase {
+            goToBackspace()
         }
     }
     
@@ -115,14 +129,24 @@ struct RowsView: View {
         let curType = selectState.buttonType
         let curId = selectState.buttonId
         if curType == ButtonType.backspace {
-            // go to button(0)
-            goToRow(id: getFirstRow())
             highlightBackspace = false
+            if showSave {
+                highlightAddPhrase()
+            } else {
+                // go to button(0)
+                goToRow(id: getFirstRow())
+            }
         } else if curType == ButtonType.row && curId - getFirstRow() < rows.count - 1 {
             // go to button(id + 1
             goToRow(id: curId + 1)
         } else if curType == ButtonType.cursor {
             highlightCursor = false
+            if showSave {
+                highlightAddPhrase()
+            } else {
+                goToRow(id: getFirstRow())
+            }
+        } else if curType == ButtonType.addNewPhrase {
             goToRow(id: getFirstRow())
         }
     }
@@ -337,12 +361,27 @@ struct RowsView: View {
         
     }
     
+    private func highlightAddPhrase() {
+        selectState.buttonId = 0
+        selectState.buttonType = ButtonType.addNewPhrase
+        selectState.clickState = 1
+    }
+    
+    private func savePhrase() {
+        let newId = customList.count
+        customList.append(CustomPhrase(id: newId, content: self.content))
+        showSave = false
+        content = ""
+        selectState.buttonType = ButtonType.customPhrase
+        selectState.buttonId = 0
+        state = 5
+    }
 }
 
 struct RowsView_Previews: PreviewProvider {
     static var tempSelect = selectedState(buttonType: ButtonType.cover, buttonId: 0, clickState: 0, isNo: false)
     
     static var previews: some View {
-        RowsView(state: .constant(2), rowState: .constant(0), charState: .constant(0), prevState: .constant(1), selectState: .constant(tempSelect), highlightBackspace: .constant(false), queue: .constant([]), value: .constant(0), content: .constant(""), contentInd: .constant(0), highlightCursor: .constant(false), playSound: .constant(true), showConfirmation: .constant(true))
+        RowsView(state: .constant(2), rowState: .constant(0), charState: .constant(0), prevState: .constant(1), selectState: .constant(tempSelect), highlightBackspace: .constant(false), queue: .constant([]), value: .constant(0), content: .constant(""), contentInd: .constant(0), highlightCursor: .constant(false), playSound: .constant(true), showConfirmation: .constant(true), showSave: .constant(false), customList: .constant([]))
     }
 }

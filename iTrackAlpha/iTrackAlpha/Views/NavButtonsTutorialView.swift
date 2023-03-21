@@ -20,6 +20,7 @@ struct NavButtonsTutorialView: View {
             Text("Looking up, down, left, or right will change the button on the screen that is being \"hovered over\". The button that is currently selected will be highlighted with a blue border, as shown below")
                 .padding([.leading, .trailing], 17)
                 .padding(.top, 0.1)
+                .foregroundColor(.black)
             HStack{
                 Text("A")
                     .frame(width: 50, height: 50)
