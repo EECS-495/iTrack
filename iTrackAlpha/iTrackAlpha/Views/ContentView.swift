@@ -9,7 +9,7 @@ import SwiftUI
 import AVFoundation
 
 enum ButtonType {
-    case cover, row , char, space, backspace, confirm, cursor, settingToggle, enterSettings, customPhrase
+    case cover, row , char, space, backspace, confirm, cursor, settingToggle, enterSettings, customPhrase, enterPhrases, addNewPhrase
 }
 
 struct selectedState {
@@ -41,11 +41,13 @@ struct ContentView: View {
     @State var rowState: Int = 0
     @State var charState: Int = 0
     @State var prevState: Int = 0
+    @State var customState: String = ""
     @State var selectState: selectedState = selectedState(buttonType: ButtonType.cover, buttonId: 0, clickState: 1, isNo: false)
     @State var showHelpButton: Bool = false
     @State var highlightBackspace: Bool = false
     @State var highlightCursor: Bool = false
     @State var customPhraseList: [CustomPhrase] = [CustomPhrase(id: 0, content: "Hello!")]
+    @State var showSave: Bool = false
     @ObservedObject var customizations: CustomizationObject
     var longDelay: CGFloat = 2.0
     var shortDelay: CGFloat = 1.0
@@ -65,21 +67,31 @@ struct ContentView: View {
                             .padding()
                     }
                 }
+                if showSave {
+                    Button(action: {savePhrase()}) {
+                        Text("Save Custom text")
+                            .frame(width: newWidthDim(), height: newHeightDim())
+                            .foregroundColor(.black)
+                            .background(Color(red: 0.83, green: 0.83, blue: 0.83))
+                            .border(.blue, width: addBorder(buttonType: ButtonType.addNewPhrase))
+                            .cornerRadius(8)
+                    }
+                }
                 Spacer()
             }
             if state == 0{
-                CoverButtons(state: $state, rowState: $rowState, content: $content, contentInd: $contentInd, prevState: $prevState, selectState: $selectState, highlightBackspace: $highlightBackspace, queue: $viewModel.queue, value: $viewModel.value, showHelpButton: $showHelpButton, highlightCursor: $highlightCursor, playSound: $customizations.playSound, showConfirmation: $customizations.showConfirmationScreen)
+                CoverButtons(state: $state, rowState: $rowState, content: $content, contentInd: $contentInd, prevState: $prevState, selectState: $selectState, highlightBackspace: $highlightBackspace, queue: $viewModel.queue, value: $viewModel.value, showHelpButton: $showHelpButton, highlightCursor: $highlightCursor, playSound: $customizations.playSound, showConfirmation: $customizations.showConfirmationScreen, showSave: $showSave, customList: $customPhraseList)
             } else if state == 1{
-                RowsView(state: $state, rowState: $rowState, charState: $charState, prevState: $prevState, selectState: $selectState, highlightBackspace: $highlightBackspace, queue: $viewModel.queue, value: $viewModel.value, content: $content, contentInd: $contentInd, highlightCursor: $highlightCursor, playSound: $customizations.playSound, showConfirmation: $customizations.showConfirmationScreen)
+                RowsView(state: $state, rowState: $rowState, charState: $charState, prevState: $prevState, selectState: $selectState, highlightBackspace: $highlightBackspace, queue: $viewModel.queue, value: $viewModel.value, content: $content, contentInd: $contentInd, highlightCursor: $highlightCursor, playSound: $customizations.playSound, showConfirmation: $customizations.showConfirmationScreen, showSave: $showSave, customList: $customPhraseList)
             } else if state == 2 {
-                CharView(state: $state, rowState: $rowState, charState: $charState, content: $content, contentInd: $contentInd, prevState: $prevState, selectState: $selectState, highlightBackspace: $highlightBackspace, queue: $viewModel.queue, value: $viewModel.value, highlightCursor: $highlightCursor, playSound: $customizations.playSound, currentCharId: 0, showConfirmation: $customizations.showConfirmationScreen)
+                CharView(state: $state, rowState: $rowState, charState: $charState, content: $content, contentInd: $contentInd, prevState: $prevState, selectState: $selectState, highlightBackspace: $highlightBackspace, queue: $viewModel.queue, value: $viewModel.value, highlightCursor: $highlightCursor, playSound: $customizations.playSound, currentCharId: 0, showConfirmation: $customizations.showConfirmationScreen, showSave: $showSave, customList: $customPhraseList)
             } else if state == 3 {
                 SettingsView(longerBlinkDelay: $customizations.longerBlinkDelay, longerGazeDelay: $customizations.longerGazeDelay, playSound: $customizations.playSound, showConfirmationScreen: $customizations.showConfirmationScreen, selectState: $selectState, queue: $viewModel.queue, value: $viewModel.value, state: $state)
             } else if state == 4 {
-                ConfirmationPopup(state: $state, rowState: $rowState, charState: $charState, prevState: $prevState, selectState: $selectState, content: $content, contentInd: $contentInd, queue: $viewModel.queue, value: $viewModel.value, highlightBackspace: $highlightBackspace, highlightCursor: $highlightCursor, playSound: $customizations.playSound)
+                ConfirmationPopup(state: $state, rowState: $rowState, charState: $charState, prevState: $prevState, selectState: $selectState, content: $content, contentInd: $contentInd, queue: $viewModel.queue, value: $viewModel.value, highlightBackspace: $highlightBackspace, highlightCursor: $highlightCursor, playSound: $customizations.playSound, customState: $customState)
                 Spacer()
             } else if state == 5 {
-                CustomPhrasesView(customList: $customPhraseList, content: $content, contentInd: $contentInd, state: $state)
+                CustomPhrasesView(customList: $customPhraseList, content: $content, contentInd: $contentInd, state: $state, showSave: $showSave, queue: $viewModel.queue, value: $viewModel.value, selectState: $selectState, highlightBackspace: $highlightBackspace, highlightCursor: $highlightCursor, prevState: $prevState, showConfirmation: $customizations.showConfirmationScreen, customState: $customState)
             }
             Spacer()
         }
@@ -89,6 +101,20 @@ struct ContentView: View {
             }
         }
         .background(Color.white)
+    }
+    
+    private func registerBlinkContent() {
+        if selectState.buttonType == ButtonType.addNewPhrase && showSave {
+            savePhrase()
+        }
+    }
+    
+    private func addBorder(buttonType: ButtonType) -> CGFloat {
+        if selectState.buttonType == ButtonType.addNewPhrase && showSave {
+            return 3.0
+        } else {
+            return 0.0
+        }
     }
     
     private func makeSound() {
@@ -184,6 +210,30 @@ struct ContentView: View {
             return 40
         } else {
             return 30
+        }
+    }
+    
+    private func savePhrase() {
+        let newId = customPhraseList.count
+        customPhraseList.append(CustomPhrase(id: newId, content: self.content))
+        showSave = false
+        content = ""
+        state = 5
+    }
+    
+    private func newWidthDim() -> CGFloat {
+        if selectState.buttonType == ButtonType.addNewPhrase && showSave{
+            return 160
+        } else {
+            return 140
+        }
+    }
+    
+    private func newHeightDim() -> CGFloat {
+        if selectState.buttonType == ButtonType.addNewPhrase && showSave {
+            return 65
+        } else {
+            return 45
         }
     }
 

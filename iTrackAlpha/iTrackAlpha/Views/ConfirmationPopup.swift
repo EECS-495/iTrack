@@ -22,6 +22,7 @@ struct ConfirmationPopup: View {
     @Binding var highlightBackspace: Bool
     @Binding var highlightCursor: Bool
     @Binding var playSound: Bool
+    @Binding var customState: String
         
     
     var body: some View {
@@ -36,6 +37,9 @@ struct ConfirmationPopup: View {
                     .foregroundColor(.black)
             } else if prevState == 2 {
                 Text(charConfirmText())
+                    .foregroundColor(.black)
+            } else if prevState == 5 {
+                Text(customPhraseText())
                     .foregroundColor(.black)
             }
             
@@ -247,6 +251,31 @@ struct ConfirmationPopup: View {
             selectState.clickState = 1
             selectState.buttonType = ButtonType.row
             selectState.buttonId = getFirstRow()
+        } else if prevState == 5 {
+            var count: Int = 0
+            var content1: String = ""
+            var content2: String = ""
+            for char in Array(content) {
+                if count >= contentInd {
+                    break
+                }
+                content1 = content1 + String(char)
+                count = count + 1
+            }
+            count = 0
+            for char in Array(content) {
+                if count >= contentInd {
+                    content2 = content2 + String(char)
+                }
+                count = count + 1
+            }
+            content = content1 + customState + content2
+            contentInd = contentInd + customState.count
+            
+            selectState.clickState = 1
+            selectState.buttonType = ButtonType.cover
+            selectState.buttonId = 0
+            state = 0
         }
     }
     
@@ -261,6 +290,9 @@ struct ConfirmationPopup: View {
         } else if prevState == 2 {
             selectState.buttonType = ButtonType.char
             selectState.buttonId = getFirstChar()
+        } else if prevState == 5 {
+            selectState.buttonType = ButtonType.customPhrase
+            selectState.buttonId = 0
         }
 //        if selectState.buttonType == ButtonType.cover {
 //            state = 0
@@ -361,12 +393,16 @@ struct ConfirmationPopup: View {
         }
         return "Did you mean to select: \(type)"
     }
+    
+    private func customPhraseText() -> String {
+        return "Did you mean to select: \(customState)"
+    }
 }
 
 struct ConfirmationPopup_Previews: PreviewProvider {
     static var tempSelect = selectedState(buttonType: ButtonType.cover, buttonId: 0, clickState: 0, isNo: false)
     
     static var previews: some View {
-        ConfirmationPopup(state: .constant(1), rowState: .constant(1), charState: .constant(0), prevState: .constant(0), selectState: .constant(tempSelect), content: .constant(""), contentInd: .constant(0), queue: .constant([]), value: .constant(0), highlightBackspace: .constant(false), highlightCursor: .constant(false), playSound: .constant(true))
+        ConfirmationPopup(state: .constant(1), rowState: .constant(1), charState: .constant(0), prevState: .constant(0), selectState: .constant(tempSelect), content: .constant(""), contentInd: .constant(0), queue: .constant([]), value: .constant(0), highlightBackspace: .constant(false), highlightCursor: .constant(false), playSound: .constant(true), customState: .constant(""))
     }
 }
