@@ -25,155 +25,18 @@ struct SettingsView: View {
     @State var showGazeDelayTut: Bool = false
     @State var showSoundTut: Bool = false
     @State var showConfirmationTut: Bool = false
+    @State var reload: Int = 0
     
     var body: some View {
         VStack{
+            Text("Settings")
+                .foregroundColor(.blue)
+                .font(.title)
             Spacer()
-            HStack{
-                Text("Extend Blink Delay")
-                    .foregroundColor(.black)
-                    .padding([.trailing, .leading])
-                Spacer()
-                Toggle(isOn: $longerBlinkDelay, label: {Text("")})
-                    .labelsHidden()
-                    .toggleStyle(SwitchToggleStyle(tint: .blue))
-                    .frame(width: 60, height: 50)
-                    .border(.blue, width: addBorder(buttonId: 0))
-                    .padding([.leading, .trailing])
-                Button(action: {tutorial(buttonId: 0)}) {
-                    Text("?")
-                        .foregroundColor(isTutorialSelected(buttonId: 0) ? .blue : .black)
-                        .overlay(
-                            Circle()
-                                .stroke(isTutorialSelected(buttonId: 0) ? Color.blue : Color.black)
-                                .frame(width: 20, height: 20)
-                        )
-                }
-                .padding([.trailing])
-                .scaleEffect(isTutorialSelected(buttonId: 0) ? 1.4 : 1.0)
-
-
-            }
-            .onChange(of: longerBlinkDelay) { _ in
-                if longerBlinkDelay {
-                    longerBlinkDelay = true
-                } else {
-                    longerBlinkDelay = false
-                }
-            }
-            if showBlinkDelayTut {
-                Text("Extending the blink delay will increase the amount of time a user's eyes will need to be closed for a blink to be registered")
-                    .foregroundColor(.blue)
-                    .padding([.leading, .trailing])
-            }
-            HStack{
-                Text("Extend Gaze Delay")
-                    .foregroundColor(.black)
-                    .padding([.trailing, .leading])
-                Spacer()
-                Toggle(isOn: $longerGazeDelay, label: {Text("")})
-                    .labelsHidden()
-                    .toggleStyle(SwitchToggleStyle(tint: .blue))
-                    .frame(width: 60, height: 50)
-                    .border(.blue, width: addBorder(buttonId: 1))
-                    .padding([.leading, .trailing])
-                Button(action: {tutorial(buttonId: 1)}) {
-                    Text("?")
-                        .foregroundColor(isTutorialSelected(buttonId: 1) ? .blue : .black)
-                        .overlay(
-                            Circle()
-                                .stroke(isTutorialSelected(buttonId: 1) ? .blue : .black)
-                                .frame(width: 20, height: 20)
-                        )
-                }
-                .padding([.trailing])
-                .scaleEffect(isTutorialSelected(buttonId: 1) ? 1.4 : 1.0)
-
-            }
-            .onChange(of: longerGazeDelay) { _ in
-                if longerGazeDelay {
-                    longerGazeDelay = true
-                } else {
-                    longerGazeDelay = false
-                }
-            }
-            if showGazeDelayTut {
-                Text("Extending the gaze delay will increase the amount of time a user's eyes will need to look in a direction for a change in gaze direction to be registered")
-                    .foregroundColor(.blue)
-                    .padding([.leading, .trailing])
-            }
-            HStack{
-                Text("Play Sound on Blink")
-                    .foregroundColor(.black)
-                    .padding([.leading, .trailing])
-                Spacer()
-                Toggle(isOn: $playSound, label: {Text("")})
-                    .labelsHidden()
-                    .toggleStyle(SwitchToggleStyle(tint: .blue))
-                    .frame(width: 60, height: 50)
-                    .border(.blue, width: addBorder(buttonId: 2))
-                    .padding([.leading, .trailing])
-                Button(action: {tutorial(buttonId: 2)}) {
-                    Text("?")
-                        .foregroundColor(isTutorialSelected(buttonId: 2) ? .blue : .black)
-                        .overlay(
-                            Circle()
-                                .stroke(isTutorialSelected(buttonId: 2) ? .blue : .black)
-                                .frame(width: 20, height: 20)
-                        )
-                }
-                .padding([.trailing])
-                .scaleEffect(isTutorialSelected(buttonId: 2) ? 1.4 : 1.0)
-
-            }
-            .onChange(of: playSound) { _ in
-                if playSound {
-                    playSound = true
-                } else {
-                    playSound = false
-                }
-            }
-            if showSoundTut {
-                Text("Enabling this will cause a sound to play when a blink or action that changes the contents of the screen is registered")
-                    .foregroundColor(.blue)
-                    .padding([.leading, .trailing])
-            }
-            HStack{
-                Text("Show Confirmation Screen")
-                    .foregroundColor(.black)
-                    .padding([.leading, .trailing])
-                Spacer()
-                Toggle("", isOn: $showConfirmationScreen)
-                    .labelsHidden()
-                    .toggleStyle(SwitchToggleStyle(tint: .blue))
-                    .frame(width: 60, height: 50)
-                    .border(.blue, width: addBorder(buttonId: 3))
-                    .padding([.leading, .trailing])
-                Button(action: {tutorial(buttonId: 3)}) {
-                    Text("?")
-                        .foregroundColor(isTutorialSelected(buttonId: 3) ? .blue : .black)
-                        .overlay(
-                            Circle()
-                                .stroke(isTutorialSelected(buttonId: 3) ? .blue : .black)
-                                .frame(width: 20, height: 20)
-                        )
-                }
-                .padding([.trailing])
-                .scaleEffect(isTutorialSelected(buttonId: 3) ? 1.4 : 1.0)
-
-            }
-            .onChange(of: showConfirmationScreen) { _ in
-                if showConfirmationScreen {
-                    showConfirmationScreen = true
-                } else {
-                    showConfirmationScreen = false
-                }
-            }
-            if showConfirmationTut{
-                Text("Enabling this will add an extra, confirmation step in between navigating to new screens and typing characters")
-                    .foregroundColor(.blue)
-                    .padding([.leading, .trailing])
-            }
+            ExtendBlinkSettingsView(longerBlinkDelay: $longerBlinkDelay, selectState: $selectState, showBlinkDelayTut: $showBlinkDelayTut)
+            ExtendGazeSettingsView(longerGazeDelay: $longerGazeDelay, selectState: $selectState, showGazeDelayTut: $showGazeDelayTut)
+            PlaySoundSettingsView(playSound: $playSound, selectState: $selectState, showSoundTut: $showSoundTut)
+            ShowConfirmSettingsView(showConfirmationScreen: $showConfirmationScreen, selectState: $selectState, showConfirmationTut: $showConfirmationTut)
             Spacer()
         }
         .modifier(GestureSwipeRight(state: $state, selectState: $selectState, prevState: $prevState, rowState: $rowState))
@@ -287,6 +150,9 @@ struct SettingsView: View {
             }
         } else if curType == ButtonType.settingTutorial {
             // call tutorial func to change bools to achieve lift off
+            if playSound {
+                makeSound()
+            }
             tutorial(buttonId: curId)
         }
     }
@@ -359,14 +225,6 @@ struct SettingsView: View {
             return 3.0
         } else {
             return 0
-        }
-    }
-    
-    private func changeGaze(isLarge: Bool) {
-        if isLarge {
-            longerGazeDelay = true
-        } else {
-            longerGazeDelay = false
         }
     }
 }
