@@ -26,6 +26,7 @@ struct CharView: View {
     @Binding var showConfirmation: Bool
     @Binding var showSave: Bool
     @Binding var customList: [CustomPhrase]
+    @Binding var nextStateId: Int
     
     var charRows: [CharRow] {
         CharRows.filter { row in
@@ -78,10 +79,11 @@ struct CharView: View {
                 makeSound()
             }
             savePhrase()
-        } else {
+        } else if selectState.buttonType == ButtonType.char {
             if showConfirmation {
                 prevState = 2
                 state = 4
+                nextStateId = 1
                 selectState.clickState = 1
                 selectState.buttonType = ButtonType.confirm
                 selectState.isNo = false
@@ -332,6 +334,7 @@ struct CharView: View {
             if selectState.buttonType == ButtonType.char && selectState.buttonId == character.id {
                 if showConfirmation {
                     prevState = 2
+                    nextStateId = 1
                     state = 4
                     selectState.clickState = 0
                 } else {
@@ -410,6 +413,6 @@ struct CharView_Previews: PreviewProvider {
     static var tempSelect = selectedState(buttonType: ButtonType.cover, buttonId: 0, clickState: 0, isNo: false)
     
     static var previews: some View {
-        CharView(state: .constant(2), rowState: .constant(0), charState: .constant(0), content: .constant(""), contentInd: .constant(0), prevState: .constant(2), selectState: .constant(tempSelect), highlightBackspace: .constant(false), queue: .constant([]), value: .constant(0), highlightCursor: .constant(false), playSound: .constant(true), currentCharId: 0, showConfirmation: .constant(true), showSave: .constant(false), customList: .constant([]))
+        CharView(state: .constant(2), rowState: .constant(0), charState: .constant(0), content: .constant(""), contentInd: .constant(0), prevState: .constant(2), selectState: .constant(tempSelect), highlightBackspace: .constant(false), queue: .constant([]), value: .constant(0), highlightCursor: .constant(false), playSound: .constant(true), currentCharId: 0, showConfirmation: .constant(true), showSave: .constant(false), customList: .constant([]), nextStateId: .constant(0))
     }
 }

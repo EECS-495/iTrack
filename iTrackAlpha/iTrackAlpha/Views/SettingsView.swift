@@ -17,6 +17,9 @@ struct SettingsView: View {
     @Binding var queue: [Action]
     @Binding var value: Int
     @Binding var state: Int
+    @Binding var nextStateId: Int
+    @Binding var prevState: Int
+    @Binding var rowState: Int // for swipe right
     @State var audioPlayer: AVAudioPlayer!
     @State var showBlinkDelayTut: Bool = false
     @State var showGazeDelayTut: Bool = false
@@ -59,7 +62,7 @@ struct SettingsView: View {
                 }
             }
             if showBlinkDelayTut {
-                Text("blink delay tutorial")
+                Text("Extending the blink delay will increase the amount of time a user's eyes will need to be closed for a blink to be registered")
                     .foregroundColor(.blue)
                     .padding([.leading, .trailing])
             }
@@ -95,7 +98,7 @@ struct SettingsView: View {
                 }
             }
             if showGazeDelayTut {
-                Text("gaze delay tutorial")
+                Text("Extending the gaze delay will increase the amount of time a user's eyes will need to look in a direction for a change in gaze direction to be registered")
                     .foregroundColor(.blue)
                     .padding([.leading, .trailing])
             }
@@ -131,7 +134,7 @@ struct SettingsView: View {
                 }
             }
             if showSoundTut {
-                Text("play sound tutorial")
+                Text("Enabling this will cause a sound to play when a blink or action that changes the contents of the screen is registered")
                     .foregroundColor(.blue)
                     .padding([.leading, .trailing])
             }
@@ -167,12 +170,13 @@ struct SettingsView: View {
                 }
             }
             if showConfirmationTut{
-                Text("confirmation screen tutorial")
+                Text("Enabling this will add an extra, confirmation step in between navigating to new screens and typing characters")
                     .foregroundColor(.blue)
                     .padding([.leading, .trailing])
             }
             Spacer()
         }
+        .modifier(GestureSwipeRight(state: $state, selectState: $selectState, prevState: $prevState, rowState: $rowState))
         .onChange(of: value ) { _ in
             if !queue.isEmpty {
                 let action = queue.first!.actionType
@@ -218,9 +222,18 @@ struct SettingsView: View {
     private func goLeft() {
         let curType = selectState.buttonType
         if curType == ButtonType.settingToggle {
-            selectState.buttonId = 0
-            selectState.buttonType = ButtonType.cover
-            state = 0
+            if showConfirmationScreen {
+                state = 4
+                selectState.buttonType = ButtonType.confirm
+                selectState.buttonId = 0
+                selectState.isNo = false
+                prevState = 3
+                nextStateId = 0
+            } else {
+                selectState.buttonId = 0
+                selectState.buttonType = ButtonType.cover
+                state = 0
+            }
         } else if curType == ButtonType.settingTutorial {
             selectState.buttonType = ButtonType.settingToggle
         }
@@ -362,6 +375,6 @@ struct SettingsView_Previews: PreviewProvider {
     static var tempSelect = selectedState(buttonType: ButtonType.settingToggle, buttonId: 0, clickState: 1, isNo: false)
     
     static var previews: some View {
-        SettingsView(longerBlinkDelay: .constant(false), longerGazeDelay: .constant(false), playSound: .constant(true), showConfirmationScreen: .constant(true), selectState: .constant(tempSelect), queue: .constant([]), value: .constant(0), state: .constant(3))
+        SettingsView(longerBlinkDelay: .constant(false), longerGazeDelay: .constant(false), playSound: .constant(true), showConfirmationScreen: .constant(true), selectState: .constant(tempSelect), queue: .constant([]), value: .constant(0), state: .constant(3), nextStateId: .constant(0), prevState: .constant(3), rowState: .constant(0))
     }
 }

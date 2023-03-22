@@ -14,6 +14,8 @@ struct TutorialView: View {
     @Binding var state: Int
     @Binding var rowState: Int // only included to use GestureSwipeRight
     @Binding var prevState: Int // only included to use GestureSwipeRight
+    @Binding var nextStateId: Int
+    @Binding var showConfirmation: Bool
     
     var body: some View {
         VStack {
@@ -43,9 +45,18 @@ struct TutorialView: View {
     private func registerGaze(action: ActionType) {
         if action == ActionType.left {
             // go back to cover buttons
-            state = 0
-            selectState.buttonType = ButtonType.cover
-            selectState.buttonId = 0
+            if showConfirmation {
+                state = 4
+                selectState.buttonId = 0
+                selectState.buttonType = ButtonType.confirm
+                selectState.isNo = false
+                prevState = 6
+                nextStateId = 0
+            } else {
+                state = 0
+                selectState.buttonType = ButtonType.cover
+                selectState.buttonId = 0
+            }
         }
     }
 }
@@ -54,6 +65,6 @@ struct TutorialView_Previews: PreviewProvider {
     static var tempSelect = selectedState(buttonType: ButtonType.cover, buttonId: 0, clickState: 0, isNo: false)
     
     static var previews: some View {
-        TutorialView(selectState: .constant(tempSelect), queue: .constant([]), value: .constant(0), state: .constant(6), rowState: .constant(0), prevState: .constant(0))
+        TutorialView(selectState: .constant(tempSelect), queue: .constant([]), value: .constant(0), state: .constant(6), rowState: .constant(0), prevState: .constant(0), nextStateId: .constant(0), showConfirmation: .constant(true))
     }
 }

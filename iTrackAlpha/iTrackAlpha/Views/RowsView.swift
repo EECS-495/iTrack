@@ -25,6 +25,7 @@ struct RowsView: View {
     @Binding var showConfirmation: Bool
     @Binding var showSave: Bool
     @Binding var customList: [CustomPhrase]
+    @Binding var nextStateId: Int
     
     var rows: [Row] {
         Rows.filter { row in
@@ -78,6 +79,7 @@ struct RowsView: View {
             // button type is row
             if showConfirmation {
                 prevState = 1
+                nextStateId = 2
                 state = 4
                 charState = rows[selectState.buttonId - getFirstRow()].CharType
                 selectState.clickState = 1
@@ -341,6 +343,7 @@ struct RowsView: View {
             if(selectState.buttonId == row.id && selectState.buttonType == ButtonType.row) {
                 if showConfirmation {
                     self.prevState = 1
+                    self.nextStateId = 2
                     self.state = 4
                     self.charState = row.CharType
                     selectState.clickState = 0
@@ -382,6 +385,6 @@ struct RowsView_Previews: PreviewProvider {
     static var tempSelect = selectedState(buttonType: ButtonType.cover, buttonId: 0, clickState: 0, isNo: false)
     
     static var previews: some View {
-        RowsView(state: .constant(2), rowState: .constant(0), charState: .constant(0), prevState: .constant(1), selectState: .constant(tempSelect), highlightBackspace: .constant(false), queue: .constant([]), value: .constant(0), content: .constant(""), contentInd: .constant(0), highlightCursor: .constant(false), playSound: .constant(true), showConfirmation: .constant(true), showSave: .constant(false), customList: .constant([]))
+        RowsView(state: .constant(2), rowState: .constant(0), charState: .constant(0), prevState: .constant(1), selectState: .constant(tempSelect), highlightBackspace: .constant(false), queue: .constant([]), value: .constant(0), content: .constant(""), contentInd: .constant(0), highlightCursor: .constant(false), playSound: .constant(true), showConfirmation: .constant(true), showSave: .constant(false), customList: .constant([]), nextStateId: .constant(2))
     }
 }

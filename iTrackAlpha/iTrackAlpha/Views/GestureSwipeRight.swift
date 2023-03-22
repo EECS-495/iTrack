@@ -35,6 +35,11 @@ struct GestureSwipeRight: ViewModifier {
                     selectState.buttonType = ButtonType.row
                     selectState.buttonId = getFirstRow()
                     prevState = 1
+                } else if state == 3 {
+                    state = 0
+                    selectState.buttonType = ButtonType.cover
+                    selectState.buttonId = 0
+                    prevState = 0
                 } else if state == 6 {
                     state = 0
                     selectState.buttonType = ButtonType.cover

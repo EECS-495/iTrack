@@ -14,6 +14,7 @@ struct ConfirmationPopup: View {
     @Binding var rowState: Int
     @Binding var charState: Int
     @Binding var prevState: Int
+    @Binding var nextStateId: Int
     @Binding var selectState: selectedState
     @Binding var content: String
     @Binding var contentInd: Int
@@ -29,6 +30,36 @@ struct ConfirmationPopup: View {
         
         VStack {
             
+            // transition everything to use nextState?
+            if nextStateId == 0 {
+                Text("Did you mean to return to the home screen?")
+                    .foregroundColor(.black)
+            } else if nextStateId == 1 && prevState == 2 {
+                // going to row view after selecting a char
+                Text(charConfirmText())
+                    .foregroundColor(.black)
+            } else if nextStateId == 1 {
+                // next state is rows
+                Text(coverConfirmText())
+                    .foregroundColor(.black)
+            } else if nextStateId == 2 {
+                // next state is char
+                Text(rowConfirmText())
+                    .foregroundColor(.black)
+            } else if nextStateId == 3 {
+                // next state is settings
+                Text(settingsConfirmText())
+                    .foregroundColor(.black)
+            } else if nextStateId == 5 {
+                // next state is custom phrases
+                Text(customPhraseText())
+                    .foregroundColor(.black)
+            } else if nextStateId == 6 {
+                // next state is tutorial
+                Text(tutorialConfirmText())
+                    .foregroundColor(.black)
+            }
+            /* old approach without nextStateId
             if prevState == 0 {
                 Text(coverConfirmText())
                     .foregroundColor(.black)
@@ -41,7 +72,7 @@ struct ConfirmationPopup: View {
             } else if prevState == 5 {
                 Text(customPhraseText())
                     .foregroundColor(.black)
-            }
+            } */
             
             HStack {
                 Button(action: nextState) {
@@ -201,7 +232,6 @@ struct ConfirmationPopup: View {
     }
     
     private func makeSound() {
-        print("in make sound")
         guard let soundURL = Bundle.main.url(forResource: "blinkTone.wav", withExtension: nil) else {
                     fatalError("Unable to find blinkTone.wav in bundle")
             }
@@ -215,18 +245,15 @@ struct ConfirmationPopup: View {
     }
     
     private func nextState() {
-        if prevState == 0 {
-            state = 1
+        if nextStateId == 0 {
+            // go to cover buttons
+            state = 0
+            selectState.buttonType = ButtonType.cover
+            selectState.buttonId = 0
             selectState.clickState = 1
-            selectState.buttonType = ButtonType.row
-            selectState.buttonId = getFirstRow()
-        } else if prevState == 1{
-            state = 2
-            selectState.clickState = 1
-            selectState.buttonType = ButtonType.char
-            selectState.buttonId = getFirstChar()
-        } else if prevState == 2 {
-            // add text to content
+        } else if prevState == 2 && nextStateId == 1 {
+            // add text to content then going to rows
+            print("in add char in confirm")
             var count: Int = 0
             var content1: String = ""
             var content2: String = ""
@@ -253,6 +280,18 @@ struct ConfirmationPopup: View {
             selectState.clickState = 1
             selectState.buttonType = ButtonType.row
             selectState.buttonId = getFirstRow()
+        } else if nextStateId == 1 {
+            // going to rows
+            state = 1
+            selectState.clickState = 1
+            selectState.buttonType = ButtonType.row
+            selectState.buttonId = getFirstRow()
+        } else if nextStateId == 2 {
+            // going to char
+            state = 2
+            selectState.clickState = 1
+            selectState.buttonType = ButtonType.char
+            selectState.buttonId = getFirstChar()
         } else if prevState == 5 {
             var count: Int = 0
             var content1: String = ""
@@ -278,23 +317,43 @@ struct ConfirmationPopup: View {
             selectState.buttonType = ButtonType.cover
             selectState.buttonId = 0
             state = 0
+        } else if nextStateId == 3 {
+            // going to settings
+            selectState.buttonId = 0
+            selectState.buttonType = ButtonType.settingToggle
+            selectState.clickState = 1
+            state = 3
+        } else if nextStateId == 6 {
+            // going to tutorial
+            // no selectState buttons yet
+            state = 6
         }
     }
     
     private func lastState() {
         self.state = self.prevState
         if prevState == 0 {
+            // going back to covers
             selectState.buttonType = ButtonType.cover
             selectState.buttonId = 0
         } else if prevState == 1 {
+            // going back to rows
             selectState.buttonType = ButtonType.row
             selectState.buttonId = getFirstRow()
         } else if prevState == 2 {
+            // going back to chars
             selectState.buttonType = ButtonType.char
             selectState.buttonId = getFirstChar()
+        } else if prevState == 3 {
+            // going back to settings
+            selectState.buttonType = ButtonType.settingToggle
+            selectState.buttonId = 0
         } else if prevState == 5 {
+            // going back to custom phrases
             selectState.buttonType = ButtonType.customPhrase
             selectState.buttonId = 0
+        } else if prevState == 6 {
+            // set aside for later when tutorial uses selectState
         }
 //        if selectState.buttonType == ButtonType.cover {
 //            state = 0
@@ -366,7 +425,7 @@ struct ConfirmationPopup: View {
         let character = CharRows.filter { row in
             row.id == selectState.buttonId
         }[0]
-        return "Did you mean to select: \(character.character)"
+        return "Did you mean to select: \(character.character)?"
     }
     
     private func rowConfirmText() -> String {
@@ -375,9 +434,17 @@ struct ConfirmationPopup: View {
         }
         if !rows.isEmpty {
             let row = rows[0]
-            return "Did you mean to select: \(row.image)"
+            return "Did you mean to select: \(row.image)?"
         }
         return ""
+    }
+    
+    private func settingsConfirmText() -> String {
+        return "Did you mean to open settings?"
+    }
+    
+    private func tutorialConfirmText() -> String {
+        return "Did you mean to open the tutorial"
     }
     
     private func coverConfirmText() -> String {
@@ -393,7 +460,7 @@ struct ConfirmationPopup: View {
         } else {
             type = "ERROR WITH DETERMINING WHICH COVER WAS CLICKED"
         }
-        return "Did you mean to select: \(type)"
+        return "Did you mean to select: \(type)?"
     }
     
     private func customPhraseText() -> String {
@@ -405,6 +472,6 @@ struct ConfirmationPopup_Previews: PreviewProvider {
     static var tempSelect = selectedState(buttonType: ButtonType.cover, buttonId: 0, clickState: 0, isNo: false)
     
     static var previews: some View {
-        ConfirmationPopup(state: .constant(1), rowState: .constant(1), charState: .constant(0), prevState: .constant(0), selectState: .constant(tempSelect), content: .constant(""), contentInd: .constant(0), queue: .constant([]), value: .constant(0), highlightBackspace: .constant(false), highlightCursor: .constant(false), playSound: .constant(true), customState: .constant(""))
+        ConfirmationPopup(state: .constant(1), rowState: .constant(1), charState: .constant(0), prevState: .constant(0), nextStateId: .constant(0), selectState: .constant(tempSelect), content: .constant(""), contentInd: .constant(0), queue: .constant([]), value: .constant(0), highlightBackspace: .constant(false), highlightCursor: .constant(false), playSound: .constant(true), customState: .constant(""))
     }
 }

@@ -31,6 +31,7 @@ struct NavButtonsTutorialView: View {
                     .cornerRadius(8)
                 Text("vs")
                     .padding([.leading, .trailing])
+                    .foregroundColor(.black)
                 Text("A")
                     .frame(width: 50, height: 50)
                     .font(.largeTitle)
