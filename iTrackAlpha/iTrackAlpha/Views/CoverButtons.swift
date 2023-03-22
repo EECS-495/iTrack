@@ -260,7 +260,7 @@ struct CoverButtons: View {
         } else if curType == ButtonType.enterPhrases {
             goToCover(buttonId: 3)
         } else if curType == ButtonType.tutorial {
-            goToCover(buttonId: 3)
+            highlightCustomPhrase()
         } else if curType == ButtonType.addNewPhrase {
             goToBackspace()
         }
