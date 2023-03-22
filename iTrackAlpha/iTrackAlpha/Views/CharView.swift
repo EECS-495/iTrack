@@ -4,9 +4,12 @@
 //
 //  Created by Danielle Maraffino on 2/2/23.
 //
+//
 
 import SwiftUI
 import AVFoundation
+import Combine
+import NaturalLanguage
 
 struct CharView: View {
     @State var audioPlayer: AVAudioPlayer!
@@ -26,7 +29,9 @@ struct CharView: View {
     @Binding var showConfirmation: Bool
     @Binding var showSave: Bool
     @Binding var customList: [CustomPhrase]
-    @Binding var nextStateId: Int
+    @State private var predictedWords: [String] = []
+    @State private var cancellables = Set<AnyCancellable>()
+    
     
     var charRows: [CharRow] {
         CharRows.filter { row in
@@ -35,6 +40,23 @@ struct CharView: View {
     }
     var body: some View {
         ScrollViewReader { spot in
+            VStack {
+                HStack {
+                    ForEach(predictedWords, id: \.self) { word in
+                        Button(action: {
+                            content = word
+                            contentInd = content.count
+                        }) {
+                            Text(word)
+                                .padding(EdgeInsets(top: 5, leading: 10, bottom: 5, trailing: 10))
+                                .background(Color.gray.opacity(0.1))
+                                .cornerRadius(8)
+                        }
+                        .padding(.horizontal, 2)
+                    }
+                }
+                .padding(.bottom, 8)
+            }
             ScrollView{
                 ForEach(charRows) { row in
                     Button(action: {clickChar(character: row)}){
@@ -72,6 +94,7 @@ struct CharView: View {
     }
     
     private func registerBlink() {
+        print("register blink")
         if selectState.buttonType == ButtonType.backspace {
             deleteChar()
         } else if selectState.buttonType == ButtonType.addNewPhrase {
@@ -79,15 +102,16 @@ struct CharView: View {
                 makeSound()
             }
             savePhrase()
-        } else if selectState.buttonType == ButtonType.char {
+        } else {
             if showConfirmation {
                 prevState = 2
                 state = 4
-                nextStateId = 1
                 selectState.clickState = 1
                 selectState.buttonType = ButtonType.confirm
                 selectState.isNo = false
+                print("show confirm")
             } else {
+                print("other show confirm")
                 // add text to content
                 var count: Int = 0
                 var content1: String = ""
@@ -115,12 +139,10 @@ struct CharView: View {
                 selectState.clickState = 1
                 selectState.buttonType = ButtonType.row
                 selectState.buttonId = getFirstRow()
+                
+                // Update predicted words
+                updatePredictedWords()
             }
-        } else if selectState.buttonType == ButtonType.exit {
-            if playSound {
-                makeSound()
-            }
-            exit()
         }
     }
     
@@ -150,7 +172,7 @@ struct CharView: View {
             // go to button(id-1)
             goToChar(id: curId-1)
             currentCharId = curId - getFirstChar() - 1
-        } else if curType == ButtonType.addNewPhrase || curType == ButtonType.exit {
+        } else if curType == ButtonType.addNewPhrase {
             goToBackspace()
         }
     }
@@ -174,12 +196,12 @@ struct CharView: View {
         } else if curType == ButtonType.cursor {
             highlightCursor = false
             if showSave {
-                highlightExit()
+                highlightAddPhrase()
             } else {
                 goToChar(id: getFirstChar())
                 currentCharId = 0
             }
-        } else if curType == ButtonType.addNewPhrase || curType == ButtonType.exit {
+        } else if curType == ButtonType.addNewPhrase {
             goToChar(id: getFirstChar())
             currentCharId = 0
         }
@@ -187,7 +209,7 @@ struct CharView: View {
     
     private func goLeft() {
         let curType = selectState.buttonType
-        if curType == ButtonType.char || curType == ButtonType.exit {
+        if curType == ButtonType.char {
             // go to row view
             goToRows()
         } else if curType == ButtonType.backspace {
@@ -197,8 +219,6 @@ struct CharView: View {
             }
         } else if curType == ButtonType.cursor {
             moveCursorLeft()
-        } else if curType == ButtonType.addNewPhrase {
-            highlightExit()
         }
     }
     
@@ -211,8 +231,6 @@ struct CharView: View {
             } else {
                 moveCursorRight()
             }
-        } else if curType == ButtonType.exit {
-            highlightAddPhrase()
         }
     }
     
@@ -331,10 +349,17 @@ struct CharView: View {
             }
             content = content1 + content2
             contentInd = contentInd - 1
+            
+            // Update predicted words
+            updatePredictedWords()
+
         }
     }
     
     private func clickChar(character: CharRow) {
+        // Update predicted words
+        updatePredictedWords()
+
         if selectState.clickState == 0 {
             selectState.clickState = 1
             selectState.buttonType = ButtonType.char
@@ -343,7 +368,6 @@ struct CharView: View {
             if selectState.buttonType == ButtonType.char && selectState.buttonId == character.id {
                 if showConfirmation {
                     prevState = 2
-                    nextStateId = 1
                     state = 4
                     selectState.clickState = 0
                 } else {
@@ -374,6 +398,7 @@ struct CharView: View {
                     selectState.clickState = 1
                     selectState.buttonType = ButtonType.row
                     selectState.buttonId = getFirstRow()
+                    updatePredictedWords()
                 }
             } else {
                 selectState.buttonId = character.id
@@ -404,36 +429,56 @@ struct CharView: View {
         let newId = customList.count
         customList.append(CustomPhrase(id: newId, content: self.content))
         showSave = false
-        goToCustomPhrases()
-    }
-    
-    private func highlightAddPhrase() {
-        if content.isEmpty {
-            highlightExit()
-        } else {
-            selectState.buttonId = 0
-            selectState.buttonType = ButtonType.addNewPhrase
-            selectState.clickState = 1
-        }
-    }
-    
-    private func highlightExit() {
-        selectState.buttonId = 0
-        selectState.buttonType = ButtonType.exit
-        selectState.clickState = 1
-    }
-    
-    private func exit() {
-        showSave = false
-        goToCustomPhrases()
-    }
-    
-    private func goToCustomPhrases() {
         content = ""
         selectState.buttonType = ButtonType.customPhrase
         selectState.buttonId = 0
-        selectState.clickState = 0
         state = 5
+    }
+    
+    private func highlightAddPhrase() {
+        selectState.buttonId = 0
+        selectState.buttonType = ButtonType.addNewPhrase
+        selectState.clickState = 1
+    }
+    
+    private func predictWords(input: String, maxSuggestions: Int) -> [String] {
+        let tagger = NLTagger(tagSchemes: [.nameType])
+        tagger.string = input
+        
+        let options: NLTagger.Options = [.omitWhitespace, .omitPunctuation, .omitOther, .joinNames]
+        let tags = tagger.tags(in: input.startIndex..<input.endIndex, unit: .word, scheme: .nameType, options: options).compactMap { $0.0 }
+        
+        var suggestions = [String]()
+        
+        for tag in tags {
+            if let tokenRange = input.range(of: tag.rawValue) {
+                let token = input[tokenRange]
+                suggestions.append(String(token))
+                if suggestions.count >= maxSuggestions {
+                    break
+                }
+            }
+        }
+        
+        return suggestions
+    }
+    
+    private func updatePredictedWords() {
+        let textChecker = UITextChecker()
+        print("update_predict_word_called")
+        
+        let lastSpaceOrNewline = content.rangeOfCharacter(from: .whitespacesAndNewlines, options: .backwards)?.upperBound
+        let lastWordStartIndex = lastSpaceOrNewline ?? content.startIndex
+        let lastWordRange = NSRange(lastWordStartIndex..<content.endIndex, in: content)
+        
+        if let completions = textChecker.completions(forPartialWordRange: lastWordRange, in: content, language: "en") {
+            predictedWords = Array(completions.prefix(3))
+            print("predict words:", predictedWords)
+        } else {
+            predictedWords = []
+            print("predict words: nothing")
+        }
+        
     }
     
 }
@@ -442,6 +487,6 @@ struct CharView_Previews: PreviewProvider {
     static var tempSelect = selectedState(buttonType: ButtonType.cover, buttonId: 0, clickState: 0, isNo: false)
     
     static var previews: some View {
-        CharView(state: .constant(2), rowState: .constant(0), charState: .constant(0), content: .constant(""), contentInd: .constant(0), prevState: .constant(2), selectState: .constant(tempSelect), highlightBackspace: .constant(false), queue: .constant([]), value: .constant(0), highlightCursor: .constant(false), playSound: .constant(true), currentCharId: 0, showConfirmation: .constant(true), showSave: .constant(false), customList: .constant([]), nextStateId: .constant(0))
+        CharView(state: .constant(2), rowState: .constant(0), charState: .constant(0), content: .constant(""), contentInd: .constant(0), prevState: .constant(2), selectState: .constant(tempSelect), highlightBackspace: .constant(false), queue: .constant([]), value: .constant(0), highlightCursor: .constant(false), playSound: .constant(true), currentCharId: 0, showConfirmation: .constant(true), showSave: .constant(false), customList: .constant([]))
     }
 }
