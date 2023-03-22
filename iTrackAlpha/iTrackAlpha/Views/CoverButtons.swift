@@ -155,9 +155,24 @@ struct CoverButtons: View {
     }
     
     private func highlightAddPhrase() {
+        if content.isEmpty {
+            highlightExit()
+        } else {
+            selectState.buttonId = 0
+            selectState.buttonType = ButtonType.addNewPhrase
+            selectState.clickState = 1
+        }
+    }
+    
+    private func highlightExit() {
         selectState.buttonId = 0
-        selectState.buttonType = ButtonType.addNewPhrase
+        selectState.buttonType = ButtonType.exit
         selectState.clickState = 1
+    }
+    
+    private func exit() {
+        showSave = false
+        goToCustomPhrases()
     }
     
     private func goToSettings() {
@@ -178,6 +193,9 @@ struct CoverButtons: View {
     }
     
     private func goToCustomPhrases() {
+        if selectState.buttonType == ButtonType.exit {
+            content = ""
+        }
         selectState.buttonType = ButtonType.customPhrase
         selectState.buttonId = 0
         selectState.clickState = 0
@@ -261,7 +279,7 @@ struct CoverButtons: View {
             goToCover(buttonId: 3)
         } else if curType == ButtonType.tutorial {
             goToCover(buttonId: 3)
-        } else if curType == ButtonType.addNewPhrase {
+        } else if curType == ButtonType.addNewPhrase || curType == ButtonType.exit {
             goToBackspace()
         }
     }
@@ -296,13 +314,13 @@ struct CoverButtons: View {
             // go to upper
             highlightCursor = false
             if showSave {
-                highlightAddPhrase()
+                highlightExit()
             } else {
                 goToCover(buttonId: 0)
             }
         } else if curType == ButtonType.enterPhrases {
             highlightSettings()
-        } else if curType == ButtonType.addNewPhrase {
+        } else if curType == ButtonType.addNewPhrase || curType == ButtonType.exit {
             highlightCursor = false
             goToCover(buttonId: 0)
         }
@@ -334,6 +352,8 @@ struct CoverButtons: View {
             }
         } else if curType == ButtonType.tutorial {
             goToSettings()
+        } else if curType == ButtonType.exit {
+            highlightAddPhrase()
         }
     }
     
@@ -365,6 +385,8 @@ struct CoverButtons: View {
             if showHelpButton {
                 highlightTutorial()
             }
+        } else if curType == ButtonType.addNewPhrase {
+            highlightExit()
         }
     }
     
@@ -490,6 +512,11 @@ struct CoverButtons: View {
                 selectState.buttonType = ButtonType.row
                 selectState.buttonId = getFirstRow()
             }
+        } else if selectState.buttonType == ButtonType.exit {
+            if playSound {
+                makeSound()
+            }
+            exit()
         }
     }
     

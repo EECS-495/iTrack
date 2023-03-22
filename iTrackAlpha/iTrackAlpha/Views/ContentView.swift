@@ -9,7 +9,7 @@ import SwiftUI
 import AVFoundation
 
 enum ButtonType {
-    case cover, row , char, space, backspace, confirm, cursor, settingToggle, enterSettings, customPhrase, enterPhrases, addNewPhrase, tutorial, settingTutorial
+    case cover, row , char, space, backspace, confirm, cursor, settingToggle, enterSettings, customPhrase, enterPhrases, addNewPhrase, tutorial, settingTutorial, exit
 }
 
 struct selectedState {
@@ -69,13 +69,26 @@ struct ContentView: View {
                     }
                 }
                 if showSave {
-                    Button(action: {savePhrase()}) {
-                        Text("Save Custom text")
-                            .frame(width: newWidthDim(), height: newHeightDim())
-                            .foregroundColor(.black)
-                            .background(Color(red: 0.83, green: 0.83, blue: 0.83))
-                            .border(.blue, width: addBorder(buttonType: ButtonType.addNewPhrase))
-                            .cornerRadius(8)
+                    HStack{
+                        Button(action: {exitCustomPhrase()}) {
+                            Text("Exit")
+                                .frame(width: newWidthDim(buttonType: ButtonType.exit), height: newHeightDim(buttonType: ButtonType.exit))
+                                .foregroundColor(.black)
+                                .background(Color(red: 0.83, green: 0.83, blue: 0.83))
+                                .border(.blue, width: addBorder(buttonType: ButtonType.exit))
+                                .cornerRadius(8)
+                        }
+                        .padding([.leading])
+                        Spacer()
+                        Button(action: {savePhrase()}) {
+                            Text("Save Custom text")
+                                .frame(width: newWidthDim(buttonType: ButtonType.addNewPhrase), height: newHeightDim(buttonType: ButtonType.addNewPhrase))
+                                .foregroundColor(saveColor())
+                                .background(Color(red: 0.83, green: 0.83, blue: 0.83))
+                                .border(.blue, width: addBorder(buttonType: ButtonType.addNewPhrase))
+                                .cornerRadius(8)
+                        }
+                        .padding([.trailing])
                     }
                 }
                 Spacer()
@@ -113,7 +126,7 @@ struct ContentView: View {
     }
     
     private func addBorder(buttonType: ButtonType) -> CGFloat {
-        if selectState.buttonType == ButtonType.addNewPhrase && showSave {
+        if selectState.buttonType == buttonType && showSave {
             return 3.0
         } else {
             return 0.0
@@ -224,19 +237,43 @@ struct ContentView: View {
         state = 5
     }
     
-    private func newWidthDim() -> CGFloat {
-        if selectState.buttonType == ButtonType.addNewPhrase && showSave{
+    private func newWidthDim(buttonType: ButtonType) -> CGFloat {
+        if selectState.buttonType == buttonType && showSave{
             return 160
         } else {
             return 140
         }
     }
     
-    private func newHeightDim() -> CGFloat {
-        if selectState.buttonType == ButtonType.addNewPhrase && showSave {
+    private func newHeightDim(buttonType: ButtonType) -> CGFloat {
+        if selectState.buttonType == buttonType && showSave {
             return 65
         } else {
             return 45
+        }
+    }
+    
+    private func exitCustomPhrase() {
+        showSave = false
+        if customizations.showConfirmationScreen {
+            // go to confirmation screen
+            selectState.buttonType = ButtonType.customPhrase
+            selectState.buttonId = 0
+            selectState.clickState = 0
+            state = 5
+        } else {
+            selectState.buttonType = ButtonType.customPhrase
+            selectState.buttonId = 0
+            selectState.clickState = 0
+            state = 5
+        }
+    }
+    
+    private func saveColor() -> Color {
+        if !content.isEmpty {
+            return Color.black
+        } else {
+            return Color(white: 0.4745)
         }
     }
 

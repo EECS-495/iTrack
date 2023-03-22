@@ -227,7 +227,7 @@ struct CustomPhrasesView: View {
             goToCursor()
         } else if curType == ButtonType.cursor {
             moveCursorLeft()
-        } else if curType == ButtonType.customPhrase {
+        } else if curType == ButtonType.customPhrase || onAddPhrase{
             goToNextState()
         }
     }
