@@ -116,6 +116,11 @@ struct CharView: View {
                 selectState.buttonType = ButtonType.row
                 selectState.buttonId = getFirstRow()
             }
+        } else if selectState.buttonType == ButtonType.exit {
+            if playSound {
+                makeSound()
+            }
+            exit()
         }
     }
     
@@ -145,7 +150,7 @@ struct CharView: View {
             // go to button(id-1)
             goToChar(id: curId-1)
             currentCharId = curId - getFirstChar() - 1
-        } else if curType == ButtonType.addNewPhrase {
+        } else if curType == ButtonType.addNewPhrase || curType == ButtonType.exit {
             goToBackspace()
         }
     }
@@ -169,12 +174,12 @@ struct CharView: View {
         } else if curType == ButtonType.cursor {
             highlightCursor = false
             if showSave {
-                highlightAddPhrase()
+                highlightExit()
             } else {
                 goToChar(id: getFirstChar())
                 currentCharId = 0
             }
-        } else if curType == ButtonType.addNewPhrase {
+        } else if curType == ButtonType.addNewPhrase || curType == ButtonType.exit {
             goToChar(id: getFirstChar())
             currentCharId = 0
         }
@@ -182,7 +187,7 @@ struct CharView: View {
     
     private func goLeft() {
         let curType = selectState.buttonType
-        if curType == ButtonType.char {
+        if curType == ButtonType.char || curType == ButtonType.exit {
             // go to row view
             goToRows()
         } else if curType == ButtonType.backspace {
@@ -192,6 +197,8 @@ struct CharView: View {
             }
         } else if curType == ButtonType.cursor {
             moveCursorLeft()
+        } else if curType == ButtonType.addNewPhrase {
+            highlightExit()
         }
     }
     
@@ -204,6 +211,8 @@ struct CharView: View {
             } else {
                 moveCursorRight()
             }
+        } else if curType == ButtonType.exit {
+            highlightAddPhrase()
         }
     }
     
@@ -395,16 +404,36 @@ struct CharView: View {
         let newId = customList.count
         customList.append(CustomPhrase(id: newId, content: self.content))
         showSave = false
-        content = ""
-        selectState.buttonType = ButtonType.customPhrase
-        selectState.buttonId = 0
-        state = 5
+        goToCustomPhrases()
     }
     
     private func highlightAddPhrase() {
+        if content.isEmpty {
+            highlightExit()
+        } else {
+            selectState.buttonId = 0
+            selectState.buttonType = ButtonType.addNewPhrase
+            selectState.clickState = 1
+        }
+    }
+    
+    private func highlightExit() {
         selectState.buttonId = 0
-        selectState.buttonType = ButtonType.addNewPhrase
+        selectState.buttonType = ButtonType.exit
         selectState.clickState = 1
+    }
+    
+    private func exit() {
+        showSave = false
+        goToCustomPhrases()
+    }
+    
+    private func goToCustomPhrases() {
+        content = ""
+        selectState.buttonType = ButtonType.customPhrase
+        selectState.buttonId = 0
+        selectState.clickState = 0
+        state = 5
     }
     
 }

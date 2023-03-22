@@ -75,6 +75,11 @@ struct RowsView: View {
                 makeSound()
             }
             savePhrase()
+        } else if selectState.buttonType == ButtonType.exit {
+            if playSound {
+                makeSound()
+            }
+            exit()
         } else {
             // button type is row
             if showConfirmation {
@@ -122,7 +127,7 @@ struct RowsView: View {
         } else if curType == ButtonType.row && curId - getFirstRow() > 0 && curId - getFirstRow() < rows.count {
             // go to button(id-1)
             goToRow(id: curId-1)
-        } else if curType == ButtonType.addNewPhrase {
+        } else if curType == ButtonType.addNewPhrase || curType == ButtonType.exit {
             goToBackspace()
         }
     }
@@ -144,18 +149,18 @@ struct RowsView: View {
         } else if curType == ButtonType.cursor {
             highlightCursor = false
             if showSave {
-                highlightAddPhrase()
+                highlightExit()
             } else {
                 goToRow(id: getFirstRow())
             }
-        } else if curType == ButtonType.addNewPhrase {
+        } else if curType == ButtonType.addNewPhrase || curType == ButtonType.exit{
             goToRow(id: getFirstRow())
         }
     }
     
     private func goLeft() {
         let curType = selectState.buttonType
-        if curType == ButtonType.row {
+        if curType == ButtonType.row || curType == ButtonType.exit {
             // go back to cover, without confirmation screen if set that way
             goToCovers()
         } else if curType == ButtonType.backspace {
@@ -166,6 +171,8 @@ struct RowsView: View {
             }
         } else if curType == ButtonType.cursor {
             moveCursorLeft()
+        } else if curType == ButtonType.addNewPhrase {
+            highlightExit()
         }
     }
     
@@ -179,6 +186,8 @@ struct RowsView: View {
             else {
                 moveCursorRight()
             }
+        } else if curType == ButtonType.exit {
+            highlightAddPhrase()
         }
     }
     
@@ -365,18 +374,38 @@ struct RowsView: View {
     }
     
     private func highlightAddPhrase() {
-        selectState.buttonId = 0
-        selectState.buttonType = ButtonType.addNewPhrase
-        selectState.clickState = 1
+        if content.isEmpty {
+            highlightExit()
+        } else {
+            selectState.buttonId = 0
+            selectState.buttonType = ButtonType.addNewPhrase
+            selectState.clickState = 1
+        }
     }
     
     private func savePhrase() {
         let newId = customList.count
         customList.append(CustomPhrase(id: newId, content: self.content))
         showSave = false
+        goToCustomPhrases()
+    }
+    
+    private func highlightExit() {
+        selectState.buttonId = 0
+        selectState.buttonType = ButtonType.exit
+        selectState.clickState = 1
+    }
+    
+    private func exit() {
+        showSave = false
+        goToCustomPhrases()
+    }
+    
+    private func goToCustomPhrases() {
         content = ""
         selectState.buttonType = ButtonType.customPhrase
         selectState.buttonId = 0
+        selectState.clickState = 0
         state = 5
     }
 }

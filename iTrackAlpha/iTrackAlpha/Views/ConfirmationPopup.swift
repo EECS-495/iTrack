@@ -32,8 +32,13 @@ struct ConfirmationPopup: View {
             
             // transition everything to use nextState?
             if nextStateId == 0 {
-                Text("Did you mean to return to the home screen?")
-                    .foregroundColor(.black)
+                if prevState == 5 {
+                    Text(customPhraseText())
+                        .foregroundColor(.black)
+                } else {
+                    Text("Did you mean to return to the home screen?")
+                        .foregroundColor(.black)
+                }
             } else if nextStateId == 1 && prevState == 2 {
                 // going to row view after selecting a char
                 Text(charConfirmText())
@@ -245,7 +250,7 @@ struct ConfirmationPopup: View {
     }
     
     private func nextState() {
-        if nextStateId == 0 {
+        if nextStateId == 0 && prevState != 5 {
             // go to cover buttons
             state = 0
             selectState.buttonType = ButtonType.cover

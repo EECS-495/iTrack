@@ -39,14 +39,15 @@ struct CustomPhrasesView: View {
                 .padding()
                 .border(.blue, width: addBorder(customPhrase))
             }
-            
-            Button(action: {addPhrase()}) {
-                Text("Add New Custom Text")
-                    .frame(width: widthDim(), height: heightDim())
-                    .foregroundColor(.black)
-                    .background(Color(red: 0.83, green: 0.83, blue: 0.83))
-                    .border(.blue, width: addNewBorder())
-                    .cornerRadius(8)
+            if !showSave {
+                Button(action: {addPhrase()}) {
+                    Text("Add New Custom Text")
+                        .frame(width: widthDim(), height: heightDim())
+                        .foregroundColor(.black)
+                        .background(Color(red: 0.83, green: 0.83, blue: 0.83))
+                        .border(.blue, width: addNewBorder())
+                        .cornerRadius(8)
+                }
             }
         }
         .onChange(of: value ) { _ in
@@ -152,6 +153,10 @@ struct CustomPhrasesView: View {
             addPhrase()
         } else if selectState.buttonType == ButtonType.backspace {
             deleteChar()
+        } else if selectState.buttonType == ButtonType.addNewPhrase {
+            savePhrase()
+        } else if selectState.buttonType == ButtonType.exit {
+            exit()
         }
     }
     
@@ -170,7 +175,11 @@ struct CustomPhrasesView: View {
     private func goUp() {
         if selectState.buttonType == ButtonType.customPhrase {
             if curId == 0 {
-                goToBackspace()
+                if showSave {
+                    highlightAddPhrase()
+                } else {
+                    goToBackspace()
+                }
             } else {
                 curId -= 1
                 selectState.clickState = 1
@@ -183,6 +192,8 @@ struct CustomPhrasesView: View {
             selectState.buttonType = ButtonType.customPhrase
             selectState.buttonId = 0
             onAddPhrase = false
+        } else if selectState.buttonType == ButtonType.addNewPhrase || selectState.buttonType == ButtonType.exit {
+            goToBackspace()
         }
     }
     
@@ -206,6 +217,11 @@ struct CustomPhrasesView: View {
             selectState.clickState = 1
             selectState.buttonType = ButtonType.customPhrase
             selectState.buttonId = 0
+        } else if selectState.buttonType == ButtonType.addNewPhrase || selectState.buttonType == ButtonType.exit {
+            selectState.buttonType = ButtonType.customPhrase
+            selectState.buttonId = 0
+            selectState.clickState = 1
+            curId = 0
         }
     }
     
@@ -217,6 +233,8 @@ struct CustomPhrasesView: View {
             } else {
                 moveCursorRight()
             }
+        } else if selectState.buttonType == ButtonType.exit {
+            highlightAddPhrase()
         }
     }
     
@@ -227,8 +245,10 @@ struct CustomPhrasesView: View {
             goToCursor()
         } else if curType == ButtonType.cursor {
             moveCursorLeft()
-        } else if curType == ButtonType.customPhrase || onAddPhrase{
+        } else if curType == ButtonType.customPhrase || onAddPhrase || curType == ButtonType.exit {
             goToNextState()
+        } else if curType == ButtonType.addNewPhrase {
+            highlightExit()
         }
     }
     
@@ -302,10 +322,39 @@ struct CustomPhrasesView: View {
     }
     
     private func highlightAddPhrase() {
+        if content.isEmpty {
+            highlightExit()
+        } else {
+            selectState.buttonId = 0
+            selectState.buttonType = ButtonType.addNewPhrase
+            selectState.clickState = 1
+        }
+    }
+    
+    private func highlightExit() {
         selectState.buttonId = 0
-        selectState.buttonType = ButtonType.addNewPhrase
+        selectState.buttonType = ButtonType.exit
         selectState.clickState = 1
     }
+    
+    private func exit() {
+        showSave = false
+        content = ""
+        selectState.buttonType = ButtonType.customPhrase
+        selectState.buttonId = 0
+        curId = 0
+    }
+    
+    private func savePhrase() {
+        let newId = customList.count
+        customList.append(CustomPhrase(id: newId, content: self.content))
+        showSave = false
+        content = ""
+        selectState.buttonType = ButtonType.customPhrase
+        selectState.buttonId = 0
+        curId = 0
+    }
+    
 }
 
 struct CustomPhrasesView_Previews: PreviewProvider {

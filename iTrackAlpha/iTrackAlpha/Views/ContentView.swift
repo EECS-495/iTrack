@@ -68,7 +68,7 @@ struct ContentView: View {
                             .padding()
                     }
                 }
-                if showSave {
+                if showSave && state != 4{
                     HStack{
                         Button(action: {exitCustomPhrase()}) {
                             Text("Exit")
