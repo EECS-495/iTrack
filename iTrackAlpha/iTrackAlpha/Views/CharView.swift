@@ -7,9 +7,13 @@
 
 import SwiftUI
 import AVFoundation
+import Combine
+import NaturalLanguage
 
 struct CharView: View {
     @State var audioPlayer: AVAudioPlayer!
+    @State private var predictedWords: [String] = []
+    @State private var cancellables = Set<AnyCancellable>()
     @Binding var state: Int
     @Binding var rowState: Int
     @Binding var charState: Int
@@ -35,6 +39,23 @@ struct CharView: View {
     }
     var body: some View {
         ScrollViewReader { spot in
+            VStack {
+                HStack {
+                    ForEach(predictedWords, id: \.self) { word in
+                        Button(action: {
+                            content = word
+                            contentInd = content.count
+                        }) {
+                            Text(word)
+                                .padding(EdgeInsets(top: 5, leading: 10, bottom: 5, trailing: 10))
+                                .background(Color.gray.opacity(0.1))
+                                .cornerRadius(8)
+                        }
+                        .padding(.horizontal, 2)
+                    }
+                }
+                .padding(.bottom, 8)
+            }
             ScrollView{
                 ForEach(charRows) { row in
                     Button(action: {clickChar(character: row)}){
@@ -80,6 +101,7 @@ struct CharView: View {
             }
             savePhrase()
         } else if selectState.buttonType == ButtonType.char {
+            updatePredictedWords()
             if showConfirmation {
                 prevState = 2
                 state = 4
@@ -331,10 +353,16 @@ struct CharView: View {
             }
             content = content1 + content2
             contentInd = contentInd - 1
+            
+            // Update predicted words
+            updatePredictedWords()
         }
     }
     
     private func clickChar(character: CharRow) {
+        // Update predicted words
+        updatePredictedWords()
+        
         if selectState.clickState == 0 {
             selectState.clickState = 1
             selectState.buttonType = ButtonType.char
@@ -382,6 +410,7 @@ struct CharView: View {
         }
         // tells backspace another button has been pushed
         highlightBackspace = false
+         
     }
     
     private func scaleDim(row: CharRow) -> CGFloat {
@@ -434,6 +463,47 @@ struct CharView: View {
         selectState.buttonId = 0
         selectState.clickState = 0
         state = 5
+    }
+    
+    
+    private func predictWords(input: String, maxSuggestions: Int) -> [String] {
+            let tagger = NLTagger(tagSchemes: [.nameType])
+            tagger.string = input
+            
+            let options: NLTagger.Options = [.omitWhitespace, .omitPunctuation, .omitOther, .joinNames]
+            let tags = tagger.tags(in: input.startIndex..<input.endIndex, unit: .word, scheme: .nameType, options: options).compactMap { $0.0 }
+            
+            var suggestions = [String]()
+            
+            for tag in tags {
+                if let tokenRange = input.range(of: tag.rawValue) {
+                    let token = input[tokenRange]
+                    suggestions.append(String(token))
+                    if suggestions.count >= maxSuggestions {
+                        break
+                    }
+                }
+            }
+            
+            return suggestions
+        }
+        
+    private func updatePredictedWords() {
+        let textChecker = UITextChecker()
+        print("update_predict_word_called")
+        
+        let lastSpaceOrNewline = content.rangeOfCharacter(from: .whitespacesAndNewlines, options: .backwards)?.upperBound
+        let lastWordStartIndex = lastSpaceOrNewline ?? content.startIndex
+        let lastWordRange = NSRange(lastWordStartIndex..<content.endIndex, in: content)
+        
+        if let completions = textChecker.completions(forPartialWordRange: lastWordRange, in: content, language: "en") {
+            predictedWords = Array(completions.prefix(3))
+            print("predict words:", predictedWords)
+        } else {
+            predictedWords = []
+            print("predict words: nothing")
+        }
+        
     }
     
 }
