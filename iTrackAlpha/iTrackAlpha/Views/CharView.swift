@@ -31,6 +31,7 @@ struct CharView: View {
     @Binding var showSave: Bool
     @Binding var customList: [CustomPhrase]
     @Binding var nextStateId: Int
+    @Binding var prevButtonType: ButtonType
     
     var charRows: [CharRow] {
         CharRows.filter { row in
@@ -101,7 +102,7 @@ struct CharView: View {
             }
             savePhrase()
         } else if selectState.buttonType == ButtonType.char {
-            updatePredictedWords()
+            //updatePredictedWords()
             if showConfirmation {
                 prevState = 2
                 state = 4
@@ -355,13 +356,13 @@ struct CharView: View {
             contentInd = contentInd - 1
             
             // Update predicted words
-            updatePredictedWords()
+            //updatePredictedWords()
         }
     }
     
     private func clickChar(character: CharRow) {
         // Update predicted words
-        updatePredictedWords()
+        //updatePredictedWords()
         
         if selectState.clickState == 0 {
             selectState.clickState = 1
@@ -430,10 +431,23 @@ struct CharView: View {
     }
     
     private func savePhrase() {
-        let newId = customList.count
-        customList.append(CustomPhrase(id: newId, content: self.content))
-        showSave = false
-        goToCustomPhrases()
+        if (showConfirmation) {
+            prevButtonType = ButtonType.addNewPhrase
+            nextStateId = 5
+            prevState = 0
+            selectState.buttonId = 0
+            selectState.buttonType = ButtonType.confirm
+            selectState.isNo = false
+            state = 4
+        } else {
+            let newId = customList.count
+            customList.append(CustomPhrase(id: newId, content: self.content))
+            showSave = false
+            content = ""
+            selectState.buttonType = ButtonType.customPhrase
+            selectState.buttonId = 0
+            state = 5
+        }
     }
     
     private func highlightAddPhrase() {
@@ -458,11 +472,27 @@ struct CharView: View {
     }
     
     private func goToCustomPhrases() {
-        content = ""
-        selectState.buttonType = ButtonType.customPhrase
-        selectState.buttonId = 0
-        selectState.clickState = 0
-        state = 5
+        if showConfirmation {
+            if selectState.buttonType == ButtonType.exit {
+                prevButtonType = ButtonType.exit
+            } else {
+                prevButtonType = ButtonType.enterPhrases
+            }
+            nextStateId = 5
+            prevState = 0
+            selectState.buttonId = 0
+            selectState.buttonType = ButtonType.confirm
+            selectState.isNo = false
+            state = 4
+        } else {
+            if selectState.buttonType == ButtonType.exit {
+                content = ""
+            }
+            selectState.buttonType = ButtonType.customPhrase
+            selectState.buttonId = 0
+            selectState.clickState = 0
+            state = 5
+        }
     }
     
     
@@ -512,6 +542,6 @@ struct CharView_Previews: PreviewProvider {
     static var tempSelect = selectedState(buttonType: ButtonType.cover, buttonId: 0, clickState: 0, isNo: false)
     
     static var previews: some View {
-        CharView(state: .constant(2), rowState: .constant(0), charState: .constant(0), content: .constant(""), contentInd: .constant(0), prevState: .constant(2), selectState: .constant(tempSelect), highlightBackspace: .constant(false), queue: .constant([]), value: .constant(0), highlightCursor: .constant(false), playSound: .constant(true), currentCharId: 0, showConfirmation: .constant(true), showSave: .constant(false), customList: .constant([]), nextStateId: .constant(0))
+        CharView(state: .constant(2), rowState: .constant(0), charState: .constant(0), content: .constant(""), contentInd: .constant(0), prevState: .constant(2), selectState: .constant(tempSelect), highlightBackspace: .constant(false), queue: .constant([]), value: .constant(0), highlightCursor: .constant(false), playSound: .constant(true), currentCharId: 0, showConfirmation: .constant(true), showSave: .constant(false), customList: .constant([]), nextStateId: .constant(0), prevButtonType: .constant(ButtonType.cover))
     }
 }

@@ -24,6 +24,9 @@ struct ConfirmationPopup: View {
     @Binding var highlightCursor: Bool
     @Binding var playSound: Bool
     @Binding var customState: String
+    @Binding var showSave: Bool
+    @Binding var customList: [CustomPhrase]
+    @Binding var prevButtonType: ButtonType
         
     
     var body: some View {
@@ -57,8 +60,16 @@ struct ConfirmationPopup: View {
                     .foregroundColor(.black)
             } else if nextStateId == 5 {
                 // next state is custom phrases
-                Text(customPhraseText())
-                    .foregroundColor(.black)
+                if (prevButtonType == ButtonType.addNewPhrase) {
+                    Text(addNewPhraseText())
+                        .foregroundColor(.black)
+                } else if (prevButtonType == ButtonType.exit) {
+                    Text("Did you mean to exit?")
+                        .foregroundColor(.black)
+                } else {
+                    Text("Did you mean to enter custom phrases?")
+                        .foregroundColor(.black)
+                }
             } else if nextStateId == 6 {
                 // next state is tutorial
                 Text(tutorialConfirmText())
@@ -332,6 +343,22 @@ struct ConfirmationPopup: View {
             // going to tutorial
             // no selectState buttons yet
             state = 6
+        } else if nextStateId == 5 {
+            if prevButtonType == ButtonType.addNewPhrase {
+                // if saving a phrase
+                let newId = customList.count
+                customList.append(CustomPhrase(id: newId, content: self.content))
+                showSave = false
+                content = ""
+            } else if prevButtonType == ButtonType.exit{
+                // if exiting
+                showSave = false
+                content = ""
+            }
+            selectState.buttonType = ButtonType.customPhrase
+            selectState.buttonId = 0
+            selectState.clickState = 0
+            state = 5
         }
     }
     
@@ -469,14 +496,19 @@ struct ConfirmationPopup: View {
     }
     
     private func customPhraseText() -> String {
-        return "Did you mean to select: \(customState)"
+        return "Did you mean to select: \(customState)?"
     }
+    
+    private func addNewPhraseText() -> String {
+        return "Would you like to save the phrase: \(content)?"
+    }
+    
 }
 
 struct ConfirmationPopup_Previews: PreviewProvider {
     static var tempSelect = selectedState(buttonType: ButtonType.cover, buttonId: 0, clickState: 0, isNo: false)
     
     static var previews: some View {
-        ConfirmationPopup(state: .constant(1), rowState: .constant(1), charState: .constant(0), prevState: .constant(0), nextStateId: .constant(0), selectState: .constant(tempSelect), content: .constant(""), contentInd: .constant(0), queue: .constant([]), value: .constant(0), highlightBackspace: .constant(false), highlightCursor: .constant(false), playSound: .constant(true), customState: .constant(""))
+        ConfirmationPopup(state: .constant(1), rowState: .constant(1), charState: .constant(0), prevState: .constant(0), nextStateId: .constant(0), selectState: .constant(tempSelect), content: .constant(""), contentInd: .constant(0), queue: .constant([]), value: .constant(0), highlightBackspace: .constant(false), highlightCursor: .constant(false), playSound: .constant(true), customState: .constant(""), showSave: .constant(false), customList: .constant([]), prevButtonType: .constant(ButtonType.cover))
     }
 }

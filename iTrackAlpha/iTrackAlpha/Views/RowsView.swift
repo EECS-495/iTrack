@@ -26,6 +26,7 @@ struct RowsView: View {
     @Binding var showSave: Bool
     @Binding var customList: [CustomPhrase]
     @Binding var nextStateId: Int
+    @Binding var prevButtonType: ButtonType
     
     var rows: [Row] {
         Rows.filter { row in
@@ -384,10 +385,23 @@ struct RowsView: View {
     }
     
     private func savePhrase() {
-        let newId = customList.count
-        customList.append(CustomPhrase(id: newId, content: self.content))
-        showSave = false
-        goToCustomPhrases()
+        if (showConfirmation) {
+            prevButtonType = ButtonType.addNewPhrase
+            nextStateId = 5
+            prevState = 0
+            selectState.buttonId = 0
+            selectState.buttonType = ButtonType.confirm
+            selectState.isNo = false
+            state = 4
+        } else {
+            let newId = customList.count
+            customList.append(CustomPhrase(id: newId, content: self.content))
+            showSave = false
+            content = ""
+            selectState.buttonType = ButtonType.customPhrase
+            selectState.buttonId = 0
+            state = 5
+        }
     }
     
     private func highlightExit() {
@@ -402,11 +416,27 @@ struct RowsView: View {
     }
     
     private func goToCustomPhrases() {
-        content = ""
-        selectState.buttonType = ButtonType.customPhrase
-        selectState.buttonId = 0
-        selectState.clickState = 0
-        state = 5
+        if showConfirmation {
+            if selectState.buttonType == ButtonType.exit {
+                prevButtonType = ButtonType.exit
+            } else {
+                prevButtonType = ButtonType.enterPhrases
+            }
+            nextStateId = 5
+            prevState = 0
+            selectState.buttonId = 0
+            selectState.buttonType = ButtonType.confirm
+            selectState.isNo = false
+            state = 4
+        } else {
+            if selectState.buttonType == ButtonType.exit {
+                content = ""
+            }
+            selectState.buttonType = ButtonType.customPhrase
+            selectState.buttonId = 0
+            selectState.clickState = 0
+            state = 5
+        }
     }
 }
 
@@ -414,6 +444,6 @@ struct RowsView_Previews: PreviewProvider {
     static var tempSelect = selectedState(buttonType: ButtonType.cover, buttonId: 0, clickState: 0, isNo: false)
     
     static var previews: some View {
-        RowsView(state: .constant(2), rowState: .constant(0), charState: .constant(0), prevState: .constant(1), selectState: .constant(tempSelect), highlightBackspace: .constant(false), queue: .constant([]), value: .constant(0), content: .constant(""), contentInd: .constant(0), highlightCursor: .constant(false), playSound: .constant(true), showConfirmation: .constant(true), showSave: .constant(false), customList: .constant([]), nextStateId: .constant(2))
+        RowsView(state: .constant(2), rowState: .constant(0), charState: .constant(0), prevState: .constant(1), selectState: .constant(tempSelect), highlightBackspace: .constant(false), queue: .constant([]), value: .constant(0), content: .constant(""), contentInd: .constant(0), highlightCursor: .constant(false), playSound: .constant(true), showConfirmation: .constant(true), showSave: .constant(false), customList: .constant([]), nextStateId: .constant(2), prevButtonType: .constant(ButtonType.cover))
     }
 }

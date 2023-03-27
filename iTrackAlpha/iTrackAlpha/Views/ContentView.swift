@@ -49,6 +49,7 @@ struct ContentView: View {
     @State var highlightCursor: Bool = false
     @State var customPhraseList: [CustomPhrase] = [CustomPhrase(id: 0, content: "Hello!")]
     @State var showSave: Bool = false
+    @State var prevButtonType: ButtonType = ButtonType.cover
     @ObservedObject var customizations: CustomizationObject
     var longDelay: CGFloat = 2.0
     var shortDelay: CGFloat = 1.0
@@ -94,18 +95,18 @@ struct ContentView: View {
                 Spacer()
             }
             if state == 0{
-                CoverButtons(state: $state, rowState: $rowState, content: $content, contentInd: $contentInd, prevState: $prevState, selectState: $selectState, highlightBackspace: $highlightBackspace, queue: $viewModel.queue, value: $viewModel.value, showHelpButton: $showHelpButton, highlightCursor: $highlightCursor, playSound: $customizations.playSound, showConfirmation: $customizations.showConfirmationScreen, showSave: $showSave, customList: $customPhraseList, nextStateId: $nextStateId)
+                CoverButtons(state: $state, rowState: $rowState, content: $content, contentInd: $contentInd, prevState: $prevState, selectState: $selectState, highlightBackspace: $highlightBackspace, queue: $viewModel.queue, value: $viewModel.value, showHelpButton: $showHelpButton, highlightCursor: $highlightCursor, playSound: $customizations.playSound, showConfirmation: $customizations.showConfirmationScreen, showSave: $showSave, customList: $customPhraseList, nextStateId: $nextStateId, prevButtonType: $prevButtonType)
             } else if state == 1{
-                RowsView(state: $state, rowState: $rowState, charState: $charState, prevState: $prevState, selectState: $selectState, highlightBackspace: $highlightBackspace, queue: $viewModel.queue, value: $viewModel.value, content: $content, contentInd: $contentInd, highlightCursor: $highlightCursor, playSound: $customizations.playSound, showConfirmation: $customizations.showConfirmationScreen, showSave: $showSave, customList: $customPhraseList, nextStateId: $nextStateId)
+                RowsView(state: $state, rowState: $rowState, charState: $charState, prevState: $prevState, selectState: $selectState, highlightBackspace: $highlightBackspace, queue: $viewModel.queue, value: $viewModel.value, content: $content, contentInd: $contentInd, highlightCursor: $highlightCursor, playSound: $customizations.playSound, showConfirmation: $customizations.showConfirmationScreen, showSave: $showSave, customList: $customPhraseList, nextStateId: $nextStateId, prevButtonType: $prevButtonType)
             } else if state == 2 {
-                CharView(state: $state, rowState: $rowState, charState: $charState, content: $content, contentInd: $contentInd, prevState: $prevState, selectState: $selectState, highlightBackspace: $highlightBackspace, queue: $viewModel.queue, value: $viewModel.value, highlightCursor: $highlightCursor, playSound: $customizations.playSound, currentCharId: 0, showConfirmation: $customizations.showConfirmationScreen, showSave: $showSave, customList: $customPhraseList, nextStateId: $nextStateId)
+                CharView(state: $state, rowState: $rowState, charState: $charState, content: $content, contentInd: $contentInd, prevState: $prevState, selectState: $selectState, highlightBackspace: $highlightBackspace, queue: $viewModel.queue, value: $viewModel.value, highlightCursor: $highlightCursor, playSound: $customizations.playSound, currentCharId: 0, showConfirmation: $customizations.showConfirmationScreen, showSave: $showSave, customList: $customPhraseList, nextStateId: $nextStateId, prevButtonType: $prevButtonType)
             } else if state == 3 {
                 SettingsView(longerBlinkDelay: $customizations.longerBlinkDelay, longerGazeDelay: $customizations.longerGazeDelay, playSound: $customizations.playSound, showConfirmationScreen: $customizations.showConfirmationScreen, selectState: $selectState, queue: $viewModel.queue, value: $viewModel.value, state: $state, nextStateId: $nextStateId, prevState: $prevState, rowState: $rowState)
             } else if state == 4 {
-                ConfirmationPopup(state: $state, rowState: $rowState, charState: $charState, prevState: $prevState, nextStateId: $nextStateId, selectState: $selectState, content: $content, contentInd: $contentInd, queue: $viewModel.queue, value: $viewModel.value, highlightBackspace: $highlightBackspace, highlightCursor: $highlightCursor, playSound: $customizations.playSound, customState: $customState)
+                ConfirmationPopup(state: $state, rowState: $rowState, charState: $charState, prevState: $prevState, nextStateId: $nextStateId, selectState: $selectState, content: $content, contentInd: $contentInd, queue: $viewModel.queue, value: $viewModel.value, highlightBackspace: $highlightBackspace, highlightCursor: $highlightCursor, playSound: $customizations.playSound, customState: $customState, showSave: $showSave, customList: $customPhraseList, prevButtonType: $prevButtonType)
                 Spacer()
             } else if state == 5 {
-                CustomPhrasesView(customList: $customPhraseList, content: $content, contentInd: $contentInd, state: $state, showSave: $showSave, queue: $viewModel.queue, value: $viewModel.value, selectState: $selectState, highlightBackspace: $highlightBackspace, highlightCursor: $highlightCursor, prevState: $prevState, showConfirmation: $customizations.showConfirmationScreen, customState: $customState, nextStateId: $nextStateId)
+                CustomPhrasesView(customList: $customPhraseList, content: $content, contentInd: $contentInd, state: $state, showSave: $showSave, queue: $viewModel.queue, value: $viewModel.value, selectState: $selectState, highlightBackspace: $highlightBackspace, highlightCursor: $highlightCursor, prevState: $prevState, showConfirmation: $customizations.showConfirmationScreen, customState: $customState, nextStateId: $nextStateId, prevButtonType: $prevButtonType)
             } else if state == 6 {
                 TutorialView(selectState: $selectState, queue: $viewModel.queue, value: $viewModel.value, state: $state, rowState: $rowState, prevState: $prevState, nextStateId: $nextStateId, showConfirmation: $customizations.showConfirmationScreen)
             }

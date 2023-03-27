@@ -28,6 +28,7 @@ struct CoverButtons: View {
     @Binding var showSave: Bool
     @Binding var customList: [CustomPhrase]
     @Binding var nextStateId: Int
+    @Binding var prevButtonType: ButtonType
         
     var body: some View {
         VStack{
@@ -193,13 +194,27 @@ struct CoverButtons: View {
     }
     
     private func goToCustomPhrases() {
-        if selectState.buttonType == ButtonType.exit {
-            content = ""
+        if showConfirmation {
+            if selectState.buttonType == ButtonType.exit {
+                prevButtonType = ButtonType.exit
+            } else {
+                prevButtonType = ButtonType.enterPhrases
+            }
+            nextStateId = 5
+            prevState = 0
+            selectState.buttonId = 0
+            selectState.buttonType = ButtonType.confirm
+            selectState.isNo = false
+            state = 4
+        } else {
+            if selectState.buttonType == ButtonType.exit {
+                content = ""
+            }
+            selectState.buttonType = ButtonType.customPhrase
+            selectState.buttonId = 0
+            selectState.clickState = 0
+            state = 5
         }
-        selectState.buttonType = ButtonType.customPhrase
-        selectState.buttonId = 0
-        selectState.clickState = 0
-        state = 5
     }
     
     private func isTutorialHighlighted() -> Bool {
@@ -651,13 +666,23 @@ struct CoverButtons: View {
     }
     
     private func savePhrase() {
-        let newId = customList.count
-        customList.append(CustomPhrase(id: newId, content: self.content))
-        showSave = false
-        content = ""
-        selectState.buttonType = ButtonType.customPhrase
-        selectState.buttonId = 0
-        state = 5
+        if (showConfirmation) {
+            prevButtonType = ButtonType.addNewPhrase
+            nextStateId = 5
+            prevState = 0
+            selectState.buttonId = 0
+            selectState.buttonType = ButtonType.confirm
+            selectState.isNo = false
+            state = 4
+        } else {
+            let newId = customList.count
+            customList.append(CustomPhrase(id: newId, content: self.content))
+            showSave = false
+            content = ""
+            selectState.buttonType = ButtonType.customPhrase
+            selectState.buttonId = 0
+            state = 5
+        }
     }
 }
 
@@ -668,6 +693,6 @@ struct CoverButtons_Previews: PreviewProvider {
     
     static var previews: some View {
         
-        CoverButtons(state: .constant(0), rowState: .constant(0), content: .constant(""), contentInd: .constant(0), prevState: .constant(0), selectState: .constant(tempSelect), highlightBackspace: .constant(false), queue: .constant([]), value: .constant(0), showHelpButton: .constant(false), highlightCursor: .constant(false), playSound: .constant(true), showConfirmation: .constant(true), showSave: .constant(false), customList: .constant([]), nextStateId: .constant(1))
+        CoverButtons(state: .constant(0), rowState: .constant(0), content: .constant(""), contentInd: .constant(0), prevState: .constant(0), selectState: .constant(tempSelect), highlightBackspace: .constant(false), queue: .constant([]), value: .constant(0), showHelpButton: .constant(false), highlightCursor: .constant(false), playSound: .constant(true), showConfirmation: .constant(true), showSave: .constant(false), customList: .constant([]), nextStateId: .constant(1), prevButtonType: .constant(ButtonType.cover))
     }
 }
