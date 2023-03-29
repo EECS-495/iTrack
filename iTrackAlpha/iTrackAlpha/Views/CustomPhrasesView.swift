@@ -24,6 +24,7 @@ struct CustomPhrasesView: View {
     @Binding var customState: String
     @Binding var nextStateId: Int
     @Binding var prevButtonType: ButtonType
+    @Binding var lookLeft: Bool
     @State var curId: Int = 0
     @State var onAddPhrase: Bool = false
     @State var audioPlayer: AVAudioPlayer!
@@ -128,6 +129,7 @@ struct CustomPhrasesView: View {
             selectState.buttonType = ButtonType.confirm
             selectState.isNo = false
             customState = customList[curId].content
+            lookLeft = false
             nextStateId = 0
             prevState = 5
         } else {
@@ -255,7 +257,8 @@ struct CustomPhrasesView: View {
     private func goToCover() {
         if showConfirmation {
             nextStateId = 0
-            prevState = 1
+            prevState = 5
+            lookLeft = true
             selectState.buttonId = 0
             selectState.buttonType = ButtonType.confirm
             selectState.isNo = false
@@ -356,7 +359,7 @@ struct CustomPhrasesView: View {
         if showConfirmation {
             prevButtonType = ButtonType.exit
             nextStateId = 5
-            prevState = 0
+            prevState = 5
             selectState.buttonId = 0
             selectState.buttonType = ButtonType.confirm
             selectState.isNo = false
@@ -374,7 +377,8 @@ struct CustomPhrasesView: View {
         if (showConfirmation) {
             prevButtonType = ButtonType.addNewPhrase
             nextStateId = 5
-            prevState = 0
+            prevState = 5
+            lookLeft = false
             selectState.buttonId = 0
             selectState.buttonType = ButtonType.confirm
             selectState.isNo = false
@@ -397,7 +401,7 @@ struct CustomPhrasesView_Previews: PreviewProvider {
     static var tempSelect = selectedState(buttonType: ButtonType.customPhrase, buttonId: 0, clickState: 0, isNo: false)
     
     static var previews: some View {
-        CustomPhrasesView(customList: .constant([]), content: .constant(""), contentInd: .constant(0), state: .constant(5), showSave: .constant(false), queue: .constant([]), value: .constant(0), selectState: .constant(tempSelect), highlightBackspace: .constant(false), highlightCursor: .constant(false), prevState: .constant(5), showConfirmation: .constant(false), customState: .constant(""), nextStateId: .constant(0), prevButtonType: .constant(ButtonType.cover))
+        CustomPhrasesView(customList: .constant([]), content: .constant(""), contentInd: .constant(0), state: .constant(5), showSave: .constant(false), queue: .constant([]), value: .constant(0), selectState: .constant(tempSelect), highlightBackspace: .constant(false), highlightCursor: .constant(false), prevState: .constant(5), showConfirmation: .constant(false), customState: .constant(""), nextStateId: .constant(0), prevButtonType: .constant(ButtonType.cover), lookLeft: .constant(false))
     }
 }
 

@@ -27,6 +27,7 @@ struct ConfirmationPopup: View {
     @Binding var showSave: Bool
     @Binding var customList: [CustomPhrase]
     @Binding var prevButtonType: ButtonType
+    @Binding var lookLeft: Bool
         
     
     var body: some View {
@@ -35,7 +36,7 @@ struct ConfirmationPopup: View {
             
             // transition everything to use nextState?
             if nextStateId == 0 {
-                if prevState == 5 {
+                if prevState == 5 && !lookLeft {
                     Text(customPhraseText())
                         .foregroundColor(.black)
                 } else {
@@ -308,7 +309,7 @@ struct ConfirmationPopup: View {
             selectState.clickState = 1
             selectState.buttonType = ButtonType.char
             selectState.buttonId = getFirstChar()
-        } else if prevState == 5 {
+        } else if prevState == 5 && !lookLeft {
             var count: Int = 0
             var content1: String = ""
             var content2: String = ""
@@ -359,6 +360,12 @@ struct ConfirmationPopup: View {
             selectState.buttonId = 0
             selectState.clickState = 0
             state = 5
+        } else if nextStateId == 0 && prevState == 5 && lookLeft {
+            // go to cover buttons
+            state = 0
+            selectState.buttonType = ButtonType.cover
+            selectState.buttonId = 0
+            selectState.clickState = 1
         }
     }
     
@@ -509,6 +516,6 @@ struct ConfirmationPopup_Previews: PreviewProvider {
     static var tempSelect = selectedState(buttonType: ButtonType.cover, buttonId: 0, clickState: 0, isNo: false)
     
     static var previews: some View {
-        ConfirmationPopup(state: .constant(1), rowState: .constant(1), charState: .constant(0), prevState: .constant(0), nextStateId: .constant(0), selectState: .constant(tempSelect), content: .constant(""), contentInd: .constant(0), queue: .constant([]), value: .constant(0), highlightBackspace: .constant(false), highlightCursor: .constant(false), playSound: .constant(true), customState: .constant(""), showSave: .constant(false), customList: .constant([]), prevButtonType: .constant(ButtonType.cover))
+        ConfirmationPopup(state: .constant(1), rowState: .constant(1), charState: .constant(0), prevState: .constant(0), nextStateId: .constant(0), selectState: .constant(tempSelect), content: .constant(""), contentInd: .constant(0), queue: .constant([]), value: .constant(0), highlightBackspace: .constant(false), highlightCursor: .constant(false), playSound: .constant(true), customState: .constant(""), showSave: .constant(false), customList: .constant([]), prevButtonType: .constant(ButtonType.cover), lookLeft: .constant(false))
     }
 }

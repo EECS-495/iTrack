@@ -172,7 +172,7 @@ struct CoverButtons: View {
     }
     
     private func exit() {
-        showSave = false
+        // showSave = false
         goToCustomPhrases()
     }
     
@@ -209,6 +209,7 @@ struct CoverButtons: View {
         } else {
             if selectState.buttonType == ButtonType.exit {
                 content = ""
+                showSave = false
             }
             selectState.buttonType = ButtonType.customPhrase
             selectState.buttonId = 0

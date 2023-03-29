@@ -388,7 +388,7 @@ struct RowsView: View {
         if (showConfirmation) {
             prevButtonType = ButtonType.addNewPhrase
             nextStateId = 5
-            prevState = 0
+            prevState = 1
             selectState.buttonId = 0
             selectState.buttonType = ButtonType.confirm
             selectState.isNo = false
@@ -411,7 +411,7 @@ struct RowsView: View {
     }
     
     private func exit() {
-        showSave = false
+        // showSave = false
         goToCustomPhrases()
     }
     
@@ -423,7 +423,7 @@ struct RowsView: View {
                 prevButtonType = ButtonType.enterPhrases
             }
             nextStateId = 5
-            prevState = 0
+            prevState = 1
             selectState.buttonId = 0
             selectState.buttonType = ButtonType.confirm
             selectState.isNo = false
@@ -431,6 +431,7 @@ struct RowsView: View {
         } else {
             if selectState.buttonType == ButtonType.exit {
                 content = ""
+                showSave = false
             }
             selectState.buttonType = ButtonType.customPhrase
             selectState.buttonId = 0
