@@ -24,6 +24,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
     var leftDelay = false*/
 
     override func viewDidLoad() {
+        UIApplication.shared.isIdleTimerDisabled = true
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         guard ARFaceTrackingConfiguration.isSupported else {
