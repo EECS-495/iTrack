@@ -10,7 +10,7 @@ import AVFoundation
 
 struct CoverButtons: View {
     
-    @State var tutorialTimer = Timer.publish(every: 5, on: .main, in: .common).autoconnect()
+    @State var tutorialTimer = Timer.publish(every: 0, on: .main, in: .common).autoconnect()
     @State var audioPlayer: AVAudioPlayer!
     @Binding var state: Int
     @Binding var rowState: Int
