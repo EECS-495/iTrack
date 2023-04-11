@@ -12,6 +12,10 @@ enum ActionType {
     case blink, up, down, left, right, NONE
 }
 
+enum EyeDetect {
+    case both, left, right
+}
+
 struct Action {
     var actionType: ActionType
 }
@@ -46,4 +50,6 @@ class CustomizationObject: ObservableObject {
     @Published var longerGazeDelay: Bool = false
     @Published var playSound: Bool = true
     @Published var showConfirmationScreen: Bool = true
+    @Published var eyeDetect: EyeDetect = EyeDetect.both
+
 }
