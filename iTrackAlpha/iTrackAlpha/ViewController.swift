@@ -9,6 +9,8 @@ import UIKit
 import ARKit
 import SwiftUI
 
+
+
 class ViewController: UIViewController, ARSCNViewDelegate {
     var sceneView: ARSCNView!
     let viewModel = ViewModel()
@@ -16,6 +18,12 @@ class ViewController: UIViewController, ARSCNViewDelegate {
     var actionDelay = false
     var blinkDelayTime = 1.0
     var lookDelayTime = 1.0
+    var blinkSens = 0.9
+    var lookUpSens = 0.7
+    var lookDownSens = 0.35
+    var lookLeftSens = 0.7
+    var lookRightSens = 0.7
+    var eyeDetect = EyeDetect.both
     @ObservedObject var customizations = CustomizationObject()
     
     /*var upDelay = false
@@ -24,9 +32,41 @@ class ViewController: UIViewController, ARSCNViewDelegate {
     var leftDelay = false*/
 
     override func viewDidLoad() {
+    
+        
         UIApplication.shared.isIdleTimerDisabled = true
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
+        /*
+        let authorizationStatus = AVCaptureDevice.authorizationStatus(for: .video)
+        var denied = false
+        
+        switch authorizationStatus {
+        case .authorized:
+            // do nothing, already granted
+             break
+        case .notDetermined:
+            // Request camera access
+            AVCaptureDevice.requestAccess(for: .video) { granted in
+                if granted {
+                    // do nothing, already granted
+                } else {
+                    denied = true
+                }
+            }
+        case .denied, .restricted:
+            denied = true
+            
+        if denied
+        {
+            fatalError("Face tracking is not supported on this device")
+        }
+        
+        @unknown default:
+            fatalError("Unexpected case of AVCaptureDevice.authorizationStatus")
+        }
+        */
+        
+        
         guard ARFaceTrackingConfiguration.isSupported else {
             fatalError("Face tracking is not supported on this device")
         }
@@ -73,38 +113,59 @@ class ViewController: UIViewController, ARSCNViewDelegate {
             return
         }
 
-        let leftBlink = faceAnchor.blendShapes[.eyeBlinkLeft]?.doubleValue ?? 0
-        let rightBlink = faceAnchor.blendShapes[.eyeBlinkRight]?.doubleValue ?? 0
+        var leftBlink = faceAnchor.blendShapes[.eyeBlinkLeft]?.doubleValue ?? 0
+        var rightBlink = faceAnchor.blendShapes[.eyeBlinkRight]?.doubleValue ?? 0
 
-        let lookUpLeft = faceAnchor.blendShapes[.eyeLookUpLeft]?.doubleValue ?? 0
-        let lookUpRight = faceAnchor.blendShapes[.eyeLookUpRight]?.doubleValue ?? 0
+        var lookUpLeft = faceAnchor.blendShapes[.eyeLookUpLeft]?.doubleValue ?? 0
+        var lookUpRight = faceAnchor.blendShapes[.eyeLookUpRight]?.doubleValue ?? 0
         
-        let lookDownLeft = faceAnchor.blendShapes[.eyeLookDownLeft]?.doubleValue ?? 0
-        let lookDownRight = faceAnchor.blendShapes[.eyeLookDownRight]?.doubleValue ?? 0
+        var lookDownLeft = faceAnchor.blendShapes[.eyeLookDownLeft]?.doubleValue ?? 0
+        var lookDownRight = faceAnchor.blendShapes[.eyeLookDownRight]?.doubleValue ?? 0
         
-        let lookLeftLeft = faceAnchor.blendShapes[.eyeLookInLeft]?.doubleValue ?? 0
-        let lookLeftRight = faceAnchor.blendShapes[.eyeLookOutRight]?.doubleValue ?? 0
+        var lookLeftLeft = faceAnchor.blendShapes[.eyeLookInLeft]?.doubleValue ?? 0
+        var lookLeftRight = faceAnchor.blendShapes[.eyeLookOutRight]?.doubleValue ?? 0
         
-        let lookRightLeft = faceAnchor.blendShapes[.eyeLookOutLeft]?.doubleValue ?? 0
-        let lookRightRight = faceAnchor.blendShapes[.eyeLookInRight]?.doubleValue ?? 0
+        var lookRightLeft = faceAnchor.blendShapes[.eyeLookOutLeft]?.doubleValue ?? 0
+        var lookRightRight = faceAnchor.blendShapes[.eyeLookInRight]?.doubleValue ?? 0
         
         let mouthOpen = faceAnchor.blendShapes[.jawOpen]?.doubleValue ?? 0
         
+        if eyeDetect == EyeDetect.right
+        {
+            leftBlink = 1
+            lookUpLeft = 1
+            lookDownLeft = 1
+            lookLeftLeft = 1
+            lookRightLeft = 1
+        }
+        else if eyeDetect == EyeDetect.left
+        {
+            rightBlink = 1
+            lookUpRight = 1
+            lookDownRight = 1
+            lookLeftRight = 1
+            lookRightRight = 1
+        }
+        
         blinkDelayTime = customizations.longerBlinkDelay ? 2.0 : 1.0
         lookDelayTime = customizations.longerGazeDelay ? 2.0 : 1.0
+        blinkSens = customizations.blinkSens
+        lookUpSens = customizations.lookUpSens
+        lookDownSens = customizations.lookDownSens
+        lookRightSens = customizations.lookRightSens
+        lookLeftSens = customizations.lookLeftSens
+        
         if !actionDelay {
-            if leftBlink > 0.9 && rightBlink > 0.9 {
+            if leftBlink > blinkSens && rightBlink > blinkSens {
                 print("Blink")
-                print("blink delay \(blinkDelayTime)")
-                print("gaze delay \(lookDelayTime)")
                 viewModel.push(action: Action(actionType: ActionType.blink))
                 self.actionDelay = true
                 DispatchQueue.main.asyncAfter(deadline: .now() + blinkDelayTime){
                     self.actionDelay = false
                 }
-                
             }
-            if lookUpLeft > 0.7 && lookUpRight > 0.7 {
+
+            if lookUpLeft > lookUpSens && lookUpRight > lookUpSens {
                 print("Up")
                 viewModel.push(action: Action(actionType: ActionType.up))
                 self.actionDelay = true
@@ -112,7 +173,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
                     self.actionDelay = false
                 }
             }
-            if lookDownLeft > 0.35 && lookDownRight > 0.35 {
+            if lookDownLeft > lookDownSens && lookDownRight > lookDownSens {
                 print("Down")
                 viewModel.push(action: Action(actionType: ActionType.down))
                 self.actionDelay = true
@@ -120,7 +181,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
                     self.actionDelay = false
                 }
             }
-            if lookLeftLeft > 0.7 && lookLeftRight > 0.7  {
+            if lookLeftLeft > lookLeftSens && lookLeftRight > lookLeftSens  {
                 print("Left")
                 viewModel.push(action: Action(actionType: ActionType.left))
                 self.actionDelay = true
@@ -128,7 +189,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
                     self.actionDelay = false
                 }
             }
-            if lookRightLeft > 0.7 && lookRightRight > 0.7 {
+            if lookRightLeft > lookRightSens && lookRightRight > lookRightSens {
                 print("Right")
                 viewModel.push(action: Action(actionType: ActionType.right))
                 self.actionDelay = true
