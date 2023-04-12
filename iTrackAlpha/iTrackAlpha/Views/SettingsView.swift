@@ -13,6 +13,8 @@ struct SettingsView: View {
     @Binding var longerGazeDelay: Bool
     @Binding var playSound: Bool
     @Binding var showConfirmationScreen: Bool
+    @Binding var detectSingleEye: Bool
+    @Binding var detectRightEye: Bool
     @Binding var selectState: selectedState
     @Binding var queue: [Action]
     @Binding var value: Int
@@ -25,6 +27,7 @@ struct SettingsView: View {
     @State var showGazeDelayTut: Bool = false
     @State var showSoundTut: Bool = false
     @State var showConfirmationTut: Bool = false
+    @State var showDetectEyeTut: Bool = false
     @State var reload: Int = 0
     
     var body: some View {
@@ -37,6 +40,8 @@ struct SettingsView: View {
             ExtendGazeSettingsView(longerGazeDelay: $longerGazeDelay, selectState: $selectState, showGazeDelayTut: $showGazeDelayTut)
             PlaySoundSettingsView(playSound: $playSound, selectState: $selectState, showSoundTut: $showSoundTut)
             ShowConfirmSettingsView(showConfirmationScreen: $showConfirmationScreen, selectState: $selectState, showConfirmationTut: $showConfirmationTut)
+            DetectEyeView(detectSingleEye: $detectSingleEye, detectRightEye: $detectRightEye, selectState: $selectState,
+                showDetectEyeTut: $showDetectEyeTut)
             Button(action: {enterCalibration(fromBlink: false)}) {
                 Text("Enter Sensitivity Calibration")
                     .frame(width: widthDim(), height: heightDim())
@@ -164,6 +169,16 @@ struct SettingsView: View {
                     showConfirmationScreen = true
                 }
             }
+            else if curId == 4 {
+                if playSound {
+                    makeSound()
+                }
+                if detectSingleEye {
+                    detectSingleEye = false
+                } else {
+                    detectSingleEye = true
+                }
+            }
         } else if curType == ButtonType.settingTutorial {
             // call tutorial func to change bools to achieve lift off
             if playSound {
@@ -205,7 +220,14 @@ struct SettingsView: View {
             } else {
                 showConfirmationTut = true
             }
+        } else if buttonId == 4 {
+            if showDetectEyeTut {
+                showDetectEyeTut = false
+            } else {
+                showDetectEyeTut = true
+            }
         }
+        
     }
     
     private func isTutorialSelected(buttonId: Int) -> Bool{
@@ -298,6 +320,6 @@ struct SettingsView_Previews: PreviewProvider {
     static var tempSelect = selectedState(buttonType: ButtonType.settingToggle, buttonId: 0, clickState: 1, isNo: false)
     
     static var previews: some View {
-        SettingsView(longerBlinkDelay: .constant(false), longerGazeDelay: .constant(false), playSound: .constant(true), showConfirmationScreen: .constant(true), selectState: .constant(tempSelect), queue: .constant([]), value: .constant(0), state: .constant(3), nextStateId: .constant(0), prevState: .constant(3), rowState: .constant(0))
+        SettingsView(longerBlinkDelay: .constant(false), longerGazeDelay: .constant(false), playSound: .constant(true), showConfirmationScreen: .constant(true), detectSingleEye: .constant(false), detectRightEye: .constant(false), selectState: .constant(tempSelect), queue: .constant([]), value: .constant(0), state: .constant(3), nextStateId: .constant(0), prevState: .constant(3), rowState: .constant(0))
     }
 }
