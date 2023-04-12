@@ -21,10 +21,12 @@ struct CalibrationButtonsView: View {
     @Binding var lookDownSens: CGFloat
     @Binding var lookLeftSens: CGFloat
     @Binding var lookRightSens: CGFloat
+    @Binding var blinkSens: CGFloat
     @Binding var defaultUp: CGFloat
     @Binding var defaultDown: CGFloat
     @Binding var defaultLeft: CGFloat
     @Binding var defaultRight: CGFloat
+    @Binding var defaultBlink: CGFloat
     
     var body: some View {
         VStack{ // use padding instead of spacers if there are too many objects
@@ -241,6 +243,6 @@ struct CalibrationButtonsView_Previews: PreviewProvider {
     static var tempSelect = selectedState(buttonType: ButtonType.calibration, buttonId: 0, clickState: 1, isNo: false)
     
     static var previews: some View {
-        CalibrationButtonsView(state: .constant(7), calibrationState: .constant(CalibrationState.buttons), selectState: .constant(tempSelect), queue: .constant([]), value: .constant(0), showConfirmationScreen: .constant(true), nextStateId: .constant(0), prevState: .constant(7), playSound: .constant(true), lookUpSens: .constant(0.7), lookDownSens: .constant(0.35), lookLeftSens: .constant(0.7), lookRightSens: .constant(0.7), defaultUp: .constant(0.7), defaultDown: .constant(0.35), defaultLeft: .constant(0.7), defaultRight: .constant(0.7))
+        CalibrationButtonsView(state: .constant(7), calibrationState: .constant(CalibrationState.buttons), selectState: .constant(tempSelect), queue: .constant([]), value: .constant(0), showConfirmationScreen: .constant(true), nextStateId: .constant(0), prevState: .constant(7), playSound: .constant(true), lookUpSens: .constant(0.7), lookDownSens: .constant(0.35), lookLeftSens: .constant(0.7), lookRightSens: .constant(0.7), blinkSens: .constant(0.9), defaultUp: .constant(0.7), defaultDown: .constant(0.35), defaultLeft: .constant(0.7), defaultRight: .constant(0.7), defaultBlink: .constant(0.9))
     }
 }

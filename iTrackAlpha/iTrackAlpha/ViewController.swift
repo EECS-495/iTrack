@@ -18,6 +18,11 @@ class ViewController: UIViewController, ARSCNViewDelegate {
     var actionDelay = false
     var blinkDelayTime = 1.0
     var lookDelayTime = 1.0
+    var blinkSens = 0.9
+    var lookUpSens = 0.7
+    var lookDownSens = 0.35
+    var lookLeftSens = 0.7
+    var lookRightSens = 0.7
     var eyeDetect = EyeDetect.both
     @ObservedObject var customizations = CustomizationObject()
     
@@ -144,9 +149,14 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         
         blinkDelayTime = customizations.longerBlinkDelay ? 2.0 : 1.0
         lookDelayTime = customizations.longerGazeDelay ? 2.0 : 1.0
+        blinkSens = customizations.blinkSens
+        lookUpSens = customizations.lookUpSens
+        lookDownSens = customizations.lookDownSens
+        lookRightSens = customizations.lookRightSens
+        lookLeftSens = customizations.lookLeftSens
         
         if !actionDelay {
-            if leftBlink > 0.9 && rightBlink > 0.9 {
+            if leftBlink > blinkSens && rightBlink > blinkSens {
                 print("Blink")
                 viewModel.push(action: Action(actionType: ActionType.blink))
                 self.actionDelay = true
@@ -155,7 +165,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
                 }
             }
 
-            if lookUpLeft > 0.7 && lookUpRight > 0.7 {
+            if lookUpLeft > lookUpSens && lookUpRight > lookUpSens {
                 print("Up")
                 viewModel.push(action: Action(actionType: ActionType.up))
                 self.actionDelay = true
@@ -163,7 +173,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
                     self.actionDelay = false
                 }
             }
-            if lookDownLeft > 0.35 && lookDownRight > 0.35 {
+            if lookDownLeft > lookDownSens && lookDownRight > lookDownSens {
                 print("Down")
                 viewModel.push(action: Action(actionType: ActionType.down))
                 self.actionDelay = true
@@ -171,7 +181,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
                     self.actionDelay = false
                 }
             }
-            if lookLeftLeft > 0.7 && lookLeftRight > 0.7  {
+            if lookLeftLeft > lookLeftSens && lookLeftRight > lookLeftSens  {
                 print("Left")
                 viewModel.push(action: Action(actionType: ActionType.left))
                 self.actionDelay = true
@@ -179,7 +189,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
                     self.actionDelay = false
                 }
             }
-            if lookRightLeft > 0.7 && lookRightRight > 0.7 {
+            if lookRightLeft > lookRightSens && lookRightRight > lookRightSens {
                 print("Right")
                 viewModel.push(action: Action(actionType: ActionType.right))
                 self.actionDelay = true

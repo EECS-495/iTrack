@@ -17,10 +17,12 @@ struct CalibrationConfirmationView: View {
     @Binding var lookDownSens: CGFloat
     @Binding var lookLeftSens: CGFloat
     @Binding var lookRightSens: CGFloat
+    @Binding var blinkSens: CGFloat
     @Binding var origLookUp: CGFloat
     @Binding var origLookDown: CGFloat
     @Binding var origLookLeft: CGFloat
     @Binding var origLookRight: CGFloat
+    @Binding var origBlink: CGFloat
     @Binding var inCalibrationConfirmation: Bool
     @Binding var playSound: Bool
     @State var audioPlayer: AVAudioPlayer!
@@ -28,11 +30,11 @@ struct CalibrationConfirmationView: View {
     // TODO make pretty and make text appear to the left of the buttons after the user selects the help button
     var body: some View {
         VStack{
-            Text("If satisfied with sensitivity for looking \(direction()), select the Confirm button to exit and save changes")
+            Text("If satisfied with sensitivity for \(direction()), select the Confirm button to exit and save changes")
                 .padding()
-            Text("If triggering response from app while looking \(direction()) was difficult, select the Increase button")
+            Text("If triggering response from app while \(direction()) was difficult, select the Increase button")
                 .padding()
-            Text("If triggering response from app while looking \(direction()) was too sensitive, select the Decrease button")
+            Text("If triggering response from app while \(direction()) was too sensitive, select the Decrease button")
                 .padding()
             Text("To exit the calibration process and revert changes, select the Exit button ")
                 .padding()
@@ -93,13 +95,15 @@ struct CalibrationConfirmationView: View {
     
     private func direction() -> String {
         if calibrationState == CalibrationState.up {
-            return "up"
+            return "looking up"
         } else if calibrationState == CalibrationState.down {
-            return "down"
+            return "looking down"
         } else if calibrationState == CalibrationState.left {
-            return "left"
+            return "looking left"
         } else if calibrationState == CalibrationState.right {
-            return "right"
+            return "looking right"
+        } else if calibrationState == CalibrationState.blink {
+            return "blinking"
         } else {
             return "INVALID CALIBRATION STATE IN CalibrationConfirmationView"
         }
@@ -119,6 +123,8 @@ struct CalibrationConfirmationView: View {
             lookLeftSens = lookLeftSens - sensIncrement
         } else if calibrationState == CalibrationState.right {
             lookRightSens = lookRightSens - sensIncrement
+        } else if calibrationState == CalibrationState.blink {
+            blinkSens = blinkSens - sensIncrement
         }
         inCalibrationConfirmation = false
     }
@@ -137,6 +143,8 @@ struct CalibrationConfirmationView: View {
             lookLeftSens = lookLeftSens + sensIncrement
         } else if calibrationState == CalibrationState.right {
             lookRightSens = lookRightSens + sensIncrement
+        } else if calibrationState == CalibrationState.blink {
+            blinkSens = blinkSens + sensIncrement
         }
         inCalibrationConfirmation = false
     }
@@ -159,6 +167,8 @@ struct CalibrationConfirmationView: View {
             lookLeftSens = origLookLeft
         } else if calibrationState == CalibrationState.right {
             lookRightSens = origLookRight
+        } else if calibrationState == CalibrationState.blink {
+            blinkSens = origBlink
         }
         inCalibrationConfirmation = false
         calibrationState = CalibrationState.buttons
@@ -236,6 +246,6 @@ struct CalibrationConfirmationView_Previews: PreviewProvider {
     static var tempSelect = selectedState(buttonType: ButtonType.calibrationConf, buttonId: 0, clickState: 1, isNo: false)
     
     static var previews: some View {
-        CalibrationConfirmationView(calibrationState: .constant(CalibrationState.down), selectState: .constant(tempSelect), queue: .constant([]), value: .constant(0), lookUpSens: .constant(0.7), lookDownSens: .constant(0.35), lookLeftSens: .constant(0.7), lookRightSens: .constant(0.7), origLookUp: .constant(0.7), origLookDown: .constant(0.35), origLookLeft: .constant(0.7), origLookRight: .constant(0.7),inCalibrationConfirmation: .constant(true), playSound: .constant(true))
+        CalibrationConfirmationView(calibrationState: .constant(CalibrationState.down), selectState: .constant(tempSelect), queue: .constant([]), value: .constant(0), lookUpSens: .constant(0.7), lookDownSens: .constant(0.35), lookLeftSens: .constant(0.7), lookRightSens: .constant(0.7),blinkSens: .constant(0.9), origLookUp: .constant(0.7), origLookDown: .constant(0.35), origLookLeft: .constant(0.7), origLookRight: .constant(0.7), origBlink: .constant(0.9), inCalibrationConfirmation: .constant(true), playSound: .constant(true))
     }
 }

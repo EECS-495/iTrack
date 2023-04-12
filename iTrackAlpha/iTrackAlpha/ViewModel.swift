@@ -54,5 +54,6 @@ class CustomizationObject: ObservableObject {
     @Published var lookDownSens: CGFloat = 0.35
     @Published var lookLeftSens: CGFloat = 0.7
     @Published var lookRightSens: CGFloat = 0.7
+    @Published var blinkSens: CGFloat = 0.9
     @Published var eyeDetect: EyeDetect = EyeDetect.both
 }

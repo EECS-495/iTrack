@@ -17,15 +17,25 @@ struct GazeCalibrationView: View {
     @Binding var lookDownSens: CGFloat
     @Binding var lookLeftSens: CGFloat
     @Binding var lookRightSens: CGFloat
+    @Binding var blinkSens: CGFloat
     @Binding var inCalibrationConfirmation: Bool
     @State var audioPlayer: AVAudioPlayer!
     // TODO determine way of saving original ^^ sensitivities, changing temp versions and updating the ones above only if the user clicks confirm in GazeConfirmationView
     var body: some View {
-        Text(calibrationText())
+        VStack{
+            Text(calibrationText())
+            Text("For best results, pause in between actions")
+        }
+            .foregroundColor(.black)
             .onChange(of: value ) { _ in
                 if !queue.isEmpty {
                     let action = queue.first!.actionType
-                    if action != ActionType.blink {
+                    if action == ActionType.blink {
+                        if calibrationState == CalibrationState.blink {
+                            registerBlink()
+                        }
+                        queue.removeFirst()
+                    } else {
                         registerGaze(action: action)
                         queue.removeFirst()
                     }
@@ -42,6 +52,8 @@ struct GazeCalibrationView: View {
             return "Look left until you hear a sound"
         } else if calibrationState == CalibrationState.right {
             return "Look right until you hear a sound"
+        } else if calibrationState == CalibrationState.blink {
+            return "Blink until you hear a sound"
         } else {
             return "This string should never be displayed, invalid calibration state for GazeCalibrationView"
         }
@@ -80,6 +92,13 @@ struct GazeCalibrationView: View {
         }
     }
     
+    private func registerBlink() {
+        // called when the user blinks and they are in adjust blink mode
+        inCalibrationConfirmation = true
+        selectState.buttonId = 0
+        selectState.buttonType = ButtonType.calibrationConf
+    }
+    
     private func makeSound() {
         print("in make sound calib")
         guard let soundURL = Bundle.main.url(forResource: "blinkTone.wav", withExtension: nil) else {
@@ -99,6 +118,6 @@ struct GazeCalibrationView_Previews: PreviewProvider {
     static var tempSelect = selectedState(buttonType: ButtonType.calibration, buttonId: 0, clickState: 1, isNo: false)
     
     static var previews: some View {
-        GazeCalibrationView(calibrationState: .constant(CalibrationState.up), selectState: .constant(tempSelect), queue: .constant([]), value: .constant(0), lookUpSens: .constant(0.7), lookDownSens: .constant(0.35), lookLeftSens: .constant(0.7), lookRightSens: .constant(0.7), inCalibrationConfirmation: .constant(false))
+        GazeCalibrationView(calibrationState: .constant(CalibrationState.blink), selectState: .constant(tempSelect), queue: .constant([]), value: .constant(0), lookUpSens: .constant(0.7), lookDownSens: .constant(0.35), lookLeftSens: .constant(0.7), lookRightSens: .constant(0.7), blinkSens: .constant(0.9), inCalibrationConfirmation: .constant(false))
     }
 }

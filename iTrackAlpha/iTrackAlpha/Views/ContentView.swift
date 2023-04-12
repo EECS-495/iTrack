@@ -115,7 +115,7 @@ struct ContentView: View {
             } else if state == 6 {
                 TutorialView(selectState: $selectState, queue: $viewModel.queue, value: $viewModel.value, state: $state, rowState: $rowState, prevState: $prevState, nextStateId: $nextStateId, showConfirmation: $customizations.showConfirmationScreen)
             } else if state == 7 {
-                CalibrationView(state: $state, showConfirmationScreen: $customizations.showConfirmationScreen, selectState: $selectState, queue: $viewModel.queue, value: $viewModel.value, nextStateId: $nextStateId, prevState: $prevState, lookUpSens: $customizations.lookUpSens, lookDownSens: $customizations.lookDownSens, lookLeftSens: $customizations.lookLeftSens, lookRightSens: $customizations.lookRightSens, playSound: $customizations.playSound)
+                CalibrationView(state: $state, showConfirmationScreen: $customizations.showConfirmationScreen, selectState: $selectState, queue: $viewModel.queue, value: $viewModel.value, nextStateId: $nextStateId, prevState: $prevState, lookUpSens: $customizations.lookUpSens, lookDownSens: $customizations.lookDownSens, lookLeftSens: $customizations.lookLeftSens, lookRightSens: $customizations.lookRightSens, blinkSens: $customizations.blinkSens, playSound: $customizations.playSound)
             }
             Spacer()
         }
