@@ -22,6 +22,17 @@
 		9507AA1829997BB200CE7E78 /* charRows.json in Resources */ = {isa = PBXBuildFile; fileRef = 9507AA1529997BB200CE7E78 /* charRows.json */; };
 		9507AA1A29997D1D00CE7E78 /* PageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9507AA1929997D1D00CE7E78 /* PageViewController.swift */; };
 		9507AA1C29997D7C00CE7E78 /* PageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9507AA1B29997D7C00CE7E78 /* PageView.swift */; };
+		BE1C117829D1FB51003C589F /* TutorialView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE1C117729D1FB51003C589F /* TutorialView.swift */; };
+		BE1C117A29D1FB5A003C589F /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE1C117929D1FB5A003C589F /* SettingsView.swift */; };
+		BE1C117C29D1FB6D003C589F /* ClickButTutorialView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE1C117B29D1FB6D003C589F /* ClickButTutorialView.swift */; };
+		BE1C117E29D1FB73003C589F /* CustomPhrasesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE1C117D29D1FB73003C589F /* CustomPhrasesView.swift */; };
+		BE1C118129D1FB7A003C589F /* ExtendBlinkSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE1C117F29D1FB7A003C589F /* ExtendBlinkSettingsView.swift */; };
+		BE1C118229D1FB7A003C589F /* ExtendGazeSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE1C118029D1FB7A003C589F /* ExtendGazeSettingsView.swift */; };
+		BE1C118429D1FB80003C589F /* ShowConfirmSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE1C118329D1FB80003C589F /* ShowConfirmSettingsView.swift */; };
+		BE1C118729D1FB86003C589F /* GoBackTutorial.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE1C118529D1FB86003C589F /* GoBackTutorial.swift */; };
+		BE1C118829D1FB86003C589F /* NavButtonsTutorialView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE1C118629D1FB86003C589F /* NavButtonsTutorialView.swift */; };
+		BE1C118A29D1FB8F003C589F /* PlaySoundSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE1C118929D1FB8F003C589F /* PlaySoundSettingsView.swift */; };
+		BE1C118C29D1FBD5003C589F /* blinkTone.wav in Resources */ = {isa = PBXBuildFile; fileRef = BE1C118B29D1FBD5003C589F /* blinkTone.wav */; };
 		CC5353CE299715BA00097C49 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC5353CD299715BA00097C49 /* AppDelegate.swift */; };
 		CC5353D0299715BA00097C49 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC5353CF299715BA00097C49 /* SceneDelegate.swift */; };
 		CC5353D2299715BA00097C49 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC5353D1299715BA00097C49 /* ViewController.swift */; };
@@ -67,6 +78,17 @@
 		9507AA1529997BB200CE7E78 /* charRows.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = charRows.json; sourceTree = "<group>"; };
 		9507AA1929997D1D00CE7E78 /* PageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageViewController.swift; sourceTree = "<group>"; };
 		9507AA1B29997D7C00CE7E78 /* PageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageView.swift; sourceTree = "<group>"; };
+		BE1C117729D1FB51003C589F /* TutorialView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TutorialView.swift; sourceTree = "<group>"; };
+		BE1C117929D1FB5A003C589F /* SettingsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		BE1C117B29D1FB6D003C589F /* ClickButTutorialView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ClickButTutorialView.swift; sourceTree = "<group>"; };
+		BE1C117D29D1FB73003C589F /* CustomPhrasesView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomPhrasesView.swift; sourceTree = "<group>"; };
+		BE1C117F29D1FB7A003C589F /* ExtendBlinkSettingsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExtendBlinkSettingsView.swift; sourceTree = "<group>"; };
+		BE1C118029D1FB7A003C589F /* ExtendGazeSettingsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExtendGazeSettingsView.swift; sourceTree = "<group>"; };
+		BE1C118329D1FB80003C589F /* ShowConfirmSettingsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShowConfirmSettingsView.swift; sourceTree = "<group>"; };
+		BE1C118529D1FB86003C589F /* GoBackTutorial.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GoBackTutorial.swift; sourceTree = "<group>"; };
+		BE1C118629D1FB86003C589F /* NavButtonsTutorialView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NavButtonsTutorialView.swift; sourceTree = "<group>"; };
+		BE1C118929D1FB8F003C589F /* PlaySoundSettingsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlaySoundSettingsView.swift; sourceTree = "<group>"; };
+		BE1C118B29D1FBD5003C589F /* blinkTone.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = blinkTone.wav; sourceTree = "<group>"; };
 		CC5353CA299715BA00097C49 /* iTrackAlpha.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iTrackAlpha.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CC5353CD299715BA00097C49 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		CC5353CF299715BA00097C49 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -111,6 +133,16 @@
 		9507A9FA2999791400CE7E78 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				BE1C118929D1FB8F003C589F /* PlaySoundSettingsView.swift */,
+				BE1C118529D1FB86003C589F /* GoBackTutorial.swift */,
+				BE1C118629D1FB86003C589F /* NavButtonsTutorialView.swift */,
+				BE1C118329D1FB80003C589F /* ShowConfirmSettingsView.swift */,
+				BE1C117F29D1FB7A003C589F /* ExtendBlinkSettingsView.swift */,
+				BE1C118029D1FB7A003C589F /* ExtendGazeSettingsView.swift */,
+				BE1C117D29D1FB73003C589F /* CustomPhrasesView.swift */,
+				BE1C117B29D1FB6D003C589F /* ClickButTutorialView.swift */,
+				BE1C117929D1FB5A003C589F /* SettingsView.swift */,
+				BE1C117729D1FB51003C589F /* TutorialView.swift */,
 				9507A9FB2999793300CE7E78 /* ContentView.swift */,
 				9507A9FD2999795100CE7E78 /* RowsView.swift */,
 				9507A9FF2999796F00CE7E78 /* CharView.swift */,
@@ -137,6 +169,7 @@
 		9507AA1229997B5100CE7E78 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				BE1C118B29D1FBD5003C589F /* blinkTone.wav */,
 				9507AA1529997BB200CE7E78 /* charRows.json */,
 				9507AA1429997BB200CE7E78 /* lowerRowsData.json */,
 				9507AA1329997BB200CE7E78 /* rowsData.json */,
@@ -304,6 +337,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				CC5353DA299715BF00097C49 /* LaunchScreen.storyboard in Resources */,
+				BE1C118C29D1FBD5003C589F /* blinkTone.wav in Resources */,
 				CC5353D7299715BF00097C49 /* Assets.xcassets in Resources */,
 				9507AA1629997BB200CE7E78 /* rowsData.json in Resources */,
 				CC5353D5299715BA00097C49 /* Main.storyboard in Resources */,
@@ -335,19 +369,29 @@
 			files = (
 				CC5353D2299715BA00097C49 /* ViewController.swift in Sources */,
 				9507AA1A29997D1D00CE7E78 /* PageViewController.swift in Sources */,
+				BE1C118729D1FB86003C589F /* GoBackTutorial.swift in Sources */,
 				9507AA0829997A0200CE7E78 /* GestureSwipeRight.swift in Sources */,
+				BE1C117C29D1FB6D003C589F /* ClickButTutorialView.swift in Sources */,
+				BE1C118829D1FB86003C589F /* NavButtonsTutorialView.swift in Sources */,
+				BE1C117A29D1FB5A003C589F /* SettingsView.swift in Sources */,
 				9507AA0D29997B0D00CE7E78 /* CharRow.swift in Sources */,
+				BE1C118129D1FB7A003C589F /* ExtendBlinkSettingsView.swift in Sources */,
 				9507AA1129997B2500CE7E78 /* Row.swift in Sources */,
 				CC5353CE299715BA00097C49 /* AppDelegate.swift in Sources */,
+				BE1C118429D1FB80003C589F /* ShowConfirmSettingsView.swift in Sources */,
 				CCC5D5B9299C472E00D078A5 /* ViewModel.swift in Sources */,
 				9507A9FE2999795100CE7E78 /* RowsView.swift in Sources */,
 				9507AA0F29997B1600CE7E78 /* ModelData.swift in Sources */,
+				BE1C118A29D1FB8F003C589F /* PlaySoundSettingsView.swift in Sources */,
+				BE1C117829D1FB51003C589F /* TutorialView.swift in Sources */,
 				9507AA04299979A900CE7E78 /* CoverButtons.swift in Sources */,
 				9507AA022999798D00CE7E78 /* ConfirmationPopup.swift in Sources */,
 				9507AA1C29997D7C00CE7E78 /* PageView.swift in Sources */,
 				9507A9FC2999793300CE7E78 /* ContentView.swift in Sources */,
 				9507AA002999796F00CE7E78 /* CharView.swift in Sources */,
 				CC5353D0299715BA00097C49 /* SceneDelegate.swift in Sources */,
+				BE1C117E29D1FB73003C589F /* CustomPhrasesView.swift in Sources */,
+				BE1C118229D1FB7A003C589F /* ExtendGazeSettingsView.swift in Sources */,
 				9507AA06299979F400CE7E78 /* CustomTextFieldView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -525,7 +569,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 82CF59PP76;
+				DEVELOPMENT_TEAM = 7J3MCKBU29;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = iTrackAlpha/Info.plist;
 				INFOPLIST_KEY_NSCameraUsageDescription = "Using front camera for blink detection.";
@@ -539,7 +583,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = manan.iTrackAlpha;
+				PRODUCT_BUNDLE_IDENTIFIER = aeh.iTrackAlpha;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -554,7 +598,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 82CF59PP76;
+				DEVELOPMENT_TEAM = 7J3MCKBU29;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = iTrackAlpha/Info.plist;
 				INFOPLIST_KEY_NSCameraUsageDescription = "Using front camera for blink detection.";
@@ -568,7 +612,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = manan.iTrackAlpha;
+				PRODUCT_BUNDLE_IDENTIFIER = aeh.iTrackAlpha;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;

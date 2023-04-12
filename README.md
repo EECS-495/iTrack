@@ -47,5 +47,32 @@ Alpha Release:
 
         Features that can tolerate imperfect environments:
         - Shaky camera due to transport, walking, etc.
+        
+Beta Release
+
+    New Features:
+        
+        Cursor Adjustments:
+        - Looking left from the backspace button will highlight the cursor
+        - Once the cursor is highlighted, the user can look left or right to shift it's position within their message
+        - Looking down from any point in the message will exit the cursor-editing mode
+        
+        Settings Screen:
+        - Blinking while the gear icon in the bottom right of the home screen will open the settings screen
+        - The user can currently only customize the blink delay, the gaze delay, the sound that plays after actions, and the presence of the confirmation             screen
+        - In settings, blinking while a toggle is highlighted will flip the toggle
+        - In settings, blinking while one of the help buttons is highlighted will make a brief explination of the respective setting appear
+        - Looking left from any of the toggles will take the user back to the home screen
+        
+        General Tutorial:
+        - After five seconds without navigating away from the home screen, a help button will appear in the bottom left of the home screen
+        - Looking left from the settings button will highlight the help button
+        - Blinking while on the help button will open the general tutorial that explains how to navigate buttons, "click" buttons, and how to go to the               previous page
+        - Looking left will bring the user back to the home screen
+        
+        Custom Phrases:
+        - Users can create and load custom phrases that they use often into their messages without having to type them character by character every time
+        - In the custom phrases screen, users will see a list of their previously saved phrases that they can immediately insert into the text field
+        - Users can create a new custom phrase with the add button at the bottom, where they will be given the normal interface for typing with a save               button at the top for when they are ready to save the contents of the text field
 
 Most of the logic regarding eye tracking and ARKit Framework configuration can be found in the "iTrackAlpha/iTrackAlpha/ViewController.swift" file.

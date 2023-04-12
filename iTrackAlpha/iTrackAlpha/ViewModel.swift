@@ -12,6 +12,10 @@ enum ActionType {
     case blink, up, down, left, right, NONE
 }
 
+enum EyeDetect {
+    case both, left, right
+}
+
 struct Action {
     var actionType: ActionType
 }
@@ -50,4 +54,5 @@ class CustomizationObject: ObservableObject {
     @Published var lookDownSens: CGFloat = 0.35
     @Published var lookLeftSens: CGFloat = 0.7
     @Published var lookRightSens: CGFloat = 0.7
+    @Published var eyeDetect: EyeDetect = EyeDetect.both
 }
