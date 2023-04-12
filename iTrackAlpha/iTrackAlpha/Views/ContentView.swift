@@ -9,7 +9,7 @@ import SwiftUI
 import AVFoundation
 
 enum ButtonType {
-    case cover, row , char, space, backspace, confirm, cursor, settingToggle, enterSettings, customPhrase, enterPhrases, addNewPhrase, tutorial, settingTutorial, exit
+    case cover, row , char, space, backspace, confirm, cursor, settingToggle, enterSettings, customPhrase, enterPhrases, addNewPhrase, tutorial, settingTutorial, exit, clear
 }
 
 struct selectedState {

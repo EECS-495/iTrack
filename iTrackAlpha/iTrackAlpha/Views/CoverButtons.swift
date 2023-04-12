@@ -32,6 +32,14 @@ struct CoverButtons: View {
         
     var body: some View {
         VStack{
+            Button (action : {clearText()}) {
+                Text("Clear")
+                    .frame(width: clearWidth(), height: clearHeight())
+                    .foregroundColor(.black)
+                    .background(Color(red: 0.83, green: 0.83, blue: 0.83))
+                    .border(.blue, width: clearBorder())
+                    .cornerRadius(8)
+            }
             Spacer()
             Button(action: {toNextState(buttonID: 0)}){
                 Image("uppercover")
@@ -126,6 +134,35 @@ struct CoverButtons: View {
                 }
             }
         }
+    }
+    
+    private func clearHeight() -> CGFloat {
+        if selectState.buttonType == ButtonType.clear {
+            return 60
+        } else {
+            return 40
+        }
+    }
+    
+    private func clearWidth() -> CGFloat {
+        if selectState.buttonType == ButtonType.clear {
+            return 110
+        } else {
+            return 90
+        }
+    }
+    
+    private func clearBorder() -> CGFloat {
+        if selectState.buttonType == ButtonType.clear {
+            return 3.0
+        } else {
+            return 0.0
+        }
+    }
+    
+    private func clearText() {
+        content = ""
+        contentInd = 0
     }
     
     private func widthDim() -> CGFloat {
@@ -274,11 +311,13 @@ struct CoverButtons: View {
         let curId = selectState.buttonId
         if curType == ButtonType.cover {
             if curId == 0 {
+                /*
                 if showSave {
                     highlightAddPhrase()
                 } else {
                     goToBackspace()
-                }
+                }*/
+                goToClear()
             } else if curId == 1 || curId == 2 {
                 // go to upper
                 goToCover(buttonId: 0)
@@ -297,6 +336,12 @@ struct CoverButtons: View {
             highlightCustomPhrase()
         } else if curType == ButtonType.addNewPhrase || curType == ButtonType.exit {
             goToBackspace()
+        } else if curType == ButtonType.clear {
+            if showSave {
+                highlightAddPhrase()
+            } else {
+                goToBackspace()
+            }
         }
     }
     
@@ -324,20 +369,24 @@ struct CoverButtons: View {
             if showSave {
                 highlightAddPhrase()
             } else {
-                goToCover(buttonId: 0)
+                goToClear()
             }
+            
         } else if curType == ButtonType.cursor {
             // go to upper
             highlightCursor = false
             if showSave {
                 highlightExit()
             } else {
-                goToCover(buttonId: 0)
+                goToClear()
             }
         } else if curType == ButtonType.enterPhrases {
             highlightSettings()
         } else if curType == ButtonType.addNewPhrase || curType == ButtonType.exit {
             highlightCursor = false
+            // goToCover(buttonId: 0)
+            goToClear()
+        } else if curType == ButtonType.clear {
             goToCover(buttonId: 0)
         }
     }
@@ -449,6 +498,11 @@ struct CoverButtons: View {
         highlightBackspace = true
     }
     
+    private func goToClear() {
+        selectState.clickState = 1
+        selectState.buttonType = ButtonType.clear
+        selectState.buttonId = 0
+    }
     
     private func registerBlink() {
         makeSound()
@@ -529,10 +583,9 @@ struct CoverButtons: View {
                 selectState.buttonId = getFirstRow()
             }
         } else if selectState.buttonType == ButtonType.exit {
-            if playSound {
-                makeSound()
-            }
             exit()
+        } else if selectState.buttonType == ButtonType.clear {
+            clearText()
         }
     }
     

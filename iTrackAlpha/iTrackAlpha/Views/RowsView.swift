@@ -36,6 +36,14 @@ struct RowsView: View {
     
     var body: some View {
         VStack{
+            Button (action : {clearText()}) {
+                Text("Clear")
+                    .frame(width: clearWidth(), height: clearHeight())
+                    .foregroundColor(.black)
+                    .background(Color(red: 0.83, green: 0.83, blue: 0.83))
+                    .border(.blue, width: clearBorder())
+                    .cornerRadius(8)
+            }
             Spacer()
             ForEach(rows) { row in
                 Button(action: {
@@ -68,6 +76,41 @@ struct RowsView: View {
         }
     }
     
+    private func clearHeight() -> CGFloat {
+        if selectState.buttonType == ButtonType.clear {
+            return 60
+        } else {
+            return 40
+        }
+    }
+    
+    private func clearWidth() -> CGFloat {
+        if selectState.buttonType == ButtonType.clear {
+            return 110
+        } else {
+            return 90
+        }
+    }
+    
+    private func clearBorder() -> CGFloat {
+        if selectState.buttonType == ButtonType.clear {
+            return 3.0
+        } else {
+            return 0.0
+        }
+    }
+    
+    private func clearText() {
+        content = ""
+        contentInd = 0
+    }
+    
+    private func goToClear() {
+        selectState.clickState = 1
+        selectState.buttonType = ButtonType.clear
+        selectState.buttonId = 0
+    }
+    
     private func registerBlink() {
         if selectState.buttonType == ButtonType.backspace {
             deleteChar()
@@ -81,6 +124,11 @@ struct RowsView: View {
                 makeSound()
             }
             exit()
+        } else if selectState.buttonType == ButtonType.clear {
+            if playSound {
+                makeSound()
+            }
+            clearText()
         } else {
             // button type is row
             if showConfirmation {
@@ -118,6 +166,20 @@ struct RowsView: View {
         let curType = selectState.buttonType
         let curId = selectState.buttonId
         if curType == ButtonType.row && curId - getFirstRow() == 0 {
+            /*if showSave {
+                // go to add phrase
+                highlightAddPhrase()
+            } else {
+                // go to backspace
+                goToBackspace()
+            }*/
+            goToClear()
+        } else if curType == ButtonType.row && curId - getFirstRow() > 0 && curId - getFirstRow() < rows.count {
+            // go to button(id-1)
+            goToRow(id: curId-1)
+        } else if curType == ButtonType.addNewPhrase || curType == ButtonType.exit {
+            goToBackspace()
+        } else if curType == ButtonType.clear {
             if showSave {
                 // go to add phrase
                 highlightAddPhrase()
@@ -125,11 +187,6 @@ struct RowsView: View {
                 // go to backspace
                 goToBackspace()
             }
-        } else if curType == ButtonType.row && curId - getFirstRow() > 0 && curId - getFirstRow() < rows.count {
-            // go to button(id-1)
-            goToRow(id: curId-1)
-        } else if curType == ButtonType.addNewPhrase || curType == ButtonType.exit {
-            goToBackspace()
         }
     }
     
@@ -142,7 +199,8 @@ struct RowsView: View {
                 highlightAddPhrase()
             } else {
                 // go to button(0)
-                goToRow(id: getFirstRow())
+                //goToRow(id: getFirstRow())
+                goToClear()
             }
         } else if curType == ButtonType.row && curId - getFirstRow() < rows.count - 1 {
             // go to button(id + 1
@@ -152,16 +210,20 @@ struct RowsView: View {
             if showSave {
                 highlightExit()
             } else {
-                goToRow(id: getFirstRow())
+                //goToRow(id: getFirstRow())
+                goToClear()
             }
         } else if curType == ButtonType.addNewPhrase || curType == ButtonType.exit{
+            // goToRow(id: getFirstRow())
+            goToClear()
+        } else if curType == ButtonType.clear {
             goToRow(id: getFirstRow())
         }
     }
     
     private func goLeft() {
         let curType = selectState.buttonType
-        if curType == ButtonType.row || curType == ButtonType.exit {
+        if curType == ButtonType.row || curType == ButtonType.exit || curType == ButtonType.clear {
             // go back to cover, without confirmation screen if set that way
             goToCovers()
         } else if curType == ButtonType.backspace {

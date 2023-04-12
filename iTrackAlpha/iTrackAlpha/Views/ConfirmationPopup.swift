@@ -207,6 +207,8 @@ struct ConfirmationPopup: View {
                 }
             } else if curType == ButtonType.cursor {
                 moveCursorLeft()
+            } else if curType == ButtonType.confirm && !selectState.isNo {
+                lastState()
             }
         }
     }
