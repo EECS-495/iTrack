@@ -9,7 +9,11 @@ import SwiftUI
 import AVFoundation
 
 enum ButtonType {
-    case cover, row , char, space, backspace, confirm, cursor, settingToggle, enterSettings, customPhrase, enterPhrases, addNewPhrase, tutorial, settingTutorial, exit
+    case cover, row , char, space, backspace, confirm, cursor, settingToggle, enterSettings, customPhrase, enterPhrases, addNewPhrase, tutorial, settingTutorial, exit, enterCalibration, calibration, calibrationConf
+}
+
+enum CalibrationState {
+    case buttons, up, down, left, right, blink
 }
 
 struct selectedState {
@@ -58,7 +62,7 @@ struct ContentView: View {
     var body: some View {
        
         VStack{
-            if state != 3 && state != 6 {
+            if state != 3 && state != 6 && state != 7 {
                 HStack{
                     CustomTextFieldView(content: $content, contentInd: $contentInd, highlightCursor: $highlightCursor)
                         .padding()
@@ -110,6 +114,8 @@ struct ContentView: View {
                 CustomPhrasesView(customList: $customPhraseList, content: $content, contentInd: $contentInd, state: $state, showSave: $showSave, queue: $viewModel.queue, value: $viewModel.value, selectState: $selectState, highlightBackspace: $highlightBackspace, highlightCursor: $highlightCursor, prevState: $prevState, showConfirmation: $customizations.showConfirmationScreen, customState: $customState, nextStateId: $nextStateId, prevButtonType: $prevButtonType, lookLeft: $lookLeft)
             } else if state == 6 {
                 TutorialView(selectState: $selectState, queue: $viewModel.queue, value: $viewModel.value, state: $state, rowState: $rowState, prevState: $prevState, nextStateId: $nextStateId, showConfirmation: $customizations.showConfirmationScreen)
+            } else if state == 7 {
+                CalibrationView(state: $state, showConfirmationScreen: $customizations.showConfirmationScreen, selectState: $selectState, queue: $viewModel.queue, value: $viewModel.value, nextStateId: $nextStateId, prevState: $prevState, lookUpSens: $customizations.lookUpSens, lookDownSens: $customizations.lookDownSens, lookLeftSens: $customizations.lookLeftSens, lookRightSens: $customizations.lookRightSens, playSound: $customizations.playSound)
             }
             Spacer()
         }

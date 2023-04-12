@@ -37,6 +37,16 @@ struct SettingsView: View {
             ExtendGazeSettingsView(longerGazeDelay: $longerGazeDelay, selectState: $selectState, showGazeDelayTut: $showGazeDelayTut)
             PlaySoundSettingsView(playSound: $playSound, selectState: $selectState, showSoundTut: $showSoundTut)
             ShowConfirmSettingsView(showConfirmationScreen: $showConfirmationScreen, selectState: $selectState, showConfirmationTut: $showConfirmationTut)
+            Button(action: {enterCalibration(fromBlink: false)}) {
+                Text("Enter Sensitivity Calibration")
+                    .frame(width: widthDim(), height: heightDim())
+                    .foregroundColor(.black)
+                    .background(Color(red: 0.83, green: 0.83, blue: 0.83))
+                    .cornerRadius(8)
+                    .border(.blue, width: addNewBorder())
+                    .cornerRadius(8)
+                    .padding()
+            }
             Spacer()
         }
         .modifier(GestureSwipeRight(state: $state, selectState: $selectState, prevState: $prevState, rowState: $rowState))
@@ -71,6 +81,9 @@ struct SettingsView: View {
         let curId = selectState.buttonId
         if (curType == ButtonType.settingToggle || curType == ButtonType.settingTutorial) && curId > 0{
             selectState.buttonId = curId - 1
+        } else if curType == ButtonType.enterCalibration {
+            selectState.buttonId = 3
+            selectState.buttonType = ButtonType.settingToggle
         }
     }
     
@@ -79,6 +92,9 @@ struct SettingsView: View {
         let curId = selectState.buttonId
         if (curType == ButtonType.settingToggle || curType == ButtonType.settingTutorial) && curId < 3{
             selectState.buttonId = curId + 1
+        } else if (curType == ButtonType.settingToggle || curType == ButtonType.settingTutorial) {
+            selectState.buttonType = ButtonType.enterCalibration
+            selectState.buttonId = 0
         }
     }
     
@@ -154,6 +170,11 @@ struct SettingsView: View {
                 makeSound()
             }
             tutorial(buttonId: curId)
+        } else if curType == ButtonType.enterCalibration {
+            if playSound {
+                makeSound()
+            }
+            enterCalibration(fromBlink: true)
         }
     }
     
@@ -225,6 +246,50 @@ struct SettingsView: View {
             return 3.0
         } else {
             return 0
+        }
+    }
+    
+    // functions below only used by enter calibration button
+    // TODO add looking functionality for this button
+    private func addNewBorder() -> CGFloat {
+        if selectState.buttonType == ButtonType.enterCalibration {
+            return 3.0
+        } else {
+            return 0.0
+        }
+    }
+    
+    private func widthDim() -> CGFloat {
+        if selectState.buttonType == ButtonType.enterCalibration {
+            return 200
+        } else {
+            return 160
+        }
+    }
+    
+    private func heightDim() -> CGFloat {
+        if selectState.buttonType == ButtonType.enterCalibration {
+            return 85
+        } else {
+            return 55
+        }
+    }
+    
+    private func enterCalibration(fromBlink: Bool) {
+        let curType = selectState.buttonType
+        if curType == ButtonType.enterCalibration || !fromBlink {
+            if showConfirmationScreen {
+                state = 4
+                selectState.buttonType = ButtonType.confirm
+                selectState.buttonId = 0
+                selectState.isNo = false
+                prevState = 3
+                nextStateId = 7
+            } else {
+                selectState.buttonId = 0
+                selectState.buttonType = ButtonType.calibration
+                state = 7
+            }
         }
     }
 }

@@ -75,6 +75,9 @@ struct ConfirmationPopup: View {
                 // next state is tutorial
                 Text(tutorialConfirmText())
                     .foregroundColor(.black)
+            } else if nextStateId == 7 {
+                Text("Did you mean to enter the sensitivity calibration?")
+                    .foregroundColor(.black)
             }
             /* old approach without nextStateId
             if prevState == 0 {
@@ -364,6 +367,11 @@ struct ConfirmationPopup: View {
             // go to cover buttons
             state = 0
             selectState.buttonType = ButtonType.cover
+            selectState.buttonId = 0
+            selectState.clickState = 1
+        } else if nextStateId == 7 {
+            state = 7
+            selectState.buttonType = ButtonType.calibration
             selectState.buttonId = 0
             selectState.clickState = 1
         }
