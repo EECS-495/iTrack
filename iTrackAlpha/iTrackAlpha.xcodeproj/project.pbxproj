@@ -33,6 +33,11 @@
 		BE1C118829D1FB86003C589F /* NavButtonsTutorialView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE1C118629D1FB86003C589F /* NavButtonsTutorialView.swift */; };
 		BE1C118A29D1FB8F003C589F /* PlaySoundSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE1C118929D1FB8F003C589F /* PlaySoundSettingsView.swift */; };
 		BE1C118C29D1FBD5003C589F /* blinkTone.wav in Resources */ = {isa = PBXBuildFile; fileRef = BE1C118B29D1FBD5003C589F /* blinkTone.wav */; };
+		BEDC10CC29E7777F00B40F21 /* DetectEyeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEDC10CB29E7777F00B40F21 /* DetectEyeView.swift */; };
+		BEDC10D129E7779B00B40F21 /* GazeCalibrationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEDC10CD29E7779B00B40F21 /* GazeCalibrationView.swift */; };
+		BEDC10D229E7779B00B40F21 /* CalibrationButtonsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEDC10CE29E7779B00B40F21 /* CalibrationButtonsView.swift */; };
+		BEDC10D329E7779B00B40F21 /* CalibrationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEDC10CF29E7779B00B40F21 /* CalibrationView.swift */; };
+		BEDC10D429E7779B00B40F21 /* CalibrationConfirmationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEDC10D029E7779B00B40F21 /* CalibrationConfirmationView.swift */; };
 		CC5353CE299715BA00097C49 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC5353CD299715BA00097C49 /* AppDelegate.swift */; };
 		CC5353D0299715BA00097C49 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC5353CF299715BA00097C49 /* SceneDelegate.swift */; };
 		CC5353D2299715BA00097C49 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC5353D1299715BA00097C49 /* ViewController.swift */; };
@@ -104,6 +109,11 @@
 		BE1C118629D1FB86003C589F /* NavButtonsTutorialView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NavButtonsTutorialView.swift; sourceTree = "<group>"; };
 		BE1C118929D1FB8F003C589F /* PlaySoundSettingsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlaySoundSettingsView.swift; sourceTree = "<group>"; };
 		BE1C118B29D1FBD5003C589F /* blinkTone.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = blinkTone.wav; sourceTree = "<group>"; };
+		BEDC10CB29E7777F00B40F21 /* DetectEyeView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DetectEyeView.swift; path = "../../../../../../Downloads/iTrack copy_new/iTrackAlpha/iTrackAlpha/Views/DetectEyeView.swift"; sourceTree = "<group>"; };
+		BEDC10CD29E7779B00B40F21 /* GazeCalibrationView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GazeCalibrationView.swift; sourceTree = "<group>"; };
+		BEDC10CE29E7779B00B40F21 /* CalibrationButtonsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CalibrationButtonsView.swift; sourceTree = "<group>"; };
+		BEDC10CF29E7779B00B40F21 /* CalibrationView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CalibrationView.swift; sourceTree = "<group>"; };
+		BEDC10D029E7779B00B40F21 /* CalibrationConfirmationView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CalibrationConfirmationView.swift; sourceTree = "<group>"; };
 		CC5353CA299715BA00097C49 /* iTrackAlpha.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iTrackAlpha.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CC5353CD299715BA00097C49 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		CC5353CF299715BA00097C49 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -163,6 +173,11 @@
 		9507A9FA2999791400CE7E78 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				BEDC10CE29E7779B00B40F21 /* CalibrationButtonsView.swift */,
+				BEDC10D029E7779B00B40F21 /* CalibrationConfirmationView.swift */,
+				BEDC10CF29E7779B00B40F21 /* CalibrationView.swift */,
+				BEDC10CD29E7779B00B40F21 /* GazeCalibrationView.swift */,
+				BEDC10CB29E7777F00B40F21 /* DetectEyeView.swift */,
 				BE1C118929D1FB8F003C589F /* PlaySoundSettingsView.swift */,
 				BE1C118529D1FB86003C589F /* GoBackTutorial.swift */,
 				BE1C118629D1FB86003C589F /* NavButtonsTutorialView.swift */,
@@ -411,11 +426,15 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BEDC10CC29E7777F00B40F21 /* DetectEyeView.swift in Sources */,
+				BEDC10D229E7779B00B40F21 /* CalibrationButtonsView.swift in Sources */,
 				CC5353D2299715BA00097C49 /* ViewController.swift in Sources */,
+				BEDC10D329E7779B00B40F21 /* CalibrationView.swift in Sources */,
 				9507AA1A29997D1D00CE7E78 /* PageViewController.swift in Sources */,
 				BE1C118729D1FB86003C589F /* GoBackTutorial.swift in Sources */,
 				F140AA7829CB8F890082AA9A /* ExtendGazeSettingsView.swift in Sources */,
 				F1094F7E29E48D2F00D1526E /* GazeCalibrationView.swift in Sources */,
+				BEDC10D429E7779B00B40F21 /* CalibrationConfirmationView.swift in Sources */, 
 				9507AA0829997A0200CE7E78 /* GestureSwipeRight.swift in Sources */,
 				BE1C117C29D1FB6D003C589F /* ClickButTutorialView.swift in Sources */,
 				BE1C118829D1FB86003C589F /* NavButtonsTutorialView.swift in Sources */,
@@ -448,6 +467,7 @@
 				CC5353D0299715BA00097C49 /* SceneDelegate.swift in Sources */,
 				BE1C117E29D1FB73003C589F /* CustomPhrasesView.swift in Sources */,
 				BE1C118229D1FB7A003C589F /* ExtendGazeSettingsView.swift in Sources */,
+				BEDC10D129E7779B00B40F21 /* GazeCalibrationView.swift in Sources */,
 				9507AA06299979F400CE7E78 /* CustomTextFieldView.swift in Sources */,
 				F17E816D29CA0C200090F415 /* GoBackTutorial.swift in Sources */,
 				F17E816B29CA0A830090F415 /* ClickButTutorialView.swift in Sources */,

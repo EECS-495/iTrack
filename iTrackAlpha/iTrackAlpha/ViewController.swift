@@ -18,12 +18,13 @@ class ViewController: UIViewController, ARSCNViewDelegate {
     var actionDelay = false
     var blinkDelayTime = 1.0
     var lookDelayTime = 1.0
+    
     var blinkSens = 0.9
     var lookUpSens = 0.7
     var lookDownSens = 0.35
     var lookLeftSens = 0.7
     var lookRightSens = 0.7
-    var eyeDetect = EyeDetect.both
+    
     @ObservedObject var customizations = CustomizationObject()
     
     /*var upDelay = false
@@ -36,40 +37,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         
         UIApplication.shared.isIdleTimerDisabled = true
         super.viewDidLoad()
-        /*
-        let authorizationStatus = AVCaptureDevice.authorizationStatus(for: .video)
-        var denied = false
         
-        switch authorizationStatus {
-        case .authorized:
-            // do nothing, already granted
-             break
-        case .notDetermined:
-            // Request camera access
-            AVCaptureDevice.requestAccess(for: .video) { granted in
-                if granted {
-                    // do nothing, already granted
-                } else {
-                    denied = true
-                }
-            }
-        case .denied, .restricted:
-            denied = true
-            
-        if denied
-        {
-            fatalError("Face tracking is not supported on this device")
-        }
-        
-        @unknown default:
-            fatalError("Unexpected case of AVCaptureDevice.authorizationStatus")
-        }
-        */
-        
-        
-        guard ARFaceTrackingConfiguration.isSupported else {
-            fatalError("Face tracking is not supported on this device")
-        }
         sceneView = ARSCNView(frame: self.view.frame)
         sceneView.delegate = self
         sceneView.backgroundColor = UIColor.white
@@ -82,6 +50,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         contentView.view.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
         contentView.view.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
         contentView.view.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -130,21 +99,25 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         
         let mouthOpen = faceAnchor.blendShapes[.jawOpen]?.doubleValue ?? 0
         
-        if eyeDetect == EyeDetect.right
+        
+        if customizations.detectSingleEye
         {
-            leftBlink = 1
-            lookUpLeft = 1
-            lookDownLeft = 1
-            lookLeftLeft = 1
-            lookRightLeft = 1
-        }
-        else if eyeDetect == EyeDetect.left
-        {
-            rightBlink = 1
-            lookUpRight = 1
-            lookDownRight = 1
-            lookLeftRight = 1
-            lookRightRight = 1
+            if !customizations.detectRightEye
+            {
+                leftBlink = 1
+                lookUpLeft = 1
+                lookDownLeft = 1
+                lookLeftLeft = 1
+                lookRightLeft = 1
+            }
+            else
+            {
+                rightBlink = 1
+                lookUpRight = 1
+                lookDownRight = 1
+                lookLeftRight = 1
+                lookRightRight = 1
+            }
         }
         
         blinkDelayTime = customizations.longerBlinkDelay ? 2.0 : 1.0
@@ -154,6 +127,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         lookDownSens = customizations.lookDownSens
         lookRightSens = customizations.lookRightSens
         lookLeftSens = customizations.lookLeftSens
+        
         
         if !actionDelay {
             if leftBlink > blinkSens && rightBlink > blinkSens {

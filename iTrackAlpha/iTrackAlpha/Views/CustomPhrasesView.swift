@@ -28,18 +28,31 @@ struct CustomPhrasesView: View {
     @State var curId: Int = 0
     @State var onAddPhrase: Bool = false
     @State var audioPlayer: AVAudioPlayer!
+    @State var isDelete: Bool = false
     
     
     var body: some View {
         VStack {
             List(customList) { customPhrase in
-                Button(action: {
-                    clickContent(customPhrase)
-                }) {
-                    Text(customPhrase.content)
+                HStack {
+                    Button(action: {
+                        clickContent(customPhrase)
+                    }) {
+                        Text(customPhrase.content)
+                    }
+                    .padding()
+                    .border(.blue, width: addBorder(customPhrase))
+                    .foregroundColor(.black)
+                    Spacer()
+                    Button(action: {
+                        delete(customPhrase)
+                    }) {
+                        Text("Delete")
+                    }
+                    .padding()
+                    .border(.blue, width: addDeleteBorder(customPhrase))
+                    .foregroundColor(.black)
                 }
-                .padding()
-                .border(.blue, width: addBorder(customPhrase))
             }
             if !showSave {
                 Button(action: {addPhrase()}) {
@@ -117,6 +130,22 @@ struct CustomPhrasesView: View {
         }
     }
     
+    private func delete(_ customPhrase: CustomPhrase) {
+        customList.remove(at: customPhrase.id)
+        if(customList.isEmpty) {
+            onAddPhrase = true
+        } else {
+            // re-set all ids
+            for i in 0...(customList.count - 1) {
+                customList[i].id = i
+            }
+            
+            if curId == customList.count {
+                curId = curId - 1
+            }
+        }
+    }
+    
     private func addPhrase() {
         showSave = true
         goToNextState()
@@ -141,7 +170,15 @@ struct CustomPhrasesView: View {
     }
     
     private func addBorder(_ customPhrase: CustomPhrase) -> CGFloat {
-        if customPhrase.id == curId && selectState.buttonType == ButtonType.customPhrase && !onAddPhrase {
+        if customPhrase.id == curId && selectState.buttonType == ButtonType.customPhrase && !onAddPhrase && !isDelete{
+            return 3.0
+        } else {
+            return 0
+        }
+    }
+    
+    private func addDeleteBorder(_ customPhrase: CustomPhrase) -> CGFloat {
+        if customPhrase.id == curId && selectState.buttonType == ButtonType.customPhrase && !onAddPhrase && isDelete {
             return 3.0
         } else {
             return 0
@@ -149,7 +186,7 @@ struct CustomPhrasesView: View {
     }
     
     private func registerBlink() {
-        if selectState.buttonType == ButtonType.customPhrase && !onAddPhrase {
+        if selectState.buttonType == ButtonType.customPhrase && !onAddPhrase && !isDelete {
             clickContent(customList[curId])
         } else if onAddPhrase {
             onAddPhrase = false
@@ -160,6 +197,9 @@ struct CustomPhrasesView: View {
             savePhrase()
         } else if selectState.buttonType == ButtonType.exit {
             exit()
+        } else if selectState.buttonType == ButtonType.customPhrase && !onAddPhrase && isDelete {
+            makeSound()
+            delete(customList[curId])
         }
     }
     
@@ -178,6 +218,7 @@ struct CustomPhrasesView: View {
     private func goUp() {
         if selectState.buttonType == ButtonType.customPhrase && !onAddPhrase {
             if curId == 0 {
+                isDelete = false
                 if showSave {
                     highlightAddPhrase()
                 } else {
@@ -213,6 +254,7 @@ struct CustomPhrasesView: View {
                 curId = 0
             }
         } else if (curId == customList.count - 1 && selectState.buttonType == ButtonType.customPhrase) && !onAddPhrase {
+            isDelete = false
             onAddPhrase = true
         } else if selectState.buttonType == ButtonType.customPhrase {
             curId += 1
@@ -237,6 +279,8 @@ struct CustomPhrasesView: View {
             }
         } else if selectState.buttonType == ButtonType.exit {
             highlightAddPhrase()
+        } else if selectState.buttonType == ButtonType.customPhrase {
+            isDelete = true
         }
     }
     
@@ -247,6 +291,8 @@ struct CustomPhrasesView: View {
             goToCursor()
         } else if curType == ButtonType.cursor {
             moveCursorLeft()
+        } else if isDelete {
+            isDelete = false
         } else if curType == ButtonType.customPhrase || onAddPhrase || curType == ButtonType.exit {
             goToCover()
         } else if curType == ButtonType.addNewPhrase {

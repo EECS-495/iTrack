@@ -40,8 +40,8 @@ struct CharView: View {
     }
     var body: some View {
         ScrollViewReader { spot in
-            VStack {
-                HStack {
+            HStack {
+                VStack {
                     ForEach(predictedWords, id: \.self) { word in
                         Button(action: {
                             content = word
@@ -56,26 +56,26 @@ struct CharView: View {
                     }
                 }
                 .padding(.bottom, 8)
-            }
-            ScrollView{
-                ForEach(charRows) { row in
-                    Button(action: {clickChar(character: row)}){
-                        Text(row.character)
-                            .frame(width: scaleDim(row: row), height: scaleDim(row: row))
-                            .font(.largeTitle)
-                            .background(Color(red: 0.83, green: 0.83, blue: 0.83))
-                            .foregroundColor(.black)
-                            .border(.blue, width: addBorder(row: row))
-                            .cornerRadius(8)
+                ScrollView{
+                    ForEach(charRows) { row in
+                        Button(action: {clickChar(character: row)}){
+                            Text(row.character)
+                                .frame(width: scaleDim(row: row), height: scaleDim(row: row))
+                                .font(.largeTitle)
+                                .background(Color(red: 0.83, green: 0.83, blue: 0.83))
+                                .foregroundColor(.black)
+                                .border(.blue, width: addBorder(row: row))
+                                .cornerRadius(8)
+                        }
+                        .padding(.horizontal, 170)
+                        .padding(.vertical, 10)
+                        .id(row.id - getFirstChar())
                     }
-                    .padding(.horizontal, 170)
-                    .padding(.vertical, 10)
-                    .id(row.id - getFirstChar())
                 }
-            }
-            .onChange(of: currentCharId) { _ in
-                spot.scrollTo(currentCharId, anchor: .center)
-                print(currentCharId)
+                .onChange(of: currentCharId) { _ in
+                    spot.scrollTo(currentCharId, anchor: .center)
+                    print(currentCharId)
+                }
             }
         }
         .modifier(GestureSwipeRight(state: $state, selectState: $selectState, prevState: $prevState, rowState: $rowState))
@@ -102,7 +102,7 @@ struct CharView: View {
             }
             savePhrase()
         } else if selectState.buttonType == ButtonType.char {
-            //updatePredictedWords()
+            updatePredictedWords()
             if showConfirmation {
                 prevState = 2
                 state = 4
@@ -356,13 +356,13 @@ struct CharView: View {
             contentInd = contentInd - 1
             
             // Update predicted words
-            //updatePredictedWords()
+            updatePredictedWords()
         }
     }
     
     private func clickChar(character: CharRow) {
         // Update predicted words
-        //updatePredictedWords()
+        updatePredictedWords()
         
         if selectState.clickState == 0 {
             selectState.clickState = 1
