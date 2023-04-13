@@ -43,6 +43,21 @@
 		CC5353EF299715BF00097C49 /* iTrackAlphaUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC5353EE299715BF00097C49 /* iTrackAlphaUITests.swift */; };
 		CC5353F1299715BF00097C49 /* iTrackAlphaUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC5353F0299715BF00097C49 /* iTrackAlphaUITestsLaunchTests.swift */; };
 		CCC5D5B9299C472E00D078A5 /* ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCC5D5B8299C472E00D078A5 /* ViewModel.swift */; };
+		F1004C1329C101C600C9A75E /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1004C1229C101C600C9A75E /* SettingsView.swift */; };
+		F1004C1529C101F600C9A75E /* blinkTone.wav in Resources */ = {isa = PBXBuildFile; fileRef = F1004C1429C101F600C9A75E /* blinkTone.wav */; };
+		F1004C1729C2279100C9A75E /* CustomPhrasesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1004C1629C2279100C9A75E /* CustomPhrasesView.swift */; };
+		F1094F7A29E465FE00D1526E /* CalibrationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1094F7929E465FE00D1526E /* CalibrationView.swift */; };
+		F1094F7C29E467D900D1526E /* CalibrationButtonsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1094F7B29E467D900D1526E /* CalibrationButtonsView.swift */; };
+		F1094F7E29E48D2F00D1526E /* GazeCalibrationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1094F7D29E48D2F00D1526E /* GazeCalibrationView.swift */; };
+		F11CD49A29C8CAD8004000F7 /* TutorialView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F11CD49929C8CAD8004000F7 /* TutorialView.swift */; };
+		F1244DD629E5C1D9009F1151 /* CalibrationConfirmationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1244DD529E5C1D9009F1151 /* CalibrationConfirmationView.swift */; };
+		F140AA7829CB8F890082AA9A /* ExtendGazeSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F140AA7729CB8F890082AA9A /* ExtendGazeSettingsView.swift */; };
+		F140AA7A29CB90CF0082AA9A /* PlaySoundSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F140AA7929CB90CF0082AA9A /* PlaySoundSettingsView.swift */; };
+		F140AA7C29CB96130082AA9A /* ShowConfirmSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F140AA7B29CB96130082AA9A /* ShowConfirmSettingsView.swift */; };
+		F17E816929CA0A4B0090F415 /* NavButtonsTutorialView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F17E816829CA0A4B0090F415 /* NavButtonsTutorialView.swift */; };
+		F17E816B29CA0A830090F415 /* ClickButTutorialView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F17E816A29CA0A830090F415 /* ClickButTutorialView.swift */; };
+		F17E816D29CA0C200090F415 /* GoBackTutorial.swift in Sources */ = {isa = PBXBuildFile; fileRef = F17E816C29CA0C200090F415 /* GoBackTutorial.swift */; };
+		F17E816F29CB6F110090F415 /* ExtendBlinkSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F17E816E29CB6F110090F415 /* ExtendBlinkSettingsView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -103,6 +118,21 @@
 		CC5353EE299715BF00097C49 /* iTrackAlphaUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iTrackAlphaUITests.swift; sourceTree = "<group>"; };
 		CC5353F0299715BF00097C49 /* iTrackAlphaUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iTrackAlphaUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		CCC5D5B8299C472E00D078A5 /* ViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModel.swift; sourceTree = "<group>"; };
+		F1004C1229C101C600C9A75E /* SettingsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		F1004C1429C101F600C9A75E /* blinkTone.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = blinkTone.wav; sourceTree = "<group>"; };
+		F1004C1629C2279100C9A75E /* CustomPhrasesView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomPhrasesView.swift; sourceTree = "<group>"; };
+		F1094F7929E465FE00D1526E /* CalibrationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalibrationView.swift; sourceTree = "<group>"; };
+		F1094F7B29E467D900D1526E /* CalibrationButtonsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalibrationButtonsView.swift; sourceTree = "<group>"; };
+		F1094F7D29E48D2F00D1526E /* GazeCalibrationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GazeCalibrationView.swift; sourceTree = "<group>"; };
+		F11CD49929C8CAD8004000F7 /* TutorialView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialView.swift; sourceTree = "<group>"; };
+		F1244DD529E5C1D9009F1151 /* CalibrationConfirmationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalibrationConfirmationView.swift; sourceTree = "<group>"; };
+		F140AA7729CB8F890082AA9A /* ExtendGazeSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtendGazeSettingsView.swift; sourceTree = "<group>"; };
+		F140AA7929CB90CF0082AA9A /* PlaySoundSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaySoundSettingsView.swift; sourceTree = "<group>"; };
+		F140AA7B29CB96130082AA9A /* ShowConfirmSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowConfirmSettingsView.swift; sourceTree = "<group>"; };
+		F17E816829CA0A4B0090F415 /* NavButtonsTutorialView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavButtonsTutorialView.swift; sourceTree = "<group>"; };
+		F17E816A29CA0A830090F415 /* ClickButTutorialView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClickButTutorialView.swift; sourceTree = "<group>"; };
+		F17E816C29CA0C200090F415 /* GoBackTutorial.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoBackTutorial.swift; sourceTree = "<group>"; };
+		F17E816E29CB6F110090F415 /* ExtendBlinkSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtendBlinkSettingsView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -143,15 +173,29 @@
 				BE1C117B29D1FB6D003C589F /* ClickButTutorialView.swift */,
 				BE1C117929D1FB5A003C589F /* SettingsView.swift */,
 				BE1C117729D1FB51003C589F /* TutorialView.swift */,
+				F1004C1629C2279100C9A75E /* CustomPhrasesView.swift */,
 				9507A9FB2999793300CE7E78 /* ContentView.swift */,
 				9507A9FD2999795100CE7E78 /* RowsView.swift */,
 				9507A9FF2999796F00CE7E78 /* CharView.swift */,
+				F1004C1229C101C600C9A75E /* SettingsView.swift */,
 				9507AA012999798D00CE7E78 /* ConfirmationPopup.swift */,
 				9507AA03299979A900CE7E78 /* CoverButtons.swift */,
 				9507AA05299979F400CE7E78 /* CustomTextFieldView.swift */,
 				9507AA0729997A0200CE7E78 /* GestureSwipeRight.swift */,
 				9507AA1929997D1D00CE7E78 /* PageViewController.swift */,
 				9507AA1B29997D7C00CE7E78 /* PageView.swift */,
+				F11CD49929C8CAD8004000F7 /* TutorialView.swift */,
+				F17E816829CA0A4B0090F415 /* NavButtonsTutorialView.swift */,
+				F17E816A29CA0A830090F415 /* ClickButTutorialView.swift */,
+				F17E816C29CA0C200090F415 /* GoBackTutorial.swift */,
+				F17E816E29CB6F110090F415 /* ExtendBlinkSettingsView.swift */,
+				F140AA7729CB8F890082AA9A /* ExtendGazeSettingsView.swift */,
+				F140AA7929CB90CF0082AA9A /* PlaySoundSettingsView.swift */,
+				F140AA7B29CB96130082AA9A /* ShowConfirmSettingsView.swift */,
+				F1094F7929E465FE00D1526E /* CalibrationView.swift */,
+				F1094F7B29E467D900D1526E /* CalibrationButtonsView.swift */,
+				F1094F7D29E48D2F00D1526E /* GazeCalibrationView.swift */,
+				F1244DD529E5C1D9009F1151 /* CalibrationConfirmationView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -370,6 +414,8 @@
 				CC5353D2299715BA00097C49 /* ViewController.swift in Sources */,
 				9507AA1A29997D1D00CE7E78 /* PageViewController.swift in Sources */,
 				BE1C118729D1FB86003C589F /* GoBackTutorial.swift in Sources */,
+				F140AA7829CB8F890082AA9A /* ExtendGazeSettingsView.swift in Sources */,
+				F1094F7E29E48D2F00D1526E /* GazeCalibrationView.swift in Sources */,
 				9507AA0829997A0200CE7E78 /* GestureSwipeRight.swift in Sources */,
 				BE1C117C29D1FB6D003C589F /* ClickButTutorialView.swift in Sources */,
 				BE1C118829D1FB86003C589F /* NavButtonsTutorialView.swift in Sources */,
@@ -377,10 +423,19 @@
 				9507AA0D29997B0D00CE7E78 /* CharRow.swift in Sources */,
 				BE1C118129D1FB7A003C589F /* ExtendBlinkSettingsView.swift in Sources */,
 				9507AA1129997B2500CE7E78 /* Row.swift in Sources */,
+				F11CD49A29C8CAD8004000F7 /* TutorialView.swift in Sources */,
+				F1244DD629E5C1D9009F1151 /* CalibrationConfirmationView.swift in Sources */,
+				F1004C1329C101C600C9A75E /* SettingsView.swift in Sources */,
 				CC5353CE299715BA00097C49 /* AppDelegate.swift in Sources */,
 				BE1C118429D1FB80003C589F /* ShowConfirmSettingsView.swift in Sources */,
+				F17E816F29CB6F110090F415 /* ExtendBlinkSettingsView.swift in Sources */,
 				CCC5D5B9299C472E00D078A5 /* ViewModel.swift in Sources */,
 				9507A9FE2999795100CE7E78 /* RowsView.swift in Sources */,
+				F1094F7A29E465FE00D1526E /* CalibrationView.swift in Sources */,
+				F1094F7C29E467D900D1526E /* CalibrationButtonsView.swift in Sources */,
+				F17E816929CA0A4B0090F415 /* NavButtonsTutorialView.swift in Sources */,
+				F140AA7C29CB96130082AA9A /* ShowConfirmSettingsView.swift in Sources */,
+				F140AA7A29CB90CF0082AA9A /* PlaySoundSettingsView.swift in Sources */,
 				9507AA0F29997B1600CE7E78 /* ModelData.swift in Sources */,
 				BE1C118A29D1FB8F003C589F /* PlaySoundSettingsView.swift in Sources */,
 				BE1C117829D1FB51003C589F /* TutorialView.swift in Sources */,
@@ -388,11 +443,14 @@
 				9507AA022999798D00CE7E78 /* ConfirmationPopup.swift in Sources */,
 				9507AA1C29997D7C00CE7E78 /* PageView.swift in Sources */,
 				9507A9FC2999793300CE7E78 /* ContentView.swift in Sources */,
+				F1004C1729C2279100C9A75E /* CustomPhrasesView.swift in Sources */,
 				9507AA002999796F00CE7E78 /* CharView.swift in Sources */,
 				CC5353D0299715BA00097C49 /* SceneDelegate.swift in Sources */,
 				BE1C117E29D1FB73003C589F /* CustomPhrasesView.swift in Sources */,
 				BE1C118229D1FB7A003C589F /* ExtendGazeSettingsView.swift in Sources */,
 				9507AA06299979F400CE7E78 /* CustomTextFieldView.swift in Sources */,
+				F17E816D29CA0C200090F415 /* GoBackTutorial.swift in Sources */,
+				F17E816B29CA0A830090F415 /* ClickButTutorialView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -569,7 +627,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 7J3MCKBU29;
+				DEVELOPMENT_TEAM = GQNGRP6D79;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = iTrackAlpha/Info.plist;
 				INFOPLIST_KEY_NSCameraUsageDescription = "Using front camera for blink detection.";
@@ -583,7 +641,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = aeh.iTrackAlpha;
+				PRODUCT_BUNDLE_IDENTIFIER = dmaraffi.iTrackAlpha;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
