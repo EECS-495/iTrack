@@ -23,7 +23,9 @@ struct GazeCalibrationView: View {
     // TODO determine way of saving original ^^ sensitivities, changing temp versions and updating the ones above only if the user clicks confirm in GazeConfirmationView
     var body: some View {
         VStack{
+            Text("Turn silent mode off")
             Text(calibrationText())
+                .padding()
             Text("For best results, pause in between actions")
         }
             .foregroundColor(.black)
