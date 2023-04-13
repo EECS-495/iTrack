@@ -30,9 +30,10 @@ struct CalibrationButtonsView: View {
     
     var body: some View {
         VStack{ // use padding instead of spacers if there are too many objects
-            Text("Use the buttons below to adjust the respective sensitivities ADD TEXT TO MAKE IT CLEAR THAT LESS SENSITIVE MEANS MORE DRAMATIC EYE MOVEMENTS ARE NEEDED")
-                .padding([.top, .leading, .trailing], 10)
-                .padding(.bottom, 130)
+            Text("Use the buttons below to adjust action sensitivities")
+                .padding()
+            Text("Dramatic eye movements will make calibration more effective")
+                .padding()
             Button(action: {enterLookUp()}){
                 Text("Adjust Look Up")
             }
@@ -84,13 +85,26 @@ struct CalibrationButtonsView: View {
             .border(.blue, width: addNewBorder(id: 4))
             .cornerRadius(8)
             .padding()
-            Spacer()
             Button(action: {restoreDefaults()}){
                 Text("Restore Defaults")
             }
+            .frame(width: widthDim(id: 5), height: heightDim(id: 5))
+            .foregroundColor(.black)
+            .background(Color(red: 0.83, green: 0.83, blue: 0.83))
+            .cornerRadius(8)
+            .border(.blue, width: addNewBorder(id: 5))
+            .cornerRadius(8)
+            .padding()
             Button(action: {exitCalibration()}){
-                Text("Exit")
+                Text("Save and Exit")
             }
+            .frame(width: widthDim(id: 6), height: heightDim(id: 6))
+            .foregroundColor(.black)
+            .background(Color(red: 0.83, green: 0.83, blue: 0.83))
+            .cornerRadius(8)
+            .border(.blue, width: addNewBorder(id: 6))
+            .cornerRadius(8)
+            .padding()
         }
         .onChange(of: value ) { _ in
             if !queue.isEmpty {

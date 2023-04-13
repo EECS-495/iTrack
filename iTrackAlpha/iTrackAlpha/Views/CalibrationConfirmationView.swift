@@ -27,57 +27,121 @@ struct CalibrationConfirmationView: View {
     @Binding var playSound: Bool
     @State var audioPlayer: AVAudioPlayer!
     @State var sensIncrement: CGFloat = 0.1
+    @State var showConfirmHelp: Bool = false
+    @State var showIncHelp: Bool = false
+    @State var showDecHelp: Bool = false
+    @State var showExitHelp: Bool = false
     // TODO make pretty and make text appear to the left of the buttons after the user selects the help button
     var body: some View {
         VStack{
-            Text("If satisfied with sensitivity for \(direction()), select the Confirm button to exit and save changes")
+            HStack {
+                Button(action: {confirmSens(fromBlink: false)}){
+                    Text("Confirm \(direction()) Sensitivity")
+                }
+                .frame(width: widthDim(id: 0), height: heightDim(id: 0))
+                .foregroundColor(.black)
+                .background(Color(red: 0.83, green: 0.83, blue: 0.83))
+                .cornerRadius(8)
+                .border(.blue, width: addNewBorder(id: 0))
+                .cornerRadius(8)
                 .padding()
-            Text("If triggering response from app while \(direction()) was difficult, select the Increase button")
+                Button(action: {flipHelp(id: 0)}) {
+                    Text("?")
+                        .foregroundColor(isTutorialHighlighted(id: 0) ? .blue : .black)
+                        .overlay(
+                            Circle()
+                                .stroke(isTutorialHighlighted(id: 0) ? Color.blue : Color.black, lineWidth: isTutorialHighlighted(id: 0) ? 2.0 : 1.0)
+                                .frame(width: isTutorialHighlighted(id: 0) ? 30: 20, height: isTutorialHighlighted(id: 0) ? 30: 20)
+                        )
+                }
                 .padding()
-            Text("If triggering response from app while \(direction()) was too sensitive, select the Decrease button")
+            }
+            if showConfirmHelp {
+                Text("If satisfied with sensitivity for \(direction()), select the Confirm button to exit and save changes")
+                    .padding()
+                    .foregroundColor(.blue)
+            }
+            HStack {
+                Button(action: {increaseSens(fromBlink: false)}){
+                    Text("Increase \(direction()) Sensitivity")
+                }
+                .frame(width: widthDim(id: 1), height: heightDim(id: 1))
+                .foregroundColor(.black)
+                .background(Color(red: 0.83, green: 0.83, blue: 0.83))
+                .cornerRadius(8)
+                .border(.blue, width: addNewBorder(id: 1))
+                .cornerRadius(8)
                 .padding()
-            Text("To exit the calibration process and revert changes, select the Exit button ")
+                Button(action: {flipHelp(id: 1)}) {
+                    Text("?")
+                        .foregroundColor(isTutorialHighlighted(id: 1) ? .blue : .black)
+                        .overlay(
+                            Circle()
+                                .stroke(isTutorialHighlighted(id: 1) ? Color.blue : Color.black, lineWidth: isTutorialHighlighted(id: 1) ? 2.0 : 1.0)
+                                .frame(width: isTutorialHighlighted(id: 1) ? 30: 20, height: isTutorialHighlighted(id: 1) ? 30: 20)
+                        )
+                }
                 .padding()
-            Button(action: {confirmSens(fromBlink: false)}){
-                Text("Confirm \(direction()) Sensitivity")
             }
-            .frame(width: widthDim(id: 0), height: heightDim(id: 0))
-            .foregroundColor(.black)
-            .background(Color(red: 0.83, green: 0.83, blue: 0.83))
-            .cornerRadius(8)
-            .border(.blue, width: addNewBorder(id: 0))
-            .cornerRadius(8)
-            .padding()
-            Button(action: {increaseSens(fromBlink: false)}){
-                Text("Increase \(direction()) Sensitivity")
+            if showIncHelp {
+                Text("If triggering response from app while \(direction()) was difficult, select the Increase button")
+                    .padding()
+                    .foregroundColor(.blue)
             }
-            .frame(width: widthDim(id: 1), height: heightDim(id: 1))
-            .foregroundColor(.black)
-            .background(Color(red: 0.83, green: 0.83, blue: 0.83))
-            .cornerRadius(8)
-            .border(.blue, width: addNewBorder(id: 1))
-            .cornerRadius(8)
-            .padding()
-            Button(action: {decreaseSens(fromBlink: false)}){
-                Text("Decrease \(direction()) Sensitivity")
+            HStack {
+                Button(action: {decreaseSens(fromBlink: false)}){
+                    Text("Decrease \(direction()) Sensitivity")
+                }
+                .frame(width: widthDim(id: 2), height: heightDim(id: 2))
+                .foregroundColor(.black)
+                .background(Color(red: 0.83, green: 0.83, blue: 0.83))
+                .cornerRadius(8)
+                .border(.blue, width: addNewBorder(id: 2))
+                .cornerRadius(8)
+                .padding()
+                Button(action: {flipHelp(id: 2)}) {
+                    Text("?")
+                        .foregroundColor(isTutorialHighlighted(id: 2) ? .blue : .black)
+                        .overlay(
+                            Circle()
+                                .stroke(isTutorialHighlighted(id: 2) ? Color.blue : Color.black, lineWidth: isTutorialHighlighted(id: 2) ? 2.0 : 1.0)
+                                .frame(width: isTutorialHighlighted(id: 2) ? 30: 20, height: isTutorialHighlighted(id: 2) ? 30: 20)
+                        )
+                }
+                .padding()
             }
-            .frame(width: widthDim(id: 2), height: heightDim(id: 2))
-            .foregroundColor(.black)
-            .background(Color(red: 0.83, green: 0.83, blue: 0.83))
-            .cornerRadius(8)
-            .border(.blue, width: addNewBorder(id: 2))
-            .cornerRadius(8)
-            .padding()
-            Button(action: {exitCalibrationConf(fromBlink: false)}){
-                Text("Exit and Discard Changes")
+            if showDecHelp {
+                Text("If triggering response from app while \(direction()) was too sensitive, select the Decrease button")
+                    .padding()
+                    .foregroundColor(.blue)
             }
-            .frame(width: widthDim(id: 3), height: heightDim(id: 3))
-            .foregroundColor(.black)
-            .background(Color(red: 0.83, green: 0.83, blue: 0.83))
-            .cornerRadius(8)
-            .border(.blue, width: addNewBorder(id: 3))
-            .cornerRadius(8)
-            .padding()
+            HStack {
+                Button(action: {exitCalibrationConf(fromBlink: false)}){
+                    Text("Exit and Discard Changes")
+                }
+                .frame(width: widthDim(id: 3), height: heightDim(id: 3))
+                .foregroundColor(.black)
+                .background(Color(red: 0.83, green: 0.83, blue: 0.83))
+                .cornerRadius(8)
+                .border(.blue, width: addNewBorder(id: 3))
+                .cornerRadius(8)
+                .padding()
+                Button(action: {flipHelp(id: 3)}) {
+                    Text("?")
+                        .foregroundColor(isTutorialHighlighted(id: 3) ? .blue : .black)
+                        .overlay(
+                            Circle()
+                                .stroke(isTutorialHighlighted(id: 3) ? Color.blue : Color.black, lineWidth: isTutorialHighlighted(id: 3) ? 2.0 : 1.0)
+                                .frame(width: isTutorialHighlighted(id: 3) ? 30: 20, height: isTutorialHighlighted(id: 3) ? 30: 20)
+                        )
+                }
+                .padding()
+            }
+            if showExitHelp {
+                Text("To exit the calibration process and revert changes, select the Exit button ")
+                    .padding()
+                    .foregroundColor(.blue)
+            }
         }
         .onChange(of: value ) { _ in
             if !queue.isEmpty {
@@ -175,7 +239,7 @@ struct CalibrationConfirmationView: View {
         selectState.buttonId = 0
         selectState.buttonType = ButtonType.calibration
     }
-    
+    // TODO add check for type
     private func registerBlink() {
         // check if select state matches before calling functions
         let curId = selectState.buttonId
@@ -190,7 +254,7 @@ struct CalibrationConfirmationView: View {
             exitCalibrationConf(fromBlink: true)
         }
     }
-    
+    // TODO add functionality for help buttons
     private func registerGaze(action: ActionType){
         if action == ActionType.up {
             if selectState.buttonId != 0 {
@@ -239,6 +303,46 @@ struct CalibrationConfirmationView: View {
                 print(error.localizedDescription)
             }
             audioPlayer.play()
+    }
+    
+    private func flipHelp(id: Int) {
+        if id == 0 {
+            if showConfirmHelp {
+                showConfirmHelp = false
+            } else {
+                showConfirmHelp = true
+            }
+        } else if id == 1 {
+            if showIncHelp {
+                showIncHelp = false
+            } else {
+                showIncHelp = true
+            }
+        } else if id == 2 {
+            if showDecHelp {
+                showDecHelp = false
+            } else {
+                showDecHelp = true
+            }
+        } else if id == 3 {
+            if showExitHelp {
+                showExitHelp = false
+            } else {
+                showExitHelp = true
+            }
+        }
+    }
+    
+    private func isTutorialHighlighted(id: Int) -> Bool {
+        if selectState.buttonType == ButtonType.calibConfHelp {
+            if selectState.buttonId == id {
+                return true
+            } else {
+                return false
+            }
+        } else {
+            return false
+        }
     }
 }
 
