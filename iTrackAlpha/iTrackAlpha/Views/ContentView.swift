@@ -9,7 +9,7 @@ import SwiftUI
 import AVFoundation
 
 enum ButtonType {
-    case cover, row , char, space, backspace, confirm, cursor, settingToggle, enterSettings, customPhrase, enterPhrases, addNewPhrase, tutorial, settingTutorial, exit, enterCalibration, calibration, calibrationConf, clear
+    case cover, row , char, space, backspace, confirm, cursor, settingToggle, enterSettings, customPhrase, enterPhrases, addNewPhrase, tutorial, settingTutorial, exit, enterCalibration, calibration, calibrationConf, clear, predText
 }
 
 enum CalibrationState {
@@ -55,6 +55,7 @@ struct ContentView: View {
     @State var showSave: Bool = false
     @State var prevButtonType: ButtonType = ButtonType.cover
     @State var lookLeft: Bool = false
+    @State var predictedWords: [String] = []
     @ObservedObject var customizations: CustomizationObject
     var longDelay: CGFloat = 2.0
     var shortDelay: CGFloat = 1.0
@@ -104,7 +105,7 @@ struct ContentView: View {
             } else if state == 1{
                 RowsView(state: $state, rowState: $rowState, charState: $charState, prevState: $prevState, selectState: $selectState, highlightBackspace: $highlightBackspace, queue: $viewModel.queue, value: $viewModel.value, content: $content, contentInd: $contentInd, highlightCursor: $highlightCursor, playSound: $customizations.playSound, showConfirmation: $customizations.showConfirmationScreen, showSave: $showSave, customList: $customPhraseList, nextStateId: $nextStateId, prevButtonType: $prevButtonType)
             } else if state == 2 {
-                CharView(state: $state, rowState: $rowState, charState: $charState, content: $content, contentInd: $contentInd, prevState: $prevState, selectState: $selectState, highlightBackspace: $highlightBackspace, queue: $viewModel.queue, value: $viewModel.value, highlightCursor: $highlightCursor, playSound: $customizations.playSound, currentCharId: 0, showConfirmation: $customizations.showConfirmationScreen, showSave: $showSave, customList: $customPhraseList, nextStateId: $nextStateId, prevButtonType: $prevButtonType)
+                CharView(state: $state, rowState: $rowState, charState: $charState, content: $content, contentInd: $contentInd, prevState: $prevState, selectState: $selectState, highlightBackspace: $highlightBackspace, queue: $viewModel.queue, value: $viewModel.value, highlightCursor: $highlightCursor, playSound: $customizations.playSound, currentCharId: 0, showConfirmation: $customizations.showConfirmationScreen, showSave: $showSave, customList: $customPhraseList, nextStateId: $nextStateId, prevButtonType: $prevButtonType, predictedWords: $predictedWords)
             } else if state == 3 {
                 SettingsView(longerBlinkDelay: $customizations.longerBlinkDelay, longerGazeDelay: $customizations.longerGazeDelay, playSound: $customizations.playSound, showConfirmationScreen: $customizations.showConfirmationScreen, selectState: $selectState, queue: $viewModel.queue, value: $viewModel.value, state: $state, nextStateId: $nextStateId, prevState: $prevState, rowState: $rowState)
             } else if state == 4 {
