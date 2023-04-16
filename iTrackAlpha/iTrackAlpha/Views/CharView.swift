@@ -41,58 +41,73 @@ struct CharView: View {
         }
     }
     var body: some View {
-        ScrollViewReader { spot in
-            VStack {
-                HStack {
-                    ForEach(predictedWords, id: \.self) { word in
-                        Button(action: {
-                            replaceCurrentWordWithPrediction(predWord: word, predWordInd: predictedWords.firstIndex(of: word) ?? 0)
-                        }) {
-                            Text(word)
-                                .frame(width: dimPredWidth(word: word), height: dimPredHeight(word: word))
-                                .background(Color(red: 0.83, green: 0.83, blue: 0.83))
-                                .foregroundColor(.black)
-                                .border(.blue, width: addPredBorder(word: word))
-                                .cornerRadius(8)
-                        }
-                        .padding(.horizontal, 2)
-                    }
-                    .padding(.bottom, 8)
-                }
-                    ScrollView{
-                        ForEach(charRows) { row in
-                            Button(action: {clickChar(character: row)}){
-                                Text(row.character)
-                                    .frame(width: scaleDim(row: row), height: scaleDim(row: row))
-                                    .font(.largeTitle)
-                                    .background(Color(red: 0.83, green: 0.83, blue: 0.83))
-                                    .foregroundColor(.black)
-                                    .border(.blue, width: addBorder(row: row))
-                                    .cornerRadius(8)
+        HStack {
+            Spacer()
+            ScrollViewReader { spot in
+                VStack {
+                        ScrollView{
+                            ForEach(charRows) { row in
+                                Button(action: {clickChar(character: row)}){
+                                    Text(row.character)
+                                        .frame(width: scaleDim(row: row), height: scaleDim(row: row))
+                                        .font(.largeTitle)
+                                        .background(Color(red: 0.83, green: 0.83, blue: 0.83))
+                                        .foregroundColor(.black)
+                                        .border(.blue, width: addBorder(row: row))
+                                        .cornerRadius(8)
+                                }
+                                .padding(.leading, 140)
+                                .padding(.vertical, 10)
+                                .id(row.id - getFirstChar())
                             }
-                            .padding(.horizontal, 170)
-                            .padding(.vertical, 10)
-                            .id(row.id - getFirstChar())
                         }
-                    }
-                    .onChange(of: currentCharId) { _ in
-                        spot.scrollTo(currentCharId, anchor: .center)
-                        print(currentCharId)
-                    }
-                
-            }
-        }
-        .modifier(GestureSwipeRight(state: $state, selectState: $selectState, prevState: $prevState, rowState: $rowState))
-        .onChange(of: value ) { _ in
-            if !queue.isEmpty {
-                let action = queue.first!.actionType
-                if action == ActionType.blink {
-                    registerBlink()
-                    queue.removeFirst()
-                } else {
-                    registerGaze(action: action)
-                    queue.removeFirst()
+                        .onChange(of: currentCharId) { _ in
+                            spot.scrollTo(currentCharId, anchor: .center)
+                            print(currentCharId)
+                        }
+                    
                 }
+            }
+            .modifier(GestureSwipeRight(state: $state, selectState: $selectState, prevState: $prevState, rowState: $rowState))
+            .onChange(of: value ) { _ in
+                if !queue.isEmpty {
+                    let action = queue.first!.actionType
+                    if action == ActionType.blink {
+                        registerBlink()
+                        queue.removeFirst()
+                    } else {
+                        registerGaze(action: action)
+                        queue.removeFirst()
+                    }
+                }
+            }
+            VStack {
+                // clear button
+                Button(action: {print("CLEAR TEXT")}){
+                    Text("Clear Text")
+                }
+                .padding([.trailing], 20)
+                .padding([.leading], 77)
+                .padding([.top, .bottom], 10)
+                Spacer()
+                // predictive text
+                ForEach(predictedWords, id: \.self) { word in
+                    Button(action: {
+                        replaceCurrentWordWithPrediction(predWord: word, predWordInd: predictedWords.firstIndex(of: word) ?? 0)
+                    }) {
+                        Text(word)
+                            .frame(width: dimPredWidth(word: word), height: dimPredHeight(word: word))
+                            .background(Color(red: 0.83, green: 0.83, blue: 0.83))
+                            .foregroundColor(.black)
+                            .border(.blue, width: addPredBorder(word: word))
+                            .cornerRadius(8)
+                    }
+                    .padding([.trailing], 40)
+                    .padding([.leading], 77)
+                    .padding([.top, .bottom], 10)
+                }
+                .padding(.bottom, 8)
+                Spacer()
             }
         }
     }
@@ -721,6 +736,6 @@ struct CharView_Previews: PreviewProvider {
     static var tempSelect = selectedState(buttonType: ButtonType.cover, buttonId: 0, clickState: 0, isNo: false)
     
     static var previews: some View {
-        CharView(state: .constant(2), rowState: .constant(0), charState: .constant(0), content: .constant(""), contentInd: .constant(0), prevState: .constant(2), selectState: .constant(tempSelect), highlightBackspace: .constant(false), queue: .constant([]), value: .constant(0), highlightCursor: .constant(false), playSound: .constant(true), currentCharId: 0, showConfirmation: .constant(true), showSave: .constant(false), customList: .constant([]), nextStateId: .constant(0), prevButtonType: .constant(ButtonType.cover), predictedWords: .constant([]))
+        CharView(state: .constant(2), rowState: .constant(0), charState: .constant(0), content: .constant(""), contentInd: .constant(0), prevState: .constant(2), selectState: .constant(tempSelect), highlightBackspace: .constant(false), queue: .constant([]), value: .constant(0), highlightCursor: .constant(false), playSound: .constant(true), currentCharId: 0, showConfirmation: .constant(true), showSave: .constant(false), customList: .constant([]), nextStateId: .constant(0), prevButtonType: .constant(ButtonType.cover), predictedWords: .constant(["a", "b", "c"]))
     }
 }
