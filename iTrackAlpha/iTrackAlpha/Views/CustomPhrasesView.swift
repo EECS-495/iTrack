@@ -25,6 +25,7 @@ struct CustomPhrasesView: View {
     @Binding var nextStateId: Int
     @Binding var prevButtonType: ButtonType
     @Binding var lookLeft: Bool
+    @Binding var predictedWords: [String]
     @State var curId: Int = 0
     @State var onAddPhrase: Bool = false
     @State var audioPlayer: AVAudioPlayer!
@@ -127,6 +128,8 @@ struct CustomPhrasesView: View {
             content = content1 + customPhrase.content + content2
             contentInd = contentInd + customPhrase.content.count
             goToNextState()
+            
+            updatePredictedWords()
         }
     }
     
@@ -350,6 +353,8 @@ struct CustomPhrasesView: View {
             }
             content = content1 + content2
             contentInd = contentInd - 1
+            
+            updatePredictedWords()
         }
     }
     
@@ -440,6 +445,40 @@ struct CustomPhrasesView: View {
         }
     }
     
+    private func updatePredictedWords() {
+
+        let textChecker = UITextChecker()
+
+        print("update_predict_word_called")
+        let cursorIndex = content.index(content.startIndex, offsetBy: contentInd)
+
+        
+
+        let lastSpaceOrNewline = content[..<cursorIndex].rangeOfCharacter(from: .whitespacesAndNewlines, options: .backwards)?.upperBound
+
+        let lastWordStartIndex = lastSpaceOrNewline ?? content.startIndex
+
+        let lastWordRange = NSRange(lastWordStartIndex..<cursorIndex, in: content)
+
+        
+
+        if let completions = textChecker.completions(forPartialWordRange: lastWordRange, in: content, language: "en") {
+
+            predictedWords = Array(completions.prefix(3))
+
+            print("predict words:", predictedWords)
+
+        } else {
+
+            predictedWords = []
+
+            print("predict words: nothing")
+
+        }
+
+    }
+    
+    
 }
 
 struct CustomPhrasesView_Previews: PreviewProvider {
@@ -447,7 +486,7 @@ struct CustomPhrasesView_Previews: PreviewProvider {
     static var tempSelect = selectedState(buttonType: ButtonType.customPhrase, buttonId: 0, clickState: 0, isNo: false)
     
     static var previews: some View {
-        CustomPhrasesView(customList: .constant([]), content: .constant(""), contentInd: .constant(0), state: .constant(5), showSave: .constant(false), queue: .constant([]), value: .constant(0), selectState: .constant(tempSelect), highlightBackspace: .constant(false), highlightCursor: .constant(false), prevState: .constant(5), showConfirmation: .constant(false), customState: .constant(""), nextStateId: .constant(0), prevButtonType: .constant(ButtonType.cover), lookLeft: .constant(false))
+        CustomPhrasesView(customList: .constant([]), content: .constant(""), contentInd: .constant(0), state: .constant(5), showSave: .constant(false), queue: .constant([]), value: .constant(0), selectState: .constant(tempSelect), highlightBackspace: .constant(false), highlightCursor: .constant(false), prevState: .constant(5), showConfirmation: .constant(false), customState: .constant(""), nextStateId: .constant(0), prevButtonType: .constant(ButtonType.cover), lookLeft: .constant(false), predictedWords: .constant(["a", "b", "c"]))
     }
 }
 

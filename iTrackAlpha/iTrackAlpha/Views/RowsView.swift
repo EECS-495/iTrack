@@ -27,6 +27,7 @@ struct RowsView: View {
     @Binding var customList: [CustomPhrase]
     @Binding var nextStateId: Int
     @Binding var prevButtonType: ButtonType
+    @Binding var predictedWords: [String]
     
     var rows: [Row] {
         Rows.filter { row in
@@ -103,6 +104,7 @@ struct RowsView: View {
     private func clearText() {
         content = ""
         contentInd = 0
+        predictedWords = []
     }
     
     private func goToClear() {
@@ -304,6 +306,8 @@ struct RowsView: View {
             }
             content = content1 + content2
             contentInd = contentInd - 1
+            
+            updatePredictedWords()
         }
     }
     
@@ -501,12 +505,45 @@ struct RowsView: View {
             state = 5
         }
     }
+    
+    private func updatePredictedWords() {
+
+        let textChecker = UITextChecker()
+
+        print("update_predict_word_called")
+        let cursorIndex = content.index(content.startIndex, offsetBy: contentInd)
+
+        
+
+        let lastSpaceOrNewline = content[..<cursorIndex].rangeOfCharacter(from: .whitespacesAndNewlines, options: .backwards)?.upperBound
+
+        let lastWordStartIndex = lastSpaceOrNewline ?? content.startIndex
+
+        let lastWordRange = NSRange(lastWordStartIndex..<cursorIndex, in: content)
+
+        
+
+        if let completions = textChecker.completions(forPartialWordRange: lastWordRange, in: content, language: "en") {
+
+            predictedWords = Array(completions.prefix(3))
+
+            print("predict words:", predictedWords)
+
+        } else {
+
+            predictedWords = []
+
+            print("predict words: nothing")
+
+        }
+
+    }
 }
 
 struct RowsView_Previews: PreviewProvider {
     static var tempSelect = selectedState(buttonType: ButtonType.cover, buttonId: 0, clickState: 0, isNo: false)
     
     static var previews: some View {
-        RowsView(state: .constant(2), rowState: .constant(0), charState: .constant(0), prevState: .constant(1), selectState: .constant(tempSelect), highlightBackspace: .constant(false), queue: .constant([]), value: .constant(0), content: .constant(""), contentInd: .constant(0), highlightCursor: .constant(false), playSound: .constant(true), showConfirmation: .constant(true), showSave: .constant(false), customList: .constant([]), nextStateId: .constant(2), prevButtonType: .constant(ButtonType.cover))
+        RowsView(state: .constant(2), rowState: .constant(0), charState: .constant(0), prevState: .constant(1), selectState: .constant(tempSelect), highlightBackspace: .constant(false), queue: .constant([]), value: .constant(0), content: .constant(""), contentInd: .constant(0), highlightCursor: .constant(false), playSound: .constant(true), showConfirmation: .constant(true), showSave: .constant(false), customList: .constant([]), nextStateId: .constant(2), prevButtonType: .constant(ButtonType.cover), predictedWords: .constant(["a", "b", "c"]))
     }
 }

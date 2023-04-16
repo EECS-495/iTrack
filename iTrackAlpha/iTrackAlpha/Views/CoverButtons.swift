@@ -29,6 +29,7 @@ struct CoverButtons: View {
     @Binding var customList: [CustomPhrase]
     @Binding var nextStateId: Int
     @Binding var prevButtonType: ButtonType
+    @Binding var predictedWords: [String]
         
     var body: some View {
         VStack{
@@ -163,6 +164,7 @@ struct CoverButtons: View {
     private func clearText() {
         content = ""
         contentInd = 0
+        predictedWords = []
     }
     
     private func widthDim() -> CGFloat {
@@ -633,6 +635,8 @@ struct CoverButtons: View {
             }
             content = content1 + content2
             contentInd = contentInd - 1
+            
+            updatePredictedWords()
         }
     }
     
@@ -738,6 +742,39 @@ struct CoverButtons: View {
             state = 5
         }
     }
+    
+    private func updatePredictedWords() {
+
+        let textChecker = UITextChecker()
+
+        print("update_predict_word_called")
+        let cursorIndex = content.index(content.startIndex, offsetBy: contentInd)
+
+        
+
+        let lastSpaceOrNewline = content[..<cursorIndex].rangeOfCharacter(from: .whitespacesAndNewlines, options: .backwards)?.upperBound
+
+        let lastWordStartIndex = lastSpaceOrNewline ?? content.startIndex
+
+        let lastWordRange = NSRange(lastWordStartIndex..<cursorIndex, in: content)
+
+        
+
+        if let completions = textChecker.completions(forPartialWordRange: lastWordRange, in: content, language: "en") {
+
+            predictedWords = Array(completions.prefix(3))
+
+            print("predict words:", predictedWords)
+
+        } else {
+
+            predictedWords = []
+
+            print("predict words: nothing")
+
+        }
+
+    }
 }
 
 struct CoverButtons_Previews: PreviewProvider {
@@ -747,6 +784,6 @@ struct CoverButtons_Previews: PreviewProvider {
     
     static var previews: some View {
         
-        CoverButtons(state: .constant(0), rowState: .constant(0), content: .constant(""), contentInd: .constant(0), prevState: .constant(0), selectState: .constant(tempSelect), highlightBackspace: .constant(false), queue: .constant([]), value: .constant(0), showHelpButton: .constant(false), highlightCursor: .constant(false), playSound: .constant(true), showConfirmation: .constant(true), showSave: .constant(false), customList: .constant([]), nextStateId: .constant(1), prevButtonType: .constant(ButtonType.cover))
+        CoverButtons(state: .constant(0), rowState: .constant(0), content: .constant(""), contentInd: .constant(0), prevState: .constant(0), selectState: .constant(tempSelect), highlightBackspace: .constant(false), queue: .constant([]), value: .constant(0), showHelpButton: .constant(false), highlightCursor: .constant(false), playSound: .constant(true), showConfirmation: .constant(true), showSave: .constant(false), customList: .constant([]), nextStateId: .constant(1), prevButtonType: .constant(ButtonType.cover), predictedWords: .constant(["a", "b", "c"]))
     }
 }
