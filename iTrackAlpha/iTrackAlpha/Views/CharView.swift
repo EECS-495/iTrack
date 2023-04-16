@@ -84,10 +84,15 @@ struct CharView: View {
             VStack {
                 // clear button
                 Button(action: {print("CLEAR TEXT")}){
-                    Text("Clear Text")
+                    Text("Clear")
+                        .frame(width: clearWidth(), height: clearHeight())
+                        .foregroundColor(.black)
+                        .background(Color(red: 0.83, green: 0.83, blue: 0.83))
+                        .border(.blue, width: clearBorder())
+                        .cornerRadius(8)
                 }
-                .padding([.trailing], 20)
-                .padding([.leading], 77)
+                .padding([.trailing], 55)
+                .padding([.leading], 70)
                 .padding([.top, .bottom], 10)
                 Spacer()
                 // predictive text
@@ -102,8 +107,8 @@ struct CharView: View {
                             .border(.blue, width: addPredBorder(word: word))
                             .cornerRadius(8)
                     }
-                    .padding([.trailing], 40)
-                    .padding([.leading], 77)
+                    .padding([.trailing], 55)
+                    .padding([.leading], 70)
                     .padding([.top, .bottom], 10)
                 }
                 .padding(.bottom, 8)
@@ -112,19 +117,55 @@ struct CharView: View {
         }
     }
     
+    private func clearHeight() -> CGFloat {
+        if selectState.buttonType == ButtonType.clear {
+            return 60
+        } else {
+            return 40
+        }
+    }
+    
+    private func clearWidth() -> CGFloat {
+        if selectState.buttonType == ButtonType.clear {
+            return 110
+        } else {
+            return 90
+        }
+    }
+    
+    private func clearBorder() -> CGFloat {
+        if selectState.buttonType == ButtonType.clear {
+            return 3.0
+        } else {
+            return 0.0
+        }
+    }
+    
+    private func clearText() {
+        content = ""
+        contentInd = 0
+        predictedWords = []
+    }
+    
+    private func goToClear() {
+        selectState.clickState = 1
+        selectState.buttonType = ButtonType.clear
+        selectState.buttonId = 0
+    }
+    
     private func dimPredHeight(word: String) -> CGFloat {
         if selectState.buttonType == ButtonType.predText && curPredText == word {
-            return 50
+            return 60
         } else {
-            return 30
+            return 40
         }
     }
     
     private func dimPredWidth(word: String) -> CGFloat {
         if selectState.buttonType == ButtonType.predText && curPredText == word {
-            return 80
+            return 110
         } else {
-            return 60
+            return 90
         }
     }
     
@@ -144,16 +185,16 @@ struct CharView: View {
         curPredTextInd = 0
     }
     
-    private func movePredTextLeft() {
+    private func movePredTextUp() {
         if curPredTextInd == 0 {
-            goToRows()
+            goToClear()
         } else {
             curPredText = predictedWords[curPredTextInd - 1]
             curPredTextInd = curPredTextInd - 1
         }
     }
     
-    private func movePredTextRight() {
+    private func movePredTextDown() {
         if curPredTextInd == predictedWords.count - 1 {
             return
         } else {
@@ -218,6 +259,11 @@ struct CharView: View {
                 makeSound()
             }
             replaceCurrentWordWithPrediction(predWord: curPredText, predWordInd: curPredTextInd)
+        } else if selectState.buttonType == ButtonType.clear {
+            if playSound {
+                makeSound()
+            }
+            clearText()
         }
     }
     
@@ -238,13 +284,13 @@ struct CharView: View {
         let curType = selectState.buttonType
         let curId = selectState.buttonId
         if curType == ButtonType.char && curId - getFirstChar() == 0 {
-            /*if showSave {
+            if showSave {
                 highlightAddPhrase()
             } else {
                 // go to backspace
                 goToBackspace()
-            }*/
-            if !predictedWords.isEmpty{
+            }
+            /*if !predictedWords.isEmpty{
                 goToPredText()
             } else {
                 if showSave {
@@ -253,7 +299,7 @@ struct CharView: View {
                     // go to backspace
                     goToBackspace()
                 }
-            }
+            }*/
         } else if curType == ButtonType.char && curId - getFirstChar() > 0 && curId - getFirstChar() < charRows.count {
             // go to button(id-1)
             goToChar(id: curId-1)
@@ -261,12 +307,9 @@ struct CharView: View {
         } else if curType == ButtonType.addNewPhrase || curType == ButtonType.exit {
             goToBackspace()
         } else if curType == ButtonType.predText {
-            if showSave {
-                highlightAddPhrase()
-            } else {
-                // go to backspace
-                goToBackspace()
-            }
+            movePredTextUp()
+        } else if curType == ButtonType.clear {
+            goToBackspace()
         }
     }
     
@@ -281,12 +324,7 @@ struct CharView: View {
                 // go to button(0)
                 //goToChar(id: getFirstChar())
                 //currentCharId = 0
-                if !predictedWords.isEmpty {
-                    goToPredText()
-                } else {
-                    goToChar(id: getFirstChar())
-                    currentCharId = 0
-                }
+                goToClear()
             }
         } else if curType == ButtonType.char && curId - getFirstChar() < charRows.count - 1 {
             // go to button(id + 1
@@ -299,25 +337,20 @@ struct CharView: View {
             } else {
                 //goToChar(id: getFirstChar())
                 //currentCharId = 0
-                if !predictedWords.isEmpty {
-                    goToPredText()
-                } else {
-                    goToChar(id: getFirstChar())
-                    currentCharId = 0
-                }
+                goToChar(id: getFirstChar())
+                currentCharId = 0
             }
         } else if curType == ButtonType.addNewPhrase || curType == ButtonType.exit {
             //goToChar(id: getFirstChar())
             //currentCharId = 0
-            if !predictedWords.isEmpty {
-                goToPredText()
-            } else {
-                goToChar(id: getFirstChar())
-                currentCharId = 0
-            }
-        } else if curType == ButtonType.predText {
             goToChar(id: getFirstChar())
             currentCharId = 0
+        } else if curType == ButtonType.predText {
+            movePredTextDown()
+        } else if curType == ButtonType.clear {
+            if !predictedWords.isEmpty {
+                goToPredText()
+            }
         }
     }
     
@@ -336,7 +369,11 @@ struct CharView: View {
         } else if curType == ButtonType.addNewPhrase {
             highlightExit()
         } else if curType == ButtonType.predText {
-            movePredTextLeft()
+            goToChar(id: getFirstChar())
+            currentCharId = 0
+        } else if curType == ButtonType.clear {
+            goToChar(id: getFirstChar())
+            currentCharId = 0
         }
     }
     
@@ -351,8 +388,12 @@ struct CharView: View {
             }
         } else if curType == ButtonType.exit {
             highlightAddPhrase()
-        } else if curType == ButtonType.predText {
-            movePredTextRight()
+        } else if curType == ButtonType.char {
+            if !predictedWords.isEmpty {
+                goToPredText()
+            } else {
+                goToClear()
+            }
         }
     }
     
@@ -641,9 +682,6 @@ struct CharView: View {
         let textChecker = UITextChecker()
 
         print("update_predict_word_called")
-
-        
-
         let cursorIndex = content.index(content.startIndex, offsetBy: contentInd)
 
         
@@ -669,12 +707,6 @@ struct CharView: View {
             print("predict words: nothing")
 
         }
-
-        
-
-        //Call the function to replace the current word with predictive text
-
-        // replaceCurrentWordWithPrediction()
 
     }
     
