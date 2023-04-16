@@ -28,6 +28,7 @@ struct SettingsView: View {
     @State var showSoundTut: Bool = false
     @State var showConfirmationTut: Bool = false
     @State var showDetectEyeTut: Bool = false
+    @State var showDetectEyeChoiceTut: Bool = false
     @State var reload: Int = 0
     
     var body: some View {
@@ -40,8 +41,7 @@ struct SettingsView: View {
             ExtendGazeSettingsView(longerGazeDelay: $longerGazeDelay, selectState: $selectState, showGazeDelayTut: $showGazeDelayTut)
             PlaySoundSettingsView(playSound: $playSound, selectState: $selectState, showSoundTut: $showSoundTut)
             ShowConfirmSettingsView(showConfirmationScreen: $showConfirmationScreen, selectState: $selectState, showConfirmationTut: $showConfirmationTut)
-            DetectEyeView(detectSingleEye: $detectSingleEye, detectRightEye: $detectRightEye, selectState: $selectState,
-                showDetectEyeTut: $showDetectEyeTut)
+            DetectEyeView(detectSingleEye: $detectSingleEye, detectRightEye: $detectRightEye, selectState: $selectState,showDetectEyeTut: $showDetectEyeTut, showDetectEyeChoiceTut: $showDetectEyeChoiceTut)
             Button(action: {enterCalibration(fromBlink: false)}) {
                 Text("Enter Sensitivity Calibration")
                     .frame(width: widthDim(), height: heightDim())
@@ -87,7 +87,11 @@ struct SettingsView: View {
         if (curType == ButtonType.settingToggle || curType == ButtonType.settingTutorial) && curId > 0{
             selectState.buttonId = curId - 1
         } else if curType == ButtonType.enterCalibration {
-            selectState.buttonId = 3
+            if detectSingleEye {
+                selectState.buttonId = 5
+            } else {
+                selectState.buttonId = 4
+            }
             selectState.buttonType = ButtonType.settingToggle
         }
     }
@@ -95,9 +99,13 @@ struct SettingsView: View {
     private func goDown() {
         let curType = selectState.buttonType
         let curId = selectState.buttonId
-        if (curType == ButtonType.settingToggle || curType == ButtonType.settingTutorial) && curId < 3{
+        if (curType == ButtonType.settingToggle || curType == ButtonType.settingTutorial) && curId < 4{
             selectState.buttonId = curId + 1
+        } else if detectSingleEye && (curType == ButtonType.settingToggle || curType == ButtonType.settingTutorial) && curId < 5 {
+            // optional toggle is showing
+            selectState.buttonId = 5
         } else if (curType == ButtonType.settingToggle || curType == ButtonType.settingTutorial) {
+            // else if you are on the bottom button
             selectState.buttonType = ButtonType.enterCalibration
             selectState.buttonId = 0
         }
@@ -178,6 +186,15 @@ struct SettingsView: View {
                 } else {
                     detectSingleEye = true
                 }
+            } else if detectSingleEye && curId == 5 {
+                if playSound {
+                    makeSound()
+                }
+                if detectRightEye {
+                    detectRightEye = false
+                } else {
+                    detectRightEye = true
+                }
             }
         } else if curType == ButtonType.settingTutorial {
             // call tutorial func to change bools to achieve lift off
@@ -225,6 +242,12 @@ struct SettingsView: View {
                 showDetectEyeTut = false
             } else {
                 showDetectEyeTut = true
+            }
+        } else if buttonId == 5 && detectSingleEye {
+            if showDetectEyeChoiceTut {
+                showDetectEyeChoiceTut = false
+            } else {
+                showDetectEyeChoiceTut = true
             }
         }
         
@@ -320,6 +343,6 @@ struct SettingsView_Previews: PreviewProvider {
     static var tempSelect = selectedState(buttonType: ButtonType.settingToggle, buttonId: 0, clickState: 1, isNo: false)
     
     static var previews: some View {
-        SettingsView(longerBlinkDelay: .constant(false), longerGazeDelay: .constant(false), playSound: .constant(true), showConfirmationScreen: .constant(true), detectSingleEye: .constant(false), detectRightEye: .constant(false), selectState: .constant(tempSelect), queue: .constant([]), value: .constant(0), state: .constant(3), nextStateId: .constant(0), prevState: .constant(3), rowState: .constant(0))
+        SettingsView(longerBlinkDelay: .constant(false), longerGazeDelay: .constant(false), playSound: .constant(true), showConfirmationScreen: .constant(true), detectSingleEye: .constant(true), detectRightEye: .constant(false), selectState: .constant(tempSelect), queue: .constant([]), value: .constant(0), state: .constant(3), nextStateId: .constant(0), prevState: .constant(3), rowState: .constant(0))
     }
 }
