@@ -34,6 +34,7 @@ struct CharView: View {
     @Binding var predictedWords: [String]
     @State var curPredText = ""
     @State var curPredTextInd = -1
+    @State var synthesizer = AVSpeechSynthesizer()
     
     var charRows: [CharRow] {
         CharRows.filter { row in
@@ -221,6 +222,23 @@ struct CharView: View {
         }
     }
     
+    private func idToCharacter(id: Int) -> String {
+        // ONLY CALL WHEN ROW STATE != 1
+        for c in charRows {
+            if c.id == id {
+                return c.character
+            }
+        }
+        return ""
+    }
+    
+    private func readString(str: String) {
+        let utterance = AVSpeechUtterance(string: str)
+        utterance.voice = AVSpeechSynthesisVoice(language: "en-US")
+        utterance.rate = 0.5
+        synthesizer.speak(utterance)
+    }
+    
     private func registerGaze(action: ActionType) {
         if action == ActionType.up {
             goUp()
@@ -258,6 +276,7 @@ struct CharView: View {
             // go to button(id-1)
             goToChar(id: curId-1)
             currentCharId = curId - getFirstChar() - 1
+            readString(str: idToCharacter(id: curId-1))
         } else if curType == ButtonType.addNewPhrase || curType == ButtonType.exit {
             goToBackspace()
         } else if curType == ButtonType.predText {
@@ -286,12 +305,14 @@ struct CharView: View {
                 } else {
                     goToChar(id: getFirstChar())
                     currentCharId = 0
+                    readString(str: idToCharacter(id: getFirstChar()))
                 }
             }
         } else if curType == ButtonType.char && curId - getFirstChar() < charRows.count - 1 {
             // go to button(id + 1
             goToChar(id: curId + 1)
             currentCharId = curId - getFirstChar() + 1
+            readString(str: idToCharacter(id: curId+1))
         } else if curType == ButtonType.cursor {
             highlightCursor = false
             if showSave {
@@ -304,6 +325,7 @@ struct CharView: View {
                 } else {
                     goToChar(id: getFirstChar())
                     currentCharId = 0
+                    readString(str: idToCharacter(id: getFirstChar()))
                 }
             }
         } else if curType == ButtonType.addNewPhrase || curType == ButtonType.exit {
@@ -314,10 +336,12 @@ struct CharView: View {
             } else {
                 goToChar(id: getFirstChar())
                 currentCharId = 0
+                readString(str: idToCharacter(id: getFirstChar()))
             }
         } else if curType == ButtonType.predText {
             goToChar(id: getFirstChar())
             currentCharId = 0
+            readString(str: idToCharacter(id: getFirstChar()))
         }
     }
     

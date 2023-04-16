@@ -27,6 +27,14 @@ struct GazeCalibrationView: View {
             Text(calibrationText())
                 .padding()
             Text("For best results, pause in between actions")
+            Button(action: {exitToButtons()}){
+                Text("Go Back")
+                    .frame(width: 90, height: 30)
+                    .foregroundColor(.black)
+                    .background(Color(red: 0.83, green: 0.83, blue: 0.83))
+                    .cornerRadius(8)
+                    .padding(30)
+            }
         }
             .foregroundColor(.black)
             .onChange(of: value ) { _ in
@@ -59,6 +67,12 @@ struct GazeCalibrationView: View {
         } else {
             return "This string should never be displayed, invalid calibration state for GazeCalibrationView"
         }
+    }
+    
+    private func exitToButtons() {
+        selectState.buttonId = 0
+        selectState.buttonType = ButtonType.calibration
+        calibrationState = CalibrationState.buttons
     }
     
     private func registerGaze(action: ActionType) {

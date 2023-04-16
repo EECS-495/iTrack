@@ -41,6 +41,7 @@ struct CalibrationView: View {
     
     var body: some View {
         VStack{
+            Spacer()
             if !inCalibrationConfirmation {
                 if calibrationState == CalibrationState.buttons {
                     CalibrationButtonsView(state: $state, calibrationState: $calibrationState, selectState: $selectState, queue: $queue, value: $value, showConfirmationScreen: $showConfirmationScreen, nextStateId: $nextStateId, prevState: $prevState, playSound: $playSound, lookUpSens: $lookUpSens, lookDownSens: $lookDownSens, lookLeftSens: $lookLeftSens, lookRightSens: $lookRightSens, blinkSens: $blinkSens, defaultUp: $defaultUp, defaultDown: $defaultDown, defaultLeft: $defaultLeft, defaultRight: $defaultRight, defaultBlink: $defaultBlink)
@@ -51,6 +52,7 @@ struct CalibrationView: View {
             } else {
                 CalibrationConfirmationView(calibrationState: $calibrationState, selectState: $selectState, queue: $queue, value: $value, lookUpSens: $lookUpSens, lookDownSens: $lookDownSens, lookLeftSens: $lookLeftSens, lookRightSens: $lookRightSens, blinkSens: $blinkSens, origLookUp: $origLookUp, origLookDown: $origLookDown, origLookLeft: $origLookLeft, origLookRight: $origLookRight, origBlink: $origBlink, inCalibrationConfirmation: $inCalibrationConfirmation, playSound: $playSound)
             }
+            Spacer()
         }
         .onAppear{
             if !setOriginals {

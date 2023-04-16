@@ -1,37 +1,37 @@
 [
     {
         "id": 0,
-        "image": "Q W E R T Y U I O P",
+        "image": "E A R L C U D Y W K",
         "RowType": 0,
         "CharType": 0
     },
     {
         "id": 1,
-        "image": "A S D F G H J K L",
+        "image": "I O T P M H V X Z",
         "RowType": 0,
         "CharType": 1
     },
     {
         "id": 2,
-        "image": "Z X C V B N M",
+        "image": "N S G B F J Q",
         "RowType": 0,
         "CharType": 2,
     },
     {
         "id": 3,
-        "image": "q w e r t y u i o p",
+        "image": "e a r l c u d y w k",
         "RowType": 3,
         "CharType": 9
     },
     {
         "id": 4,
-        "image": "a s d f g h j k l",
+        "image": "i o t p m h v x z",
         "RowType": 3,
         "CharType": 10
     },
     {
         "id": 5,
-        "image": "z x c v b n m",
+        "image": "n s g b f j q",
         "RowType": 3,
         "CharType": 11
     },

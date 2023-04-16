@@ -180,15 +180,25 @@ struct CalibrationConfirmationView: View {
             makeSound()
         }
         if calibrationState == CalibrationState.up {
-            lookUpSens = lookUpSens - sensIncrement
+            if lookUpSens > 0 {
+                lookUpSens = lookUpSens - sensIncrement
+            }
         } else if calibrationState == CalibrationState.down {
-            lookDownSens = lookDownSens - sensIncrement
+            if lookDownSens > 0 {
+                lookDownSens = lookDownSens - sensIncrement
+            }
         } else if calibrationState == CalibrationState.left {
-            lookLeftSens = lookLeftSens - sensIncrement
+            if lookLeftSens > 0 {
+                lookLeftSens = lookLeftSens - sensIncrement
+            }
         } else if calibrationState == CalibrationState.right {
-            lookRightSens = lookRightSens - sensIncrement
+            if lookRightSens > 0 {
+                lookRightSens = lookRightSens - sensIncrement
+            }
         } else if calibrationState == CalibrationState.blink {
-            blinkSens = blinkSens - sensIncrement
+            if blinkSens > 0 {
+                blinkSens = blinkSens - sensIncrement
+            }
         }
         inCalibrationConfirmation = false
     }
@@ -200,15 +210,25 @@ struct CalibrationConfirmationView: View {
             makeSound()
         }
         if calibrationState == CalibrationState.up {
-            lookUpSens = lookUpSens + sensIncrement
+            if lookUpSens < 1 {
+                lookUpSens = lookUpSens + sensIncrement
+            }
         } else if calibrationState == CalibrationState.down {
-            lookDownSens = lookDownSens + sensIncrement
+            if lookDownSens < 1 {
+                lookDownSens = lookDownSens + sensIncrement
+            }
         } else if calibrationState == CalibrationState.left {
-            lookLeftSens = lookLeftSens + sensIncrement
+            if lookLeftSens < 1 {
+                lookLeftSens = lookLeftSens + sensIncrement
+            }
         } else if calibrationState == CalibrationState.right {
-            lookRightSens = lookRightSens + sensIncrement
+            if lookRightSens < 1 {
+                lookRightSens = lookRightSens + sensIncrement
+            }
         } else if calibrationState == CalibrationState.blink {
-            blinkSens = blinkSens + sensIncrement
+            if blinkSens < 1 {
+                blinkSens = blinkSens + sensIncrement
+            }
         }
         inCalibrationConfirmation = false
     }
