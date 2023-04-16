@@ -27,12 +27,27 @@ struct CalibrationButtonsView: View {
     @Binding var defaultLeft: CGFloat
     @Binding var defaultRight: CGFloat
     @Binding var defaultBlink: CGFloat
+    @State var showTutorial: Bool = false
     
     var body: some View {
         VStack{ // use padding instead of spacers if there are too many objects
-            Text("Use the buttons below to adjust the respective sensitivities ADD TEXT TO MAKE IT CLEAR THAT LESS SENSITIVE MEANS MORE DRAMATIC EYE MOVEMENTS ARE NEEDED")
-                .padding([.top, .leading, .trailing], 10)
-                .padding(.bottom, 130)
+            if showTutorial {
+                Text("Use the buttons below to adjust sensitivities")
+                    .padding(3)
+                    .foregroundColor(.blue)
+                Text("Dramatic eye actions will make calibration more effective")
+                    .padding(3)
+                    .foregroundColor(.blue)
+            }
+            Button(action: {showCalibTut()}) {
+                Text("?")
+                    .foregroundColor(selectState.buttonType == ButtonType.calibHelp ? .blue : .black)
+                    .overlay(
+                        Circle()
+                            .stroke(selectState.buttonType == ButtonType.calibHelp ? Color.blue : Color.black, lineWidth: selectState.buttonType == ButtonType.calibHelp ? 2.0 : 1.0)
+                            .frame(width: selectState.buttonType == ButtonType.calibHelp ? 30: 20, height: selectState.buttonType == ButtonType.calibHelp ? 30: 20)
+                    )
+            }
             Button(action: {enterLookUp()}){
                 Text("Adjust Look Up")
             }
@@ -42,7 +57,7 @@ struct CalibrationButtonsView: View {
             .cornerRadius(8)
             .border(.blue, width: addNewBorder(id: 0))
             .cornerRadius(8)
-            .padding()
+            .padding(3)
             
             Button(action: {enterLookDown()}){
                 Text("Adjust Look Down")
@@ -53,7 +68,7 @@ struct CalibrationButtonsView: View {
             .cornerRadius(8)
             .border(.blue, width: addNewBorder(id: 1))
             .cornerRadius(8)
-            .padding()
+            .padding(3)
             Button(action: {enterLookLeft()}){
                 Text("Adjust Look Left")
             }
@@ -63,7 +78,7 @@ struct CalibrationButtonsView: View {
             .cornerRadius(8)
             .border(.blue, width: addNewBorder(id: 2))
             .cornerRadius(8)
-            .padding()
+            .padding(3)
             Button(action: {enterLookRight()}){
                 Text("Adjust Look Right")
             }
@@ -73,7 +88,7 @@ struct CalibrationButtonsView: View {
             .cornerRadius(8)
             .border(.blue, width: addNewBorder(id: 3))
             .cornerRadius(8)
-            .padding()
+            .padding(3)
             Button(action: {enterBlink()}){
                 Text("Adjust Blink")
             }
@@ -83,14 +98,27 @@ struct CalibrationButtonsView: View {
             .cornerRadius(8)
             .border(.blue, width: addNewBorder(id: 4))
             .cornerRadius(8)
-            .padding()
-            Spacer()
+            .padding(3)
             Button(action: {restoreDefaults()}){
                 Text("Restore Defaults")
             }
+            .frame(width: widthDim(id: 5), height: heightDim(id: 5))
+            .foregroundColor(.black)
+            .background(Color(red: 0.83, green: 0.83, blue: 0.83))
+            .cornerRadius(8)
+            .border(.blue, width: addNewBorder(id: 5))
+            .cornerRadius(8)
+            .padding(3)
             Button(action: {exitCalibration()}){
-                Text("Exit")
+                Text("Save and Exit")
             }
+            .frame(width: widthDim(id: 6), height: heightDim(id: 6))
+            .foregroundColor(.black)
+            .background(Color(red: 0.83, green: 0.83, blue: 0.83))
+            .cornerRadius(8)
+            .border(.blue, width: addNewBorder(id: 6))
+            .cornerRadius(8)
+            .padding(3)
         }
         .onChange(of: value ) { _ in
             if !queue.isEmpty {
@@ -143,8 +171,16 @@ struct CalibrationButtonsView: View {
         lookRightSens = defaultRight
     }
     
+    private func showCalibTut() {
+        if showTutorial {
+            showTutorial = false
+        } else {
+            showTutorial = true
+        }
+    }
+    
     private func exitCalibration() {
-        
+        // TODO
     }
     
     private func registerBlink() {
@@ -160,6 +196,8 @@ struct CalibrationButtonsView: View {
             } else if selectState.buttonId == 4 {
                 enterBlink()
             }
+        } else if selectState.buttonType == ButtonType.calibHelp {
+            showCalibTut()
         }
     }
     
@@ -179,6 +217,9 @@ struct CalibrationButtonsView: View {
         if selectState.buttonType == ButtonType.calibration {
             if selectState.buttonId > 0 {
                 selectState.buttonId = selectState.buttonId - 1
+            } else if selectState.buttonId == 0 {
+                selectState.buttonType = ButtonType.calibHelp
+                selectState.buttonId = 0
             }
         }
     }
@@ -188,6 +229,9 @@ struct CalibrationButtonsView: View {
             if selectState.buttonId < 4 {
                 selectState.buttonId = selectState.buttonId + 1
             }
+        } else if selectState.buttonType == ButtonType.calibHelp {
+            selectState.buttonType = ButtonType.calibration
+            selectState.buttonId = 0
         }
     }
     

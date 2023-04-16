@@ -9,7 +9,7 @@ import SwiftUI
 import AVFoundation
 
 enum ButtonType {
-    case cover, row , char, space, backspace, confirm, cursor, settingToggle, enterSettings, customPhrase, enterPhrases, addNewPhrase, tutorial, settingTutorial, exit, enterCalibration, calibration, calibrationConf, clear, predText
+    case cover, row , char, space, backspace, confirm, cursor, settingToggle, enterSettings, customPhrase, enterPhrases, addNewPhrase, tutorial, settingTutorial, exit, enterCalibration, calibration, calibrationConf, calibHelp, calibConfHelp, clear, predText
 }
 
 enum CalibrationState {
@@ -107,7 +107,7 @@ struct ContentView: View {
             } else if state == 2 {
                 CharView(state: $state, rowState: $rowState, charState: $charState, content: $content, contentInd: $contentInd, prevState: $prevState, selectState: $selectState, highlightBackspace: $highlightBackspace, queue: $viewModel.queue, value: $viewModel.value, highlightCursor: $highlightCursor, playSound: $customizations.playSound, currentCharId: 0, showConfirmation: $customizations.showConfirmationScreen, showSave: $showSave, customList: $customPhraseList, nextStateId: $nextStateId, prevButtonType: $prevButtonType, predictedWords: $predictedWords)
             } else if state == 3 {
-                SettingsView(longerBlinkDelay: $customizations.longerBlinkDelay, longerGazeDelay: $customizations.longerGazeDelay, playSound: $customizations.playSound, showConfirmationScreen: $customizations.showConfirmationScreen, selectState: $selectState, queue: $viewModel.queue, value: $viewModel.value, state: $state, nextStateId: $nextStateId, prevState: $prevState, rowState: $rowState)
+                SettingsView(longerBlinkDelay: $customizations.longerBlinkDelay, longerGazeDelay: $customizations.longerGazeDelay, playSound: $customizations.playSound, showConfirmationScreen: $customizations.showConfirmationScreen, detectSingleEye: $customizations.detectSingleEye, detectRightEye: $customizations.detectRightEye, selectState: $selectState, queue: $viewModel.queue, value: $viewModel.value, state: $state, nextStateId: $nextStateId, prevState: $prevState, rowState: $rowState)
             } else if state == 4 {
                 ConfirmationPopup(state: $state, rowState: $rowState, charState: $charState, prevState: $prevState, nextStateId: $nextStateId, selectState: $selectState, content: $content, contentInd: $contentInd, queue: $viewModel.queue, value: $viewModel.value, highlightBackspace: $highlightBackspace, highlightCursor: $highlightCursor, playSound: $customizations.playSound, customState: $customState, showSave: $showSave, customList: $customPhraseList, prevButtonType: $prevButtonType, lookLeft: $lookLeft)
                 Spacer()

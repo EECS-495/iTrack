@@ -41,8 +41,6 @@ struct CalibrationView: View {
     
     var body: some View {
         VStack{
-            Text("Turn on sound to calibrate your eye tracking")
-            Spacer()
             if !inCalibrationConfirmation {
                 if calibrationState == CalibrationState.buttons {
                     CalibrationButtonsView(state: $state, calibrationState: $calibrationState, selectState: $selectState, queue: $queue, value: $value, showConfirmationScreen: $showConfirmationScreen, nextStateId: $nextStateId, prevState: $prevState, playSound: $playSound, lookUpSens: $lookUpSens, lookDownSens: $lookDownSens, lookLeftSens: $lookLeftSens, lookRightSens: $lookRightSens, blinkSens: $blinkSens, defaultUp: $defaultUp, defaultDown: $defaultDown, defaultLeft: $defaultLeft, defaultRight: $defaultRight, defaultBlink: $defaultBlink)
