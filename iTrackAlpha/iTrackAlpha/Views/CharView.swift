@@ -734,55 +734,66 @@ struct CharView: View {
     private func replaceCurrentWordWithPrediction(predWord: String, predWordInd: Int) {
 
         if predictedWords.isEmpty {
-
             print("No predicted words available.")
-
             return
+        }
+        //find the space in the content
+        var first_space: Int = 0
+        var has_first_space = false
+        print("contentInd", contentInd)
 
+        for i in stride(from: contentInd-1, to: 0, by: -1){
+            if Array(content)[i] == " "{
+                first_space = i
+                has_first_space = true
+                break
+            }
+
+        }//try find the first(before) space
+        
+        var second_space: Int = content.count
+        var has_second_space = false
+        for i in stride(from: contentInd, to: content.count, by: 1){
+            if Array(content)[i] == " "{
+                second_space = i
+                has_second_space = true
+                break
+            }
+        }//try to find the second(after) space
+        var content1: String = ""
+        var content2: String = ""
+        var temp_count = 0
+        for char in Array(content) {
+            if temp_count >= first_space   {
+                break
+            }
+            content1 = content1 + String(char)
+            temp_count = temp_count+1
         }
 
-        
+        temp_count = 0
+        for char in Array(content) {
+            if temp_count > second_space  {
+                content2 = content2 + String(char)
+            }
+            temp_count = temp_count+1
+        }
 
-        let cursorIndex = content.index(content.startIndex, offsetBy: contentInd)
-
-        let lastSpaceOrNewline = content[..<cursorIndex].rangeOfCharacter(from: .whitespacesAndNewlines, options: .backwards)?.upperBound
-
-        let lastWordStartIndex = lastSpaceOrNewline ?? content.startIndex
-
-
-
-        let rangeToDelete = lastWordStartIndex..<cursorIndex
-
-        
-
-        //IMPORTANT!!
-
-        //Wait for changes later
-
-        //remove the word before cursor based on space
-
-        content.removeSubrange(rangeToDelete)
-
-        //Replace the current word with the first word in the predictive text
-
-        // content.insert(contentsOf: predictedWords[0], at: lastWordStartIndex)
-        content.insert(contentsOf: predWord, at: lastWordStartIndex)
-
-
-        // Update contentInd to point to the end of the inserted word
-
-        let deletedWordCount = content.distance(from: lastWordStartIndex, to: cursorIndex)
-
-        contentInd = contentInd - deletedWordCount + predWord.count
-        
-
-
-
-        print("Replaced word with prediction:", predictedWords[0])
-        print("new content: ", content)
-
+        if (has_first_space && has_second_space){
+            content = content1 + " " + predWord + " " + content2
+            contentInd = content1.count + content2.count + predWord.count + 2
+        } else if (has_first_space && !has_second_space){
+            content = content1 + " " + predWord + content2
+            contentInd = content1.count + content2.count + predWord.count + 1
+        } else if (!has_first_space && has_second_space){
+            content = content1 + predWord + " " + content2
+            contentInd = content1.count + content2.count + predWord.count + 1
+        } else {
+            content = content1 + predWord + content2
+            contentInd = content1.count + content2.count + predWord.count
+        }
     }
-    
+
 }
 
 struct CharView_Previews: PreviewProvider {
