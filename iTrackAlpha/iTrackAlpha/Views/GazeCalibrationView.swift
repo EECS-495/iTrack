@@ -28,8 +28,16 @@ struct GazeCalibrationView: View {
                 .padding()
             Text("For best results, pause in between actions")
             Button(action: {exitToButtons()}){
-                Text("Go Back")
-                    .frame(width: 90, height: 30)
+                Text("Exit")
+                    .frame(width: 90, height: 40)
+                    .foregroundColor(.black)
+                    .background(Color(red: 0.83, green: 0.83, blue: 0.83))
+                    .cornerRadius(8)
+                    .padding(30)
+            }
+            Button(action: {goToConfirmation()}){
+                Text("Make Adjustments")
+                    .frame(width: 160, height: 40)
                     .foregroundColor(.black)
                     .background(Color(red: 0.83, green: 0.83, blue: 0.83))
                     .cornerRadius(8)
@@ -73,6 +81,12 @@ struct GazeCalibrationView: View {
         selectState.buttonId = 0
         selectState.buttonType = ButtonType.calibration
         calibrationState = CalibrationState.buttons
+    }
+    
+    private func goToConfirmation() {
+        inCalibrationConfirmation = true
+        selectState.buttonId = 0
+        selectState.buttonType = ButtonType.calibrationConf
     }
     
     private func registerGaze(action: ActionType) {
