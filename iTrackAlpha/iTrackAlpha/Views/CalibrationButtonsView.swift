@@ -181,6 +181,18 @@ struct CalibrationButtonsView: View {
     
     private func exitCalibration() {
         // TODO
+        if showConfirmationScreen {
+            state = 4
+            selectState.buttonType = ButtonType.confirm
+            selectState.buttonId = 0
+            selectState.isNo = false
+            prevState = 7
+            nextStateId = 3
+        } else {
+            selectState.buttonId = 0
+            selectState.buttonType = ButtonType.settingToggle
+            state = 3
+        }
     }
     
     private func registerBlink() {
@@ -195,6 +207,10 @@ struct CalibrationButtonsView: View {
                 enterLookRight()
             } else if selectState.buttonId == 4 {
                 enterBlink()
+            } else if selectState.buttonId == 5 {
+                restoreDefaults()
+            } else if selectState.buttonId == 6 {
+                exitCalibration()
             }
         } else if selectState.buttonType == ButtonType.calibHelp {
             showCalibTut()
@@ -226,7 +242,7 @@ struct CalibrationButtonsView: View {
     
     private func goDown() {
         if selectState.buttonType == ButtonType.calibration {
-            if selectState.buttonId < 4 {
+            if selectState.buttonId < 6 {
                 selectState.buttonId = selectState.buttonId + 1
             }
         } else if selectState.buttonType == ButtonType.calibHelp {

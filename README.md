@@ -74,5 +74,44 @@ Beta Release
         - Users can create and load custom phrases that they use often into their messages without having to type them character by character every time
         - In the custom phrases screen, users will see a list of their previously saved phrases that they can immediately insert into the text field
         - Users can create a new custom phrase with the add button at the bottom, where they will be given the normal interface for typing with a save               button at the top for when they are ready to save the contents of the text field
+        
+Omega Release
+
+    New Features:
+    
+        Predictive Text
+        - After the user has typed a few characters into the text field, the app will predict words the user may want to use
+        - In CharView, these words will be available to the right of the characters
+        - Looking right from any character in CharView will shift the selection to the predicted words
+        - Blinking will replace the word in progress in the text field with the selected, predicted word
+        
+        Calibration View
+        - Users can alter the sensitivies that the app recognizes actions with from the settings page
+        - In the first view, users can select if they want to change a directional look or the blinking sensitivies
+        - Once selected, the user will be asked to look in that direction/blink until they hear a sound
+        - Based on the difficulty the user has with activating the sound, they can confirm or adjust the value they just tried
+        - There is also a button to reset the sensitivies back to their default values
+        
+        Clear Button
+        - Clears the entire contents of the text field
+        - Resets the cursor back to the starting position
+        - The button is present on most views where the backspace button is present
+        
+        Looking Left in Confirmation Screens
+        - Previously, the user could only go back to the screen they had just left in the confirmation screen by selecting no
+        - Now users can look left, as they can in all other screens, to get back to the previous screen from the confirmation screen
+        - Looking left from the yes button has the same functionality as selecting the no button
+        
+        Announcing Characters as User Scrolls
+        - Scrolling through characters now announces which character is highlighted while the user scrolls
+        - Announces uppercase, lowercase, numbers, and non alphanumeric characters
+        - Does not announce other buttons such as the cover buttons, backspace, settings, etc
+        
+        
+        Other Bug Fixes/Feature Additions
+        - App icon added
+        - Reorganized characters to comply with Notre Dame ranked frequencies of letters
+        - Added functionality for using single eye of choice instead of both for navigating interface
+        - Deleting custom phrases option added
 
 Most of the logic regarding eye tracking and ARKit Framework configuration can be found in the "iTrackAlpha/iTrackAlpha/ViewController.swift" file.
